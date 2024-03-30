@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode(of = "id")
-public class User implements UserDetails {
+public class Member implements UserDetails {
     @Id @GeneratedValue
     @Column(name = "member_id", updatable = false, unique = true, nullable = false)
     private Long id;
