@@ -1,4 +1,4 @@
-package com.example.security;
+package com.example.fashioncommuni.security;
 
 import io.jsonwebtoken.io.IOException;
 import jakarta.servlet.*;
