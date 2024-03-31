@@ -1,4 +1,4 @@
-package com.example.config.security;
+package com.example.security;
 
 import io.jsonwebtoken.io.IOException;
 import jakarta.servlet.*;
@@ -8,8 +8,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
-
-import java.net.http.HttpRequest;
 
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends GenericFilterBean {
