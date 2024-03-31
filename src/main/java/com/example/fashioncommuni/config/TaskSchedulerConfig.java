@@ -1,4 +1,4 @@
-package com.example.config;
+package com.example.fashioncommuni.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,11 +14,11 @@ import java.util.concurrent.Executors;
 public class TaskSchedulerConfig implements SchedulingConfigurer {
     @Override
     public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
-        taskRegistrar.setScheduler(taskScheduler());
+        taskRegistrar.setScheduler(taskSchedulerCount());
     }
     @Bean(destroyMethod = "shutdown") //@Bean(destoryMethod = "shutdown")은 스프링 컨테이너가 종료될 때 Executor를 종료시키기 위한 메소드
-    public Executor taskScheduler() {
-        return Executors.newScheduledThreadPool(1);
+    public Executor taskSchedulerCount() {
+        return Executors.newScheduledThreadPool(2);
         //스케쥴링을 위한 스레드 풀을 생성 Executors.newScheduledThreadPool(2)는 2개의 스레드를 가지는 스레드 풀을 생성
     }
 }

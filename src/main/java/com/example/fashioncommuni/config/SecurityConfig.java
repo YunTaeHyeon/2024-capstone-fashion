@@ -1,7 +1,7 @@
-package com.example.config;
+package com.example.fashioncommuni.config;
 
-import com.example.security.JwtAuthenticationFilter;
-import com.example.security.JwtTokenProvider;
+import com.example.fashioncommuni.security.JwtAuthenticationFilter;
+import com.example.fashioncommuni.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

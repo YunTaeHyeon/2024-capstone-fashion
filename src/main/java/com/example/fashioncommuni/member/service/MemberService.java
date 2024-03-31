@@ -1,7 +1,7 @@
-package com.example.member.service;
-import com.example.member.repository.MemberRepository;
-import com.example.security.JwtToken;
-import com.example.security.JwtTokenProvider;
+package com.example.fashioncommuni.member.service;
+import com.example.fashioncommuni.member.repository.MemberRepository;
+import com.example.fashioncommuni.security.JwtToken;
+import com.example.fashioncommuni.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
