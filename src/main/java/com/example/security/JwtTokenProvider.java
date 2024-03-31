@@ -1,6 +1,5 @@
-package com.example.config.security;
+package com.example.security;
 
-import com.example.dto.JwtToken;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -20,8 +19,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-@Slf4j
-@Component
+@Slf4j @Component
 public class JwtTokenProvider {
     private final Key key;
 

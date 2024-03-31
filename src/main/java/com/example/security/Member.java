@@ -1,4 +1,4 @@
-package com.example.domain;
+package com.example.security;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -14,8 +14,7 @@ import java.util.stream.Collectors;
 @Entity
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@Builder
+@AllArgsConstructor @Builder
 @EqualsAndHashCode(of = "id")
 public class Member implements UserDetails {
     @Id @GeneratedValue
