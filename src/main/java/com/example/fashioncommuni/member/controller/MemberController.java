@@ -1,8 +1,8 @@
-package com.example.member.controller;
+package com.example.fashioncommuni.member.controller;
 
-import com.example.member.dto.SignInDto;
-import com.example.member.service.MemberService;
-import com.example.security.JwtToken;
+import com.example.fashioncommuni.member.dto.SignInDto;
+import com.example.fashioncommuni.member.service.MemberService;
+import com.example.fashioncommuni.security.JwtToken;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
