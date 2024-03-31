@@ -1,4 +1,4 @@
-package com.example.member.dto;
+package com.example.fashioncommuni.member.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

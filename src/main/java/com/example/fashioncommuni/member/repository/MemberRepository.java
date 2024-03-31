@@ -1,8 +1,8 @@
-package com.example.member.repository;
+package com.example.fashioncommuni.member.repository;
 
+import com.example.fashioncommuni.member.domain.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.lang.reflect.Member;
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member,Long> {
