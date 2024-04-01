@@ -22,7 +22,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     /**
      * 이 메서드는 사용자가 로그인을 시도할 때 호출된다.
      * HTTP 요청에서 사용자 이름과 비밀번호를 추출하여 UsernamePasswordAuthenticationToken 객체를 생성하고, 이를 AuthenticationManager에 전달하여 인증을 시도한다.
-     * 인증이 성공하면 인증된 사용자의 정보와 권한을 담은 Authentication 객체를 반환하고, 인증이 실패하면 AuthenticationException을 던진다.
+     * 인증이 성공하면 인증된 사용자의 정보와 권한을 담은 Authentication 객체를 반환하고, 인증이 실패하면 AuthenticationException 던진다.
      */
     @Override
     public Authentication attemptAuthentication(
