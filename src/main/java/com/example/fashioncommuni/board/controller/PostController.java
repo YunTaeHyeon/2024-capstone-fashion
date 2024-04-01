@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/posts")
+@RequestMapping("/posts")//toDO: URL 통합
 public class PostController {
     @Autowired
     private PostService postService;
@@ -27,7 +27,7 @@ public class PostController {
         return new ResponseEntity<>(post, HttpStatus.OK);
     }
 
-    @PutMapping("/{postId}") // PUT /posts/{postId}
+    @PutMapping("/{postId}") // PUT /posts/{postId} //toDo: 위험한지 확인해봐야 함
     public ResponseEntity<Post> updatePost(@PathVariable Long postId, @RequestBody Post post) {
         post.setPostId(postId);
         Post updatedPost = postService.updatePost(post);
@@ -40,7 +40,7 @@ public class PostController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping // GET /posts
+    @GetMapping // GET /posts //toDo: 하지만 우리 메인페이지는 ai를 활용해야 함
     public ResponseEntity<List<Post>> getPosts() {
         List<Post> posts = postService.getPosts();
         return new ResponseEntity<>(posts, HttpStatus.OK);

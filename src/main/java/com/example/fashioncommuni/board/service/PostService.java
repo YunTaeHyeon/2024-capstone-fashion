@@ -15,7 +15,7 @@ public class PostService {
     private PostRepository postRepository; // PostRepository 의존성 주입
 
     public Post createPost(Post post) {
-        post.setCreatedAt(LocalDateTime.now()); // 현재 시간을 설정
+        post.setCreatedAt(LocalDateTime.now()); // 현재 시간을 설정 //toDo: set은 발작버튼입니다.
         return postRepository.save(post); // 저장 후 리턴
     }
 
