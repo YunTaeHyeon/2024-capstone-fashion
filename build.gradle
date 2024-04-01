@@ -41,10 +41,10 @@ dependencies {
 	// com.sun.xml.bind
 	implementation 'com.sun.xml.bind:jaxb-impl:4.0.1'
 	implementation 'com.sun.xml.bind:jaxb-core:4.0.1'
-
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 	// javax.xml.bind
 	implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
-//	runtimeOnly 'com.h2database:h2'
+	runtimeOnly 'com.h2database:h2'
 
 }
 
