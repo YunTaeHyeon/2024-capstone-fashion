@@ -1,8 +1,7 @@
-package com.example.board.service;
+package com.example.fashioncommuni.board.service;
 
-import com.example.board.domain.Post;
-import com.example.board.repository.PostRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.fashioncommuni.board.domain.Post;
+import com.example.fashioncommuni.board.repository.PostRepository;
 import org.springframework.stereotype.Service;
 
 
@@ -11,11 +10,14 @@ import java.util.List;
 
 @Service
 public class PostService {
-    @Autowired
-    private PostRepository postRepository; // PostRepository 의존성 주입
+    private final PostRepository postRepository; // PostRepository 의존성 주입
+
+    public PostService(PostRepository postRepository) {
+        this.postRepository = postRepository;
+    }
 
     public Post createPost(Post post) {
-        post.setCreatedAt(LocalDateTime.now()); // 현재 시간을 설정 //toDo: set은 발작버튼입니다.
+        post.setCreatedAt(LocalDateTime.now()); // 현재 시간을 설정 toDo: set은 발작버튼입니다.
         return postRepository.save(post); // 저장 후 리턴
     }
 
