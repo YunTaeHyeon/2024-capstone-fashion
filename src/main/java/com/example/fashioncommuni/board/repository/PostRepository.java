@@ -1,6 +1,6 @@
-package com.example.fashioncommuni.board.repository;
+package com.example.board.repository;
 
-import com.example.fashioncommuni.board.domain.Post;
+import com.example.board.domain.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

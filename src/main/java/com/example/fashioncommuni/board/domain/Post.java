@@ -1,4 +1,4 @@
-package com.example.fashioncommuni.board.domain;
+package com.example.board.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Table(name = "posts")
-public class Post { // toDO: set이라고 쓴 애들 이름 잘 짓기.
+public class Post { //toDO: set이라고 쓴 애들 이름 잘 짓기.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 생성
     private Long postId; // 게시글 식별자

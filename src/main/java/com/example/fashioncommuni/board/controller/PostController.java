@@ -1,7 +1,8 @@
-package com.example.fashioncommuni.board.controller;
+package com.example.board.controller;
 
-import com.example.fashioncommuni.board.domain.Post;
-import com.example.fashioncommuni.board.service.PostService;
+import com.example.board.domain.Post;
+import com.example.board.service.PostService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,11 +12,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/posts")//toDO: URL 통합
 public class PostController {
-    private final com.example.fashioncommuni.board.service.PostService postService;
-
-    public PostController(PostService postService) {
-        this.postService = postService;
-    }
+    @Autowired
+    private PostService postService;
 
     @PostMapping // POST /posts
     public ResponseEntity<Post> createPost(@RequestBody Post post) {
