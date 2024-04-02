@@ -1,6 +1,7 @@
 package com.example.fashioncommuni.board.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -13,8 +14,10 @@ public class Post { // toDO: set이라고 쓴 애들 이름 잘 짓기.
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 생성
     private Long postId; // 게시글 식별자
 
+    @NotEmpty(message = "제목은 필수 입력값입니다.") // 제목은 필수 입력값
     private String title; // 제목
 
+    @NotEmpty(message = "내용은 필수 입력값입니다.") // 내용은 필수 입력값
     @Column(columnDefinition = "TEXT") // TEXT 타입
     private String body; // 내용
 
