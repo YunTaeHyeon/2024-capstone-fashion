@@ -1,6 +1,8 @@
 package com.example.fashioncommuni.security.filter;
 
 import com.example.fashioncommuni.member.dto.UserDto;
+import com.example.fashioncommuni.security.exception.ErrorCode;
+import com.example.fashioncommuni.security.exception.ProfileApplicationException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;

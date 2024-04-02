@@ -16,7 +16,7 @@ public class Post {
     @Column(columnDefinition = "TEXT") // TEXT 타입
     private String body; // 내용
 
-    @Column(name = "user_id")  // user_id 컬럼
+    @Column(name = "use r_id")  // user_id 컬럼
     private Long userId; // 사용자 식별자
 
     @Column(name = "category_id") // category_id 컬럼
