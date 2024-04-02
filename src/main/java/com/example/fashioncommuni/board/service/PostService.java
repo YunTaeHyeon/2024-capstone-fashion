@@ -25,12 +25,12 @@ public class PostService {
         return postRepository.findById(postId).orElse(null); // postId로 조회
     }
 
-    public Post updatePost(Post post) {
-        post.setCreatedAt(LocalDateTime.now()); // 현재 시간을 설정
-        return postRepository.save(post); // 저장 후 리턴
-    }
-
+    // 게시물 삭제 기능 구현
     public void deletePost(Long postId) {
+        // postId를 이용하여 해당 게시물을 찾습니다.
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("게시물을 찾을 수 없습니다: " + postId));
+        // 데이터베이스에서 게시물을 삭제합니다.
         postRepository.deleteById(postId); // postId로 삭제
     }
 
@@ -58,17 +58,9 @@ public class PostService {
         existingPost.setBody(updatedPost.getBody()); // 내용 업데이트
         // 필요한 경우 다른 속성도 업데이트할 수 있음
 
+        // toDO: 현재 시간으로 수정 시간 업데이트 나중에
+
         // 업데이트된 게시물 저장 후 반환
         return postRepository.save(existingPost); // 저장 후 리턴
-    }
-
-    public void validatePost(Post post) { // 게시글 유효성 검사
-        if (post.getTitle() == null || post.getTitle().isEmpty()) { // 제목이 없으면
-            throw new IllegalArgumentException("제목은 필수 입력값입니다."); // 예외 발생
-        }
-        if (post.getBody() == null || post.getBody().isEmpty()) { // 내용이 없으면
-            throw new IllegalArgumentException("내용은 필수 입력값입니다."); // 예외 발생
-        }
-        // 유효성 검사 로직 추가 가능
     }
 }
