@@ -1,6 +1,12 @@
 package com.example.fashioncommuni.security;
 
 
+import com.example.fashioncommuni.member.service.CustomUserDetailsService;
+import com.example.fashioncommuni.security.filter.CustomAuthenticationFilter;
+import com.example.fashioncommuni.security.filter.JwtAuthorizationFilter;
+import com.example.fashioncommuni.security.handler.CustomAuthFailureHandler;
+import com.example.fashioncommuni.security.handler.CustomAuthSuccessHandler;
+import com.example.fashioncommuni.security.handler.CustomAuthenticationProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +19,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -21,6 +28,9 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+
+
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -55,7 +65,7 @@ public class SecurityConfig {
             CustomAuthenticationFilter customAuthenticationFilter,
             JwtAuthorizationFilter jwtAuthorizationFilter
     ) throws Exception {
-        log.debug("[+] WebSecurityConfig Start !!! ");
+        log.debug("[+] WebSecurityConfig Start");
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
