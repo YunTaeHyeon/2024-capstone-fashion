@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Entity
@@ -23,32 +25,22 @@ public class UserCategoryScores {
     @JoinColumn(name = "user_id")
     private User user;
 
-    //@OneToOne
-    //@JoinColumn(name = "category_id")
-    //private Category category;
-    //toDO: 카테고리 엔티티 만들기
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userCategoryScores", orphanRemoval = true)
+    @MapKey(name = "category")
+    private Map<Long, CategoryScores> scores = new LinkedHashMap<>();
+    //코드 설명: 사용자의 카테고리별 별점 점수를 저장
+    //Long -> category_id   CategoryScores -> 별점들을 저장
 
-    @ElementCollection
-    @CollectionTable(name = "category_scores", joinColumns = @JoinColumn(name = "user_category_score_id"))
-    @Column(name = "score")
-    private List<Double> scores = new ArrayList<>(12);
-    //코드 설명: 사용자의 카테고리별 선호도 점수를 저장
-    //처음에는 12개의 카테고리에 대한 점수를 0으로 초기화
 
     @Builder
-    public UserCategoryScores(Long id, User user, List<Double> scores) {
+    public UserCategoryScores(Long id, User user, Map<Long, CategoryScores> scores) {
         this.id = id;
         this.user = user;
         this.scores = scores;
     }
 
-    public static UserCategoryScores of(User user, List<Double> scores) {
+    public static UserCategoryScores of(User user, Map<Long, CategoryScores> scores) {
         return new UserCategoryScores(null, user, scores);
     }
-
-    public void updateScores(List<Double> scores) {
-        this.scores = scores;
-    }
-
 
 }
