@@ -23,7 +23,7 @@ public class UserCategoryScoresServiceImpl implements UserCategoryScoresService 
 
     //toDo: 카테고리 점수를 계산할 때 점수를 남겼을 때, 조회했을 때 등등 각각 다른 메서드로 구현해야 할 듯.
 
-    @Scheduled(fixedDelay = 1000 * 60 * 60 * 24 * 7)
+    //@Scheduled(fixedDelay = 1000 * 60 * 60 * 24 * 7) 다른 곳에서 적용 필요
     @Override
     public List<Double> calculateUserCategoryScores(Long userId) {
         // 사용자의 카테고리 점수를 스케쥴링으로 계산하는 함수
