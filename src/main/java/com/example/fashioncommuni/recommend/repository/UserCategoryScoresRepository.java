@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface UserCategoryScoresRepository extends JpaRepository<UserCategoryScores, Long> {
-    Optional<UserCategoryScores> findByUserIdAndCategoryId(Long userId, Long categoryId);
+    Optional<UserCategoryScores> findByUserId(Long userId);
 }
