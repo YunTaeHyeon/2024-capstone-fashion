@@ -13,7 +13,6 @@ import java.util.Map;
 @Entity
 @Table(name = "user_category_scores")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@RequiredArgsConstructor
 public class UserCategoryScores {
 
     @Id
