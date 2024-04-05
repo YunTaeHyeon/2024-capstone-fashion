@@ -17,7 +17,9 @@ public class CategoryScores {
     @JoinColumn(name = "user_category_score_id")
     private UserCategoryScores userCategoryScores;
 
-    //private Long categoryId; -> 없어도 될 듯
+    @Column(name = "category") // 카테고리를 나타내는 속성 추가
+    private String category;
+    //toDo: 왜 String이어야 되는거지 지금??"
 
     @ElementCollection
     @CollectionTable(name = "score_values", joinColumns = @JoinColumn(name = "category_score_id"))
