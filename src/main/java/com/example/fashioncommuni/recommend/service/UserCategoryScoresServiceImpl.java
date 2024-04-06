@@ -3,9 +3,14 @@ package com.example.fashioncommuni.recommend.service;
 import com.example.fashioncommuni.recommend.domain.CategoryScores;
 import com.example.fashioncommuni.recommend.domain.UserCategoryScores;
 import com.example.fashioncommuni.recommend.repository.UserCategoryScoresRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -13,6 +18,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class UserCategoryScoresServiceImpl implements UserCategoryScoresService {
     private final UserCategoryScoresRepository userCategoryScoresRepository;
     private static final int MAX_USE_SCORES = 50; //추천에 사용할 최대 점수의 개수
@@ -22,11 +28,47 @@ public class UserCategoryScoresServiceImpl implements UserCategoryScoresService 
     }
 
     //toDo: 카테고리 점수를 계산할 때 점수를 남겼을 때, 조회했을 때 등등 각각 다른 메서드로 구현해야 할 듯.
-
-    //@Scheduled(fixedDelay = 1000 * 60 * 60 * 24 * 7) 다른 곳에서 적용 필요
+    @Scheduled(fixedDelay = 1000 * 60 * 60 * 24 * 7)
     @Override
-    public List<Double> calculateUserCategoryScores(Long userId) {
-        // 사용자의 카테고리 점수를 스케쥴링으로 계산하는 함수
+    public void writeCsvUserCategoryScores() { //csv 파일로 사용자의 카테고리 점수를 저장하는 함수(KNN 모델의 학습 자료 생성)
+        List<List<Double>> writeCsv = new ArrayList<>(); //writeCsv는 Double로 user_id와 각 카테고리의 가중치로 이루어진 리스트
+
+        List<UserCategoryScores> userCategoryScoresList = userCategoryScoresRepository.findAll();
+        //현재는 모든 사용자의 유저 카테고리 스코어를 가져오지만 만일 필요하다면 특정 사용자의 카테고리 스코어를 가져올 수도 있음
+        for (UserCategoryScores userCategoryScores : userCategoryScoresList) {
+            writeCsv.add(calculateUserCategoryScores(userCategoryScores.getUser().getId()));
+        }
+
+        // 현재 날짜를 포함한 파일 이름 생성
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String dateString = currentDate.format(formatter);
+        String fileName = "user_category_scores_" + dateString + ".csv"; //파일 이름 변경 가능
+        String filePath = fileName;
+        //String filePath = "path/to/save/" + fileName; //파일 경로 변경 가능
+
+        // CSV 파일에 데이터 쓰기
+        try {
+            FileWriter csvWriter = new FileWriter(filePath);
+            for (List<Double> rowData : writeCsv) {
+                csvWriter.append(String.join(",", rowData.stream().map(String::valueOf).collect(Collectors.toList())));
+                csvWriter.append("\n");
+            }
+            csvWriter.flush();
+            csvWriter.close();
+
+            log.info(filePath + " 생성 완료");
+
+        } catch (IOException e) {
+            log.info(filePath + " 생성 실패");
+            e.printStackTrace();
+        }
+
+    }
+
+
+    @Override
+    public List<Double> calculateUserCategoryScores(Long userId) {  // 사용자의 카테고리 점수를 계산하는 함수
         UserCategoryScores userCategoryScores = userCategoryScoresRepository.findByUserId(userId)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다.: " + userId));
 
@@ -50,8 +92,10 @@ public class UserCategoryScoresServiceImpl implements UserCategoryScoresService 
         // 전체 점수 합계를 계산합니다.
         double totalScore = categorySumMap.values().stream().mapToDouble(Double::doubleValue).sum();
 
-        // 각 카테고리의 가중치를 계산하여 리스트에 추가합니다.
+        // userId와 각 카테고리의 가중치를 계산하여 리스트에 추가합니다. userId는 0번째 인덱스에 저장됩니다.
         List<Double> finalScores = new ArrayList<>();
+        finalScores.add(userId.doubleValue());
+
         for (double score : categorySumMap.values()) {
             finalScores.add(score / totalScore);
         }
