@@ -25,7 +25,7 @@
   - Docker
 
 ### ERD
-<img width="999" alt="image" src="https://github.com/YunTaeHyeon/2024-capstone-fashion/assets/67150311/4f3ea268-a8a9-481b-a96a-f0622099ccd6">
+<img width="999" alt="image" src="https://github.com/YunTaeHyeon/2024-capstone-fashion/assets/71334400/519f282f-d7cd-47f6-a97b-d71fedd630ab">
 
 
 ### 서비스 조직도
