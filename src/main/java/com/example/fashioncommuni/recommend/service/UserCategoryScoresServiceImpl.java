@@ -1,11 +1,14 @@
 package com.example.fashioncommuni.recommend.service;
 
+import com.example.fashioncommuni.board.domain.Post;
+import com.example.fashioncommuni.board.repository.PostRepository;
 import com.example.fashioncommuni.recommend.domain.CategoryScores;
 import com.example.fashioncommuni.recommend.domain.UserCategoryScores;
 import com.example.fashioncommuni.recommend.repository.UserCategoryScoresRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -21,10 +24,12 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserCategoryScoresServiceImpl implements UserCategoryScoresService {
     private final UserCategoryScoresRepository userCategoryScoresRepository;
+    private final PostRepository postRepository;
     private static final int MAX_USE_SCORES = 50; //추천에 사용할 최대 점수의 개수
 
-    public UserCategoryScoresServiceImpl(UserCategoryScoresRepository userCategoryScoresRepository) {
+    public UserCategoryScoresServiceImpl(UserCategoryScoresRepository userCategoryScoresRepository, PostRepository postRepository){
         this.userCategoryScoresRepository = userCategoryScoresRepository;
+        this.postRepository = postRepository;
     }
 
     //toDo: 카테고리 점수를 계산할 때 점수를 남겼을 때, 조회했을 때 등등 각각 다른 메서드로 구현해야 할 듯.
@@ -100,5 +105,44 @@ public class UserCategoryScoresServiceImpl implements UserCategoryScoresService 
             finalScores.add(score / totalScore);
         }
         return finalScores;
+    }
+
+    @Override
+    @Transactional
+    public CategoryScores viewPost(Long userId, Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("게시물을 찾을 수 없습니다.: " + postId));
+
+        // 게시물의 카테고리를 가져옵니다.
+        Long categoryId = post.getCategoryId();
+
+        // 사용자의 카테고리 점수를 가져옵니다.
+        UserCategoryScores userCategoryScores = userCategoryScoresRepository.findByUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다.: " + userId));
+
+        // 사용자의 카테고리 점수 맵을 가져옵니다.
+        Map<Long, CategoryScores> scoresMap = userCategoryScores.getScores();
+
+        // userCategoryScores에서 categoryId와 대치되는 CategoryScores를 가져옵니다.
+        CategoryScores categoryScores = scoresMap.get(categoryId);
+
+        // 카테고리 점수가 없을 경우, 새로운 카테고리 점수를 생성합니다.
+        if (categoryScores == null) {
+            categoryScores = CategoryScores.builder()
+                    .userCategoryScores(userCategoryScores)
+                    .category(categoryId.toString()) //카테고리 id를 문자열로 변환하여 저장
+                    .scores(new ArrayList<>())
+                    .build();
+            scoresMap.put(categoryId, categoryScores);
+        }
+
+        // 카테고리 점수를 업데이트합니다.
+        categoryScores.addCategoryScores(1.0);
+
+        // 사용자의 카테고리 점수를 저장합니다.
+        userCategoryScoresRepository.save(userCategoryScores);
+
+        return categoryScores;
+
     }
 }
