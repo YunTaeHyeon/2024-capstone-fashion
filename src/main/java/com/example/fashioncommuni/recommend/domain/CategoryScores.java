@@ -1,13 +1,17 @@
 package com.example.fashioncommuni.recommend.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CategoryScores {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +28,13 @@ public class CategoryScores {
     @CollectionTable(name = "score_values", joinColumns = @JoinColumn(name = "category_score_id"))
     @Column(name = "score")
     private List<Double> scores = new ArrayList<>();
+
+    @Builder
+    public CategoryScores(UserCategoryScores userCategoryScores, String category, List<Double> scores) {
+        this.userCategoryScores = userCategoryScores;
+        this.category = category;
+        this.scores = scores;
+    }
 
     public void addCategoryScores(double score){
         scores.add(score);
