@@ -1,5 +1,7 @@
 package com.example.fashioncommuni.member.domain;
 
+import com.example.fashioncommuni.board.domain.BaseEntity;
+import com.example.fashioncommuni.board.domain.Image;
 import com.example.fashioncommuni.member.dto.UserDto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -11,7 +13,7 @@ import java.util.Objects;
 @Table(name ="USERS")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(callSuper = true)
-public class User {
+public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -34,6 +36,8 @@ public class User {
     @Column(name="gender",nullable = false)
     private String gender;
 
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    private Image image; // toDo: 추가함
 
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
