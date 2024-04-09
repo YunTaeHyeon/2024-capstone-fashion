@@ -114,7 +114,7 @@ public class UserCategoryScoresServiceImpl implements UserCategoryScoresService 
                 .orElseThrow(() -> new IllegalArgumentException("게시물을 찾을 수 없습니다.: " + postId));
 
         // 게시물의 카테고리를 가져옵니다.
-        Long categoryId = post.getCategory_id();
+        Long categoryId = post.getCategoryId();
 
         // 사용자의 카테고리 점수를 가져옵니다.
         UserCategoryScores userCategoryScores = userCategoryScoresRepository.findByUserId(userId)
