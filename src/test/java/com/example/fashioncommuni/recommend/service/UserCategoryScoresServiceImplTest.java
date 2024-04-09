@@ -54,7 +54,7 @@ public class UserCategoryScoresServiceImplTest {
         Long userId = 1L;
         Long postId = 1L;
         Post post = new Post();
-        post.setCategoryId(1L);
+        post.setCategory_id(1L);
         when(postRepository.findById(postId)).thenReturn(Optional.of(post));
 
         UserCategoryScores userCategoryScores = mock(UserCategoryScores.class);
@@ -73,7 +73,7 @@ public class UserCategoryScoresServiceImplTest {
         // categoryScores가 null이 아닌지 검증
         assertThat(categoryScores).isNotNull();
         // categoryScores의 카테고리가 post의 카테고리와 같은지 검증
-        assertThat(categoryScores.getCategory()).isEqualTo(post.getCategoryId().toString());
+        assertThat(categoryScores.getCategory()).isEqualTo(post.getCategory_id().toString());
         // categoryScores의 점수가 1.0인지 검증
         assertThat(categoryScores.getScores()).containsExactly(1.0);
     }
