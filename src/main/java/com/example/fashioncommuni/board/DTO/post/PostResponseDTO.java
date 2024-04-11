@@ -20,6 +20,7 @@ public class PostResponseDTO {
     private Long user_id;
     private Long category_id;
     private String status;
+    private String email;
     private List<String> imageUrls;
 
     @Builder
@@ -31,6 +32,7 @@ public class PostResponseDTO {
         this.user_id = post.getUser().getId();
         this.category_id = post.getCategory_id();
         this.status = post.getStatus();
+        this.email = post.getUser().getEmail();
         //this.imageUrls = post.getImages().stream()
         //        .map(PostImage::getUrl)
         //        .toList();

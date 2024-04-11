@@ -38,7 +38,7 @@ public class CommentController {
 
     /**
      * 댓글 삭제
-     * @param posts_id 게시물
+     * @param post_id 게시물
      * @param comment_id 댓글 ID
      * @return 해당 게시물 리다이렉트
      */
