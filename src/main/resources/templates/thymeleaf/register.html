@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+    .register-form {
+      width: 300px;
+      background-color: #fff;
+      padding: 30px 40px;
+      border-radius: 8px;
+      box-shadow: 0px 0px 15px rgba(0,0,0,0.1);
+    }
+    .register-form input, .register-form button {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+      font-size: 16px;
+    }
+    .register-form button {
+      background-color: #007BFF;
+      color: #fff;
+      cursor: pointer;
+      font-weight: 500;
+      border: none;
+    }
+    .register-form button:hover {
+      background-color: #0056b3;
+    }
+    .error-message {
+      color: red;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+<div class="register-form">
+  <div>
+    <label>Login ID: </label>
+    <input type="text" th:id="loginId" placeholder="Enter your login ID" />
+  </div>
+  <div>
+    <label>Password: </label>
+    <input type="password" th:id="password" placeholder="Enter your password" />
+  </div>
+  <div>
+    <label>Username: </label>
+    <input type="text" th:id="username" placeholder="Enter your username" />
+  </div>
+  <div>
+    <label>Email: </label>
+    <input type="text" th:id="email" placeholder="Enter your email" />
+  </div>
+  <div>
+    <label>Age: </label>
+    <input type="number" th:id="age" placeholder="Enter your age" />
+  </div>
+  <div>
+    <label>Gender: </label>
+    <select th:id="gender">
+      <option value="MALE">Male</option>
+      <option value="FEMALE">Female</option>
+    </select>
+  </div>
+  <div>
+    <button id="register">Register</button>
+  </div>
+  <div class="error-message" id="error-message"></div>
+  <div class="login-link">
+    <a href="/login">Already have an account? Login here</a>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+<script>
+  $(document).ready(function() {
+    $('#register').click(function() {
+      let loginId = $('#loginId').val();
+      let password = $('#password').val();
+      let username = $('#username').val();
+      let email = $('#email').val();
+      let age = $('#age').val();
+      let gender = $('#gender').val();
+
+      // role과 userstatus를 자동으로 설정
+      let role = 'USER'; // 예시 값
+      let userstatus = 'D'; // 예시 값
+
+      $.ajax({
+        url: '/user/register',
+        type: 'post',
+        contentType: 'application/json',
+        data: JSON.stringify({
+          loginId: loginId,
+          password: password,
+          username: username,
+          email: email,
+          age: age,
+          gender: gender,
+          roleType: role, // 서버로 전송할 데이터에 추가
+          status: userstatus // 서버로 전송할 데이터에 추가
+        }),
+        success: function() {
+          alert("회원가입이 성공적으로 완료되었습니다.");
+          window.location.href = "/login";
+        },
+        error: function(xhr) {
+          $('#error-message').text(xhr.responseJSON.message);
+        }
+      });
+    });
+  });
+
+</script>
+
+</body>
+</html>
