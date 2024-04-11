@@ -1,8 +1,8 @@
 package com.example.fashioncommuni.board.service;
 
 import com.example.fashioncommuni.board.DTO.image.PostImageUploadDTO;
-import com.example.fashioncommuni.board.DTO.posts.PostResponseDTO;
-import com.example.fashioncommuni.board.DTO.posts.PostWriteRequestDTO;
+import com.example.fashioncommuni.board.DTO.post.PostResponseDTO;
+import com.example.fashioncommuni.board.DTO.post.PostWriteRequestDTO;
 import com.example.fashioncommuni.board.domain.Post;
 import com.example.fashioncommuni.board.domain.PostImage;
 import com.example.fashioncommuni.board.repository.PostImageRepository;
@@ -30,29 +30,29 @@ import java.util.UUID;
 public class PostServiceImpl implements PostService {
 
     private final UserRepository userRepository;
-    private final PostRepository postsRepository;
-    private final PostImageRepository postsImageRepository;
+    private final PostRepository postRepository;
+    private final PostImageRepository postImageRepository;
 
-    @Value("${file.postsImagePath}")
+    @Value("${file.postImagePath}")
     private String uploadFolder;
 
     @Override
     @Transactional
-    public Long savePost(PostWriteRequestDTO postsWriteRequestDTO,
-                         PostImageUploadDTO postsImageUploadDTO,
+    public Long savePost(PostWriteRequestDTO postWriteRequestDTO,
+                         PostImageUploadDTO postImageUploadDTO,
                          String email) {
         User user = userRepository.findUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException("이메일이 존재하지 않습니다."));
 
         Post result = Post.builder()
-                .title(postsWriteRequestDTO.getTitle())
-                .body(postsWriteRequestDTO.getBody())
+                .title(postWriteRequestDTO.getTitle())
+                .body(postWriteRequestDTO.getBody())
                 .user(user)
                 .build();
 
-        postsRepository.save(result);
+        postRepository.save(result);
 
-        if (postsImageUploadDTO.getFiles() != null && !postsImageUploadDTO.getFiles().isEmpty()) {
-            for (MultipartFile file : postsImageUploadDTO.getFiles()) {
+        if (postImageUploadDTO.getFiles() != null && !postImageUploadDTO.getFiles().isEmpty()) {
+            for (MultipartFile file : postImageUploadDTO.getFiles()) {
                 UUID uuid = UUID.randomUUID();
                 String imageFileName = uuid + "_" + file.getOriginalFilename();
 
@@ -65,11 +65,11 @@ public class PostServiceImpl implements PostService {
                 }
 
                 PostImage image = PostImage.builder()
-                        .url("/postsImages/" + imageFileName)
+                        .url("/postImages/" + imageFileName)
                         .post(result)
                         .build();
 
-                postsImageRepository.save(image);
+                postImageRepository.save(image);
             }
         }
 
@@ -77,52 +77,52 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostResponseDTO postsDetail(Long post_id) {
-        Post posts = postsRepository.findById(post_id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
+    public PostResponseDTO postDetail(Long post_id) {
+        Post post = postRepository.findById(post_id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
         PostResponseDTO result = PostResponseDTO.builder()
-                .post(posts)
+                .post(post)
                 .build();
 
         return result;
     }
 
     @Override
-    public Page<PostResponseDTO> postsList(Pageable pageable) {
-        Page<Post> posts = postsRepository.findAll(pageable);
-        return getPostResponseDTOS(pageable, posts);
+    public Page<PostResponseDTO> postList(Pageable pageable) {
+        Page<Post> post = postRepository.findAll(pageable);
+        return getPostResponseDTOS(pageable, post);
     }
 
     @Override
     public Page<PostResponseDTO> searchingPostList(String keyword, Pageable pageable) {
-        Page<Post> posts = postsRepository.findByTitle(keyword, pageable);
-        return getPostResponseDTOS(pageable, posts);
+        Page<Post> post = postRepository.findByTitle(keyword, pageable);
+        return getPostResponseDTOS(pageable, post);
     }
 
-    private Page<PostResponseDTO> getPostResponseDTOS(Pageable pageable, Page<Post> posts) {
-        List<PostResponseDTO> postsDTOs = new ArrayList<>();
+    private Page<PostResponseDTO> getPostResponseDTOS(Pageable pageable, Page<Post> post) {
+        List<PostResponseDTO> postDTOs = new ArrayList<>();
 
-        for (Post post : posts) {
+        for (Post posts : post) {
             PostResponseDTO result = PostResponseDTO.builder()
-                    .post(post)
+                    .post(posts)
                     .build();
-            postsDTOs.add(result);
+            postDTOs.add(result);
         }
 
-        return new PageImpl<>(postsDTOs, pageable, posts.getTotalElements());
+        return new PageImpl<>(postDTOs, pageable, post.getTotalElements());
     }
 
     @Override
-    public Long postsUpdate(Long post_id, PostWriteRequestDTO postsWriteRequestDTO) {
-        Post posts = postsRepository.findById(post_id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
-        posts.update(postsWriteRequestDTO.getTitle(), postsWriteRequestDTO.getBody());
-        postsRepository.save(posts);
+    public Long postUpdate(Long post_id, PostWriteRequestDTO postWriteRequestDTO) {
+        Post post = postRepository.findById(post_id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
+        post.update(postWriteRequestDTO.getTitle(), postWriteRequestDTO.getBody());
+        postRepository.save(post);
 
-        return posts.getPost_id();
+        return post.getPost_id();
     }
 
     @Override
-    public void postsRemove(Long post_id) {
-        Post posts = postsRepository.findById(post_id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
-        postsRepository.delete(posts);
+    public void postRemove(Long post_id) {
+        Post post = postRepository.findById(post_id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
+        postRepository.delete(post);
     }
 }

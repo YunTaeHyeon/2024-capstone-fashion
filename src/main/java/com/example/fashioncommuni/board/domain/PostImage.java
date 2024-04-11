@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "posts_image") // toDo: ERD 타입명 변경하기
+@Table(name = "post_image") // toDo: ERD 타입명 변경하기
 public class PostImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

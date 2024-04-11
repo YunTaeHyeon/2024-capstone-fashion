@@ -2,8 +2,8 @@ package com.example.fashioncommuni.board.controller;
 
 import com.example.fashioncommuni.board.DTO.comment.CommentResponseDTO;
 import com.example.fashioncommuni.board.DTO.image.PostImageUploadDTO;
-import com.example.fashioncommuni.board.DTO.posts.PostResponseDTO;
-import com.example.fashioncommuni.board.DTO.posts.PostWriteRequestDTO;
+import com.example.fashioncommuni.board.DTO.post.PostResponseDTO;
+import com.example.fashioncommuni.board.DTO.post.PostWriteRequestDTO;
 import com.example.fashioncommuni.board.service.CommentService;
 import com.example.fashioncommuni.board.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -19,12 +19,12 @@ import java.util.List;
 
 @Controller // ToDo: RestController로 변경
 @RequiredArgsConstructor
-@RequestMapping("/posts") //toDO: URL 통합
+@RequestMapping("/post") //toDO: URL 통합
 public class PostController {
 
     private static final Logger logger = LoggerFactory.getLogger(PostController.class);
 
-    private final PostService postsService;
+    private final PostService postService;
     private final CommentService commentService;
 
     /**
@@ -33,23 +33,23 @@ public class PostController {
      */
     @GetMapping("/write")
     public String writeForm() {
-        return "posts/write";
+        return "post/write";
     }
 
     /**
      * 게시글 작성 post
-     * @param postsWriteRequestDTO 게시글 정보
+     * @param postWriteRequestDTO 게시글 정보
      * @param authentication 유저 정보
      * @return 게시글 디테일 페이지
      */
     @PostMapping("/write")
-    public String write(PostWriteRequestDTO postsWriteRequestDTO,
-                        @ModelAttribute PostImageUploadDTO postsImageUploadDTO,
+    public String write(PostWriteRequestDTO postWriteRequestDTO,
+                        @ModelAttribute PostImageUploadDTO postImageUploadDTO,
                         Authentication authentication) {
 
-        logger.info("postsImageDTO is {}", postsImageUploadDTO);
+        logger.info("postImageDTO is {}", postImageUploadDTO);
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        postsService.savePost(postsWriteRequestDTO, postsImageUploadDTO, userDetails.getUsername());
+        postService.savePost(postWriteRequestDTO, postImageUploadDTO, userDetails.getUsername());
 
         return "redirect:/";
     }
@@ -61,15 +61,15 @@ public class PostController {
      * @return
      */
     @GetMapping("/{post_id}")
-    public String postsDetail(@PathVariable Long post_id, Model model) {
-        PostResponseDTO result = postsService.postsDetail(post_id);
+    public String postDetail(@PathVariable Long post_id, Model model) {
+        PostResponseDTO result = postService.postDetail(post_id);
         List<CommentResponseDTO> commentResponseDTO = commentService.commentList(post_id);
 
         model.addAttribute("comments", commentResponseDTO);
         model.addAttribute("dto", result);
         model.addAttribute("id", post_id);
 
-        return "posts/detail";
+        return "post/detail";
     }
 
     /**
@@ -80,43 +80,43 @@ public class PostController {
      * @return 게시글 수정 페이지
      */
     @GetMapping("/{post_id}/update")
-    public String postsUpdateForm(@PathVariable Long post_id, Model model, Authentication authentication) {
+    public String postUpdateForm(@PathVariable Long post_id, Model model, Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        PostResponseDTO result = postsService.postsDetail(post_id);
+        PostResponseDTO result = postService.postDetail(post_id);
         // 추가 조건문
 
         model.addAttribute("dto", result);
         model.addAttribute("id", post_id);
 
-        return "posts/update";
+        return "post/update";
     }
 
     /**
      * 게시글 수정 post
-     * @param posts_id 게시글 ID
-     * @param postsWriteRequestDTO 수정 정보
+     * @param post_id 게시글 ID
+     * @param postWriteRequestDTO 수정 정보
      * @return 게시글 상세 조회 페이지
      */
     @PostMapping("/{post_id}/update")
-    public String postsUpdate(@PathVariable Long posts_id, PostWriteRequestDTO postsWriteRequestDTO) {
-        postsService.postsUpdate(posts_id, postsWriteRequestDTO);
+    public String postUpdate(@PathVariable Long post_id, PostWriteRequestDTO postWriteRequestDTO) {
+        postService.postUpdate(post_id, postWriteRequestDTO);
 
-        return "redirect:/posts/" + posts_id;
+        return "redirect:/post/" + post_id;
     }
 
     /**
      * 게시글 삭제
-     * @param posts_id 게시글 ID
+     * @param post_id 게시글 ID
      * @param authentication 유저 정보
      * @return
      */
-    @GetMapping("/{posts_id}/remove")
-    public String postsRemove(@PathVariable Long posts_id, Authentication authentication) {
+    @GetMapping("/{post_id}/remove")
+    public String postRemove(@PathVariable Long post_id, Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        PostResponseDTO result = postsService.postsDetail(posts_id);
+        PostResponseDTO result = postService.postDetail(post_id);
         // 추가 조건문
 
-        postsService.postsRemove(posts_id);
+        postService.postRemove(post_id);
 
         return "redirect:/";
     }
