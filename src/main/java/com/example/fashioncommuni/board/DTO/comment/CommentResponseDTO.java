@@ -17,7 +17,7 @@ public class CommentResponseDTO {
     private String content;
     private String username;
     private String email;
-    private String imageUrl;
+    // private String imageUrl;
 
     @Builder
     public CommentResponseDTO(Comment comment) {

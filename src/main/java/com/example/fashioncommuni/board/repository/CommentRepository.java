@@ -9,7 +9,7 @@ import java.util.List;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     /**
-     * Board로 Comment 조회
+     * Board-> Comment 조회
      * @param post 게시물 정보
      * @return 댓글 리스트
      */

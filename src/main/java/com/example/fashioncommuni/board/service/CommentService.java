@@ -5,7 +5,7 @@ import com.example.fashioncommuni.board.DTO.comment.CommentResponseDTO;
 
 import java.util.List;
 
-public interface CommentService { // 댓글 서비스
+public interface CommentService {
 
     /**
      * 댓글 작성
