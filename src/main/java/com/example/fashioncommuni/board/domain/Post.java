@@ -13,7 +13,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "posts")
+@Table(name = "post")
 public class Post extends BaseEntity {
 
     @Id
@@ -37,13 +37,13 @@ public class Post extends BaseEntity {
 
     private String status;
 
-    @OneToMany(mappedBy = "posts", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @OrderBy("comment_id asc")
-    private List<Comment> comments;
+    private List<Comment> comment;
 
-    @OneToMany(mappedBy = "posts", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @OrderBy("image_id asc")
-    private List<PostImage> images;
+    private List<PostImage> image;
 
     public void update(String title, String body) {
         this.title = title;

@@ -1,4 +1,4 @@
-package com.example.fashioncommuni.board.DTO.posts;
+package com.example.fashioncommuni.board.DTO.post;
 
 import com.example.fashioncommuni.board.domain.Post;
 import com.example.fashioncommuni.board.domain.PostImage;
@@ -31,8 +31,8 @@ public class PostResponseDTO {
         this.user_id = post.getUser().getId();
         this.category_id = post.getCategory_id();
         this.status = post.getStatus();
-        this.imageUrls = post.getImages().stream()
-                .map(PostImage::getUrl)
-                .toList();
+        //this.imageUrls = post.getImages().stream()
+        //        .map(PostImage::getUrl)
+        //        .toList();
     }
 }

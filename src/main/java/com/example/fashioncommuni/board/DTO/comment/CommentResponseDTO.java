@@ -27,6 +27,6 @@ public class CommentResponseDTO {
         this.content = comment.getContent();
         this.username = comment.getUser().getUsername();
         this.email = comment.getUser().getEmail();
-        this.imageUrl = comment.getUser().getImage().getUrl();
+        // this.imageUrl = comment.getUser().getImage().getUrl();
     }
 }
