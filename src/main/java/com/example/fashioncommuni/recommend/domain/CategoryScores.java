@@ -13,11 +13,12 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CategoryScores {
-    @Id
-    @Column(name = "category_score_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    //@Id
+    //@Column(name = "category_score_id")
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    //private Long id;
 
+    @Id
     @ManyToOne
     @JoinColumn(name = "user_category_score_id")
     private UserCategoryScores userCategoryScores;
