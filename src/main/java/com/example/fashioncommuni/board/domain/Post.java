@@ -32,7 +32,7 @@ public class Post extends BaseEntity {
 
     private String status;
 
-    // user_id 외래키 설정
+    // user_id 외래키 설정(게시물을 누가 상속받았는 지 알기 위해 작성)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
