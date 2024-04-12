@@ -1,4 +1,4 @@
-package com.example.fashioncommuni.board.DTO.posts;
+package com.example.fashioncommuni.board.DTO.post;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

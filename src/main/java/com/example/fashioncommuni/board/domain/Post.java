@@ -13,7 +13,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "posts")
+@Table(name = "post")
 public class Post extends BaseEntity {
 
     @Id
@@ -27,23 +27,23 @@ public class Post extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String body; // toDo: ERD 타입명 변경하기
 
-    // user_id 외래키 설정
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-
     @Column(name = "category_id")
     private Long category_id;
 
     private String status;
 
-    @OneToMany(mappedBy = "posts", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    // user_id 외래키 설정(게시물을 누가 상속받았는 지 알기 위해 작성)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @OrderBy("comment_id asc")
     private List<Comment> comments;
 
-    @OneToMany(mappedBy = "posts", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @OrderBy("image_id asc")
-    private List<PostImage> images;
+    private List<PostImage> postImages;
 
     public void update(String title, String body) {
         this.title = title;
