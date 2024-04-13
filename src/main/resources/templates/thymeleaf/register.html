@@ -116,7 +116,7 @@
         }),
         success: function() {
           alert("회원가입이 성공적으로 완료되었습니다.");
-          window.location.href = "/login";
+          window.location.href = '/init-interest'; // 회원가입 후 해당 URL로 리다이렉트
         },
         error: function(xhr) {
           $('#error-message').text(xhr.responseJSON.message);
@@ -124,7 +124,6 @@
       });
     });
   });
-
 </script>
 
 </body>
