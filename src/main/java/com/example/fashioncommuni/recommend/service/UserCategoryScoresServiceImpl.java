@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 public class UserCategoryScoresServiceImpl implements UserCategoryScoresService {
     private final UserCategoryScoresRepository userCategoryScoresRepository;
     private final PostRepository postRepository;
-    private static final int MAX_USE_SCORES = 50; //추천에 사용할 최대 점수의 개수
+    private static final int MAX_USE_SCORES = 50; //추천에 사용할 최대 점수의 개수 //toDo: 변경 가능
 
     public UserCategoryScoresServiceImpl(UserCategoryScoresRepository userCategoryScoresRepository, PostRepository postRepository){
         this.userCategoryScoresRepository = userCategoryScoresRepository;
