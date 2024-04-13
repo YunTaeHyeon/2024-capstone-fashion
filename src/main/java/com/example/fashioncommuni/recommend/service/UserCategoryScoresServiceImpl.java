@@ -50,7 +50,7 @@ public class UserCategoryScoresServiceImpl implements UserCategoryScoresService 
         String dateString = currentDate.format(formatter);
         String fileName = "user_category_scores_" + dateString + ".csv"; //파일 이름 변경 가능
         String filePath = fileName;
-        //String filePath = "path/to/save/" + fileName; //파일 경로 변경 가능
+        //String filePath = "path/to/save/" + fileName; //파일 경로 변경 가능 toDo: 서버에 올리면 파일 경로 설정
 
         // CSV 파일에 데이터 쓰기
         try {
