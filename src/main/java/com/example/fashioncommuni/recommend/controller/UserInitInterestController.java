@@ -4,6 +4,7 @@ import com.example.fashioncommuni.member.domain.User;
 import com.example.fashioncommuni.member.dto.SecurityUserDetailsDto;
 import com.example.fashioncommuni.member.service.SecurityService;
 import com.example.fashioncommuni.member.service.SecurityUserService;
+import com.example.fashioncommuni.member.service.UserService;
 import com.example.fashioncommuni.recommend.service.UserInitInterestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -22,19 +23,19 @@ public class UserInitInterestController {
     private final UserInitInterestService userInitInterestService;
     private final SecurityUserService securityUserService;
 
-    @GetMapping("/{userId})")
-    public String ViewInitInterestPage(@PathVariable Long userId, Model model, Authentication authentication) {
+    @GetMapping("/{loginId})")
+    public String ViewInitInterestPage(@PathVariable String loginId, Model model, Authentication authentication) {
 
         SecurityUserDetailsDto userDetails = (SecurityUserDetailsDto) authentication.getPrincipal();
-        String loginId = userDetails.getUsername();
+        String authLoginId = userDetails.getUsername();
 
-        User user = securityUserService.findByLoginId(loginId).orElseThrow(()-> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
-
-        if(user.getId() != userId) {
+        if(loginId != authLoginId) {
             throw new IllegalArgumentException("해당 유저가 존재하지 않습니다.");
         }
 
-        model.addAttribute("userId", userId);
+        User user = securityUserService.findByLoginId(loginId).orElseThrow(()-> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+
+        model.addAttribute("userId", user.getId());
 
         return "init-interest";
 
