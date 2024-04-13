@@ -16,10 +16,12 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -28,8 +30,6 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-
 
 
 import java.util.Arrays;
@@ -74,16 +74,20 @@ public class SecurityConfig {
                         .requestMatchers("/css/**").permitAll()
                         .requestMatchers("/main/rootPage").permitAll()
                         .requestMatchers("/error.html").permitAll()
+                        .requestMatchers("/user/login").permitAll()
+                        .requestMatchers("/login").permitAll()
+                        .requestMatchers("/user/register").permitAll()
+                        .requestMatchers("/register").permitAll()
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(jwtAuthorizationFilter, BasicAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .formLogin(login -> login
                         .loginPage("/login")
                         .successHandler(new SimpleUrlAuthenticationSuccessHandler("/main/rootPage"))
                         .permitAll()
                 )
-                .addFilterBefore(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(customAuthenticationFilter, JwtAuthorizationFilter.class)
                 .build();
     }
 
@@ -128,7 +132,7 @@ public class SecurityConfig {
     @Bean
     public CustomAuthenticationProvider customAuthenticationProvider(UserDetailsService userDetailsService) {
         return new CustomAuthenticationProvider(
-                userDetailsService
+                userDetailsService,passwordEncoder()
         );
     }
 
@@ -172,5 +176,9 @@ public class SecurityConfig {
                         .getAuthorities()
                         .contains(new SimpleGrantedAuthority("ADMIN"))
         );
+    }
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

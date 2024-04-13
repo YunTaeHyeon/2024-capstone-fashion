@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<head>
+    <title>Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .login-form {
+            width: 300px;
+            background-color: #fff;
+            padding: 30px 40px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 15px rgba(0,0,0,0.1);
+        }
+        .login-form input, .login-form button {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+        }
+        .login-form button {
+            background-color: #007BFF;
+            color: #fff;
+            cursor: pointer;
+            font-weight: 500;
+            border: none;
+        }
+        .login-form button:hover {
+            background-color: #0056b3;
+        }
+        .error-message {
+            color: red;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+<div class="login-form">
+    <div>
+        <label>loginId: </label>
+        <input type="text" id="loginId" placeholder="Enter your login ID"/>
+    </div>
+    <div>
+        <label>Password: </label>
+        <input type="password" id="password" placeholder="Enter your password"/>
+    </div>
+    <div>
+        <button id="login">Login</button>
+    </div>
+    <div id="error-message" class="error-message"></div>
+    <div class="register-button">
+        <button onclick="window.location.href='/register'">회원가입 하러가기</button>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#login').click(function() {
+            let loginId = $('#loginId').val();
+            let password = $('#password').val();
+
+            $.ajax({
+                url: '/user/login',
+                type: 'post',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    loginId: loginId,
+                    password: password
+                }),
+                success: function(data, textStatus, jqXHR) {
+                    // JWT 토큰 유효성 검사
+                    $.ajax({
+                        url: '/token/validate', // 토큰 유효성 검사 API
+                        type: 'post',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            token: data.token
+                        }),
+                        success: function(validationResult) {
+                            if (validationResult.isValid) {
+                                window.location.href = "/main/rootPage";
+                            } else {
+                                $('#error-message').text("토큰이 유효하지 않습니다.");
+                            }
+                        },
+                        error: function(err) {
+                            $('#error-message').text("로그인에 실패하였습니다.");
+                        }
+                    });
+                },
+                error: function(err) {
+                    $('#error-message').text(err.responseJSON.message);
+                }
+            });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        });
+    });
+</script>
+
+
+</body>
+</html>
