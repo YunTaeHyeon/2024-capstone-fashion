@@ -61,6 +61,7 @@ public class User {
                 .id(userDto.userId())
                 .loginId(userDto.loginId())
                 .password(userDto.password())
+                .username(userDto.username())
                 .email(userDto.email())
                 .age(userDto.age())
                 .gender(userDto.gender())
