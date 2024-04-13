@@ -2,9 +2,62 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Init Interest</title>
+    <style>
+        /* 스타일링 추가 */
+        .image {
+            cursor: pointer;
+            /* 선택된 이미지에 적용되는 스타일 */
+        }
+        .disabled {
+            /* 비활성화된 이미지에 적용되는 스타일 */
+            pointer-events: none;
+            opacity: 0.5;
+        }
+    </style>
 </head>
 <body>
+<h1>Init Interest</h1>
+<div id="image-container">
+    <!-- 이미지 목록 -->
+    <img class="image" src="image1.jpg" alt="Image 1" data-category-id="1">
+    <img class="image" src="image2.jpg" alt="Image 2" data-category-id="2">
+    <!-- 나머지 이미지들도 동일하게 추가 -->
+</div>
 
+<script>
+    // 이미지 요소들을 가져옴
+    const images = document.querySelectorAll('.image');
+
+    // 각 이미지에 클릭 이벤트 리스너 추가
+    images.forEach(image => {
+        image.addEventListener('click', function() {
+            // 이미지가 클릭되면 해당 categoryId를 가져옴
+            const categoryId = this.getAttribute('data-category-id');
+            // 이미지를 비활성화
+            this.classList.add('disabled');
+            // POST 요청 보내기
+            fetch(`/${userId}/${categoryId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                // 필요한 경우 body에 데이터 추가
+                // body: JSON.stringify({ userId: userId, categoryId: categoryId })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    // 성공적으로 요청을 보낸 경우에 할 일 추가
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // 에러 발생 시 처리할 내용 추가
+                });
+        });
+    });
+</script>
 </body>
 </html>
