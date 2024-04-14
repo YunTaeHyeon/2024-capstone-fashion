@@ -145,4 +145,9 @@ public class UserCategoryScoresServiceImpl implements UserCategoryScoresService 
         return categoryScores;
 
     }
+
+    @Override
+    public UserCategoryScores findUserCategoryScoresByUserId(Long userId){
+        return userCategoryScoresRepository.findByUserId(userId).get();
+    }
 }
