@@ -1,6 +1,7 @@
 package com.example.fashioncommuni.recommend.service;
 
 import com.example.fashioncommuni.recommend.domain.CategoryScores;
+import com.example.fashioncommuni.recommend.domain.UserCategoryScores;
 
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ public interface UserCategoryScoresService {
     // 게시물을 조회했을 때 카테고리 스코어를 계산하는 함수
     CategoryScores viewPost(Long userId, Long postId);
     // 게시물을 조회했을 때 카테고리 스코어를 계산하는 함수
+    UserCategoryScores findUserCategoryScoresByUserId(Long userId);
 
     // toDO: ratingPost() 함수 구현
     // CategoryScores ratingPost()
