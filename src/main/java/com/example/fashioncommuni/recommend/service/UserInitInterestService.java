@@ -1,5 +1,6 @@
 package com.example.fashioncommuni.recommend.service;
 
+import com.example.fashioncommuni.member.domain.User;
 import com.example.fashioncommuni.member.repository.UserRepository;
 import com.example.fashioncommuni.recommend.domain.CategoryScores;
 import com.example.fashioncommuni.recommend.domain.UserCategoryScores;
@@ -48,5 +49,7 @@ public class UserInitInterestService {
 
         return categoryScores;
     }
+
+
 
 }
