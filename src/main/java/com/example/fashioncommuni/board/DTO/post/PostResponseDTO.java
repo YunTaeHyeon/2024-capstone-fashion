@@ -15,7 +15,7 @@ public class PostResponseDTO {
 
     private Long post_id;
     private String title;
-    private String body; // toDo: body 말고 content로 변경
+    private String content;
     private LocalDateTime createdAt;
     private Long user_id;
     private Long category_id;
@@ -27,7 +27,7 @@ public class PostResponseDTO {
     public PostResponseDTO(Post post) {
         this.post_id = post.getPost_id();
         this.title = post.getTitle();
-        this.body = post.getBody();
+        this.content = post.getContent();
         this.createdAt = post.getCreatedAt();
         this.user_id = post.getUser().getId();
         this.category_id = post.getCategory_id();
