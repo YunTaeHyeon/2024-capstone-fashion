@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 public class PostWriteRequestDTO {
 
     private String title;
-    private String body;
+    private String content;
 }

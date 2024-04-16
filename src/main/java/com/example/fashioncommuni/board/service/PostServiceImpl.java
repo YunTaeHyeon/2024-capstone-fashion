@@ -45,7 +45,7 @@ public class PostServiceImpl implements PostService {
 
         Post result = Post.builder()
                 .title(postWriteRequestDTO.getTitle())
-                .body(postWriteRequestDTO.getBody())
+                .content(postWriteRequestDTO.getContent())
                 .user(user)
                 .build();
 
@@ -114,7 +114,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public Long postUpdate(Long post_id, PostWriteRequestDTO postWriteRequestDTO) {
         Post post = postRepository.findById(post_id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
-        post.update(postWriteRequestDTO.getTitle(), postWriteRequestDTO.getBody());
+        post.update(postWriteRequestDTO.getTitle(), postWriteRequestDTO.getContent());
         postRepository.save(post);
 
         return post.getPost_id();
