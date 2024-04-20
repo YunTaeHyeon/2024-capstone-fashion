@@ -2,6 +2,7 @@ package com.example.fashioncommuni.board.controller;
 
 import com.example.fashioncommuni.board.DTO.image.ImageUploadDTO;
 import com.example.fashioncommuni.board.service.ImageService;
+import com.example.fashioncommuni.member.dto.SecurityUserDetailsDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,7 +26,7 @@ public class ImageController {
      */
     @PostMapping("/upload")
     public String upload(@ModelAttribute ImageUploadDTO imageUploadDTO, Authentication authentication) {
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        SecurityUserDetailsDto userDetails = (SecurityUserDetailsDto) authentication.getPrincipal();
         imageService.upload(imageUploadDTO, userDetails.getUsername());
 
         return "redirect:/member/info";

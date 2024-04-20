@@ -2,9 +2,9 @@ package com.example.fashioncommuni.board.controller;
 
 import com.example.fashioncommuni.board.DTO.comment.CommentRequestDTO;
 import com.example.fashioncommuni.board.service.CommentService;
+import com.example.fashioncommuni.member.dto.SecurityUserDetailsDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +23,7 @@ public class CommentController {
      */
     @PostMapping("/post/{post_id}/comment")
     public String writeComment(@PathVariable Long post_id, CommentRequestDTO commentRequestDTO, Authentication authentication) {
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        SecurityUserDetailsDto userDetails = (SecurityUserDetailsDto) authentication.getPrincipal();
         commentService.writeComment(commentRequestDTO, post_id, userDetails.getUsername());
 
         return "redirect:/post/" + post_id;

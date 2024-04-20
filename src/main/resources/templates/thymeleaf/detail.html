@@ -4,11 +4,11 @@
       layout:decorate="~{layout/default}">
 <head>
     <meta charset="UTF-8">
-    <title th:text="'게시글 | ' + ${dto.title}">게시글 </title>
+    <title th:text="게시글 + ${dto.title}">게시글 </title>
 </head>
 <body>
 <div class="container" layout:fragment="content">
-    <h1 class="mt-4">`Board`</h1>
+    <h1 class="mt-4">Board</h1>
     <div class="card mb-4">
         <div class="card-body">
             <form>
@@ -21,11 +21,11 @@
                     <textarea class="form-control" id="content" name="content" disabled th:text="${dto.content}"></textarea>
                 </div>
                 <div class="mb-3" th:if="${dto.imageUrls != null}">
-                    <label class="form-label">Images</label>
+<!--                    <label class="form-label">Images</label>-->
                     <div>
-                        <th:block th:each="imageUrl : ${dto.imageUrls}">
-                            <img th:src="${imageUrl}" alt="Image" width="200px" height="200px">
-                        </th:block>
+<!--                        <th:block th:each="imageUrl : ${dto.imageUrls}">-->
+<!--                            <img th:src="${imageUrl}" alt="Image" width="200px" height="200px">-->
+<!--                        </th:block>-->
                     </div>
                 </div>
                 <div class="mb-3">
@@ -38,17 +38,17 @@
                         type="text" class="form-control" id="writer" name="writer"
                         th:value="${dto.username}" disabled>
                 </div>
-                <a href="/" class="btn btn-outline-secondary">list</a>
-                <th:block th:if="${dto.getEmail() == #authentication.principal.username}">
-                    <a th:href="@{/post/{post_id}/update(post_id=${post_id})}" class="btn btn-outline-warning">modify</a>
-                    <a th:href="@{/post/{post_id}/remove(post_id=${post_id})}" class="btn btn-outline-danger" onclick="return confirm('삭제하시겠습니까?')">remove</a>
-                </th:block>
+<!--                <a href="/static" class="btn btn-outline-secondary">list</a>-->
+<!--                <th:block th:if="${dto.getEmail() == #authentication.principal.username}">-->
+<!--                    <a th:href="@{/templates/thymeleaf/post/{post_id}/update(post_id=${post_id})}" class="btn btn-outline-warning">modify</a>-->
+<!--                    <a th:href="@{/templates/thymeleaf/post/{post_id}/remove(post_id=${post_id})}" class="btn btn-outline-danger" onclick="return confirm('삭제하시겠습니까?')">remove</a>-->
+<!--                </th:block>-->
             </form>
             <!-- Comments Form -->
             <div class="card my-4">
                 <h5 class="card-header">Leave a Comment:</h5>
                 <div class="card-body">
-                    <form th:action="@{/post/{post_id}/comment(comment_id=${comment_id})}" th:method="post">
+                    <form th:action="@{/templates/thymeleaf/post/{post_id}/comment(comment_id=${comment_id})}" th:method="post">
                         <div class="form-group" style="margin-bottom: 10px;">
                             <input type="hidden" name="idx" th:value="*${idx}" />
                             <textarea name="content" class="form-control" rows="3"></textarea>
@@ -66,7 +66,7 @@
                         <div class="media mb-4">
                             <div class="media-body">
                                 <div class="d-flex align-items-start">
-                                    <img class="d-flex mr-3 rounded-circle" th:src="${comment.getImageUrl()}" alt="User image" width="50">
+<!--                                    <img class="d-flex mr-3 rounded-circle" th:src="${comment.getImageUrl()}" alt="User image" width="50">-->
                                     <div>
                                         <h5 class="mt-0" th:text="${comment.getUsername()}">User Name</h5>
                                         <p th:text="${comment.getContent()}" th:id="'comment-' + ${comment.getComment_id()}">Comment content</p>
@@ -75,7 +75,7 @@
                                 </div>
                                 <div th:if="${comment.getEmail() == #authentication.principal.username}">
                                     <button class="btn btn-sm btn-outline-warning" th:attr="data-id=${comment.getComment_id()}" onclick="editComment(this)">Edit</button>
-                                    <a th:href="@{/post/{post_id}/comment/{comment_id}/remove(post_id=${post_id}, comment_id=${comment.getComment_id()})}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this comment?')">Delete</a>
+                                    <a th:href="@{/templates/thymeleaf/post/{post_id}/comment/{comment_id}/remove(post_id=${post_id}, comment_id=${comment.getComment_id()})}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this comment?')">Delete</a>
                                 </div>
                             </div>
                         </div>

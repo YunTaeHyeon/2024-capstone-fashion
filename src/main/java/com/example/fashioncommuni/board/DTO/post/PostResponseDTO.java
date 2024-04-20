@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -21,7 +20,7 @@ public class PostResponseDTO {
     private Long category_id;
     private String status;
     private String email;
-    private List<String> imageUrls;
+    // private List<String> imageUrls;
 
     @Builder
     public PostResponseDTO(Post post) {
