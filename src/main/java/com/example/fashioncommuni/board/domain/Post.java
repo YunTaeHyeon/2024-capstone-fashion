@@ -25,7 +25,7 @@ public class Post extends BaseEntity {
 
     @NotEmpty(message = "내용은 필수 입력값입니다.")
     @Column(columnDefinition = "TEXT")
-    private String body; // toDo: ERD 타입명 변경하기
+    private String content; // toDo: ERD 타입명 변경하기
 
     @Column(name = "category_id")
     private Long category_id;
@@ -45,8 +45,8 @@ public class Post extends BaseEntity {
     @OrderBy("image_id asc")
     private List<PostImage> postImages;
 
-    public void update(String title, String body) {
+    public void update(String title, String content) {
         this.title = title;
-        this.body = body;
+        this.content = content;
     }
 }
