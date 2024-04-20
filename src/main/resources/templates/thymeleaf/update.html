@@ -31,7 +31,7 @@
                         type="text" class="form-control" id="writer" name="writer"
                         th:value="${dto.username}" disabled>
                 </div>
-                <a th:href="@{/post/{post_id}(post_id=${post_id})}" class="btn btn-outline-secondary">본문</a>
+                <a th:href="@{/templates/thymeleaf/post/{post_id}(post_id=${post_id})}" class="btn btn-outline-secondary">본문</a>
                 <button type="submit" class="btn btn-primary">등록</button>
             </form>
         </div>
