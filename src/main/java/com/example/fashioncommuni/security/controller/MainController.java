@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -22,7 +23,7 @@ public class MainController {
     private final UserCategoryScoresService userCategoryScoresService;
 
     @GetMapping("/rootPage")
-    public String rootPage(Authentication authentication) {
+    public String rootPage(Authentication authentication, Model model) {
 
         SecurityUserDetailsDto userDetailsDto = (SecurityUserDetailsDto) authentication.getPrincipal();
         String authLoginId = userDetailsDto.getUsername();
@@ -35,6 +36,8 @@ public class MainController {
             UserCategoryScores userCategoryScores = userCategoryScoresService.findUserCategoryScoresByUserId(user.getId());
         } catch (Exception e) {
             log.info("초기 추천화면");
+            log.info("user.getId() = " + user.getId());
+
             return "init-interest";
         }
 
