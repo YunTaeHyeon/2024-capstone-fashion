@@ -31,8 +31,8 @@ public class ImageServiceImpl implements ImageService{
     private String uploadFolder;
 
     @Override
-    public void upload(ImageUploadDTO imageUploadDTO, String email) {
-        User user = userRepository.findUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException("이메일이 존재하지 않습니다."));
+    public void upload(ImageUploadDTO imageUploadDTO, String LoginId) {
+        User user = userRepository.findUserByLoginId(LoginId).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
         MultipartFile file = imageUploadDTO.getFile();
 
         UUID uuid = UUID.randomUUID();
@@ -61,8 +61,8 @@ public class ImageServiceImpl implements ImageService{
     }
 
     @Override
-    public ImageResponseDTO findImage(String email) {
-        User user = userRepository.findUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException("이메일이 존재하지 않습니다."));
+    public ImageResponseDTO findImage(String LoginId) {
+        User user = userRepository.findUserByLoginId(LoginId).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
         Image image = imageRepository.findByUser(user);
 
         String defaultImageUrl = "/profileImages/anonymous.png";

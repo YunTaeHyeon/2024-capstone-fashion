@@ -41,7 +41,7 @@ public class PostServiceImpl implements PostService {
     public Long savePost(PostWriteRequestDTO postWriteRequestDTO,
                          PostImageUploadDTO postImageUploadDTO,
                          String email) {
-        User user = userRepository.findUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException("이메일이 존재하지 않습니다."));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
 
         Post result = Post.builder()
                 .title(postWriteRequestDTO.getTitle())
@@ -51,12 +51,12 @@ public class PostServiceImpl implements PostService {
 
         postRepository.save(result);
 
-        if (postImageUploadDTO.getFiles() != null && !postImageUploadDTO.getFiles().isEmpty()) { // 이미지 파일이 존재할 경우
+        if (postImageUploadDTO.getFiles() != null && !postImageUploadDTO.getFiles().isEmpty()) {
             for (MultipartFile file : postImageUploadDTO.getFiles()) {
-                UUID uuid = UUID.randomUUID(); // 파일명 중복 방지를 위한 UUID 생성
+                UUID uuid = UUID.randomUUID();
                 String imageFileName = uuid + "_" + file.getOriginalFilename();
 
-                File destinationFile = new File(uploadFolder + imageFileName); // 파일 저장 경로 설정
+                File destinationFile = new File(uploadFolder + imageFileName);
 
                 try {
                     file.transferTo(destinationFile);
@@ -98,17 +98,17 @@ public class PostServiceImpl implements PostService {
         return getPostResponseDTOS(pageable, posts);
     }
 
-    private Page<PostResponseDTO> getPostResponseDTOS(Pageable pageable, Page<Post> posts) {
+    private Page<PostResponseDTO> getPostResponseDTOS(Pageable pageable, Page<Post> post) {
         List<PostResponseDTO> postDTOs = new ArrayList<>();
 
-        for (Post post : posts) {
+        for (Post posts : post) {
             PostResponseDTO result = PostResponseDTO.builder()
-                    .post(post)
+                    .post(posts)
                     .build();
             postDTOs.add(result);
         }
 
-        return new PageImpl<>(postDTOs, pageable, posts.getTotalElements());
+        return new PageImpl<>(postDTOs, pageable, post.getTotalElements());
     }
 
     @Override

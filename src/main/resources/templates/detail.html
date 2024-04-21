@@ -20,14 +20,14 @@
                     <label for="content" class="form-label">content</label>
                     <textarea class="form-control" id="content" name="content" disabled th:text="${dto.content}"></textarea>
                 </div>
-                <div class="mb-3" th:if="${dto.imageUrls != null}">
+<!--                <div class="mb-3" th:if="${dto.imageUrls != null}">-->
 <!--                    <label class="form-label">Images</label>-->
-                    <div>
+<!--                    <div>-->
 <!--                        <th:block th:each="imageUrl : ${dto.imageUrls}">-->
 <!--                            <img th:src="${imageUrl}" alt="Image" width="200px" height="200px">-->
 <!--                        </th:block>-->
-                    </div>
-                </div>
+<!--                    </div>-->
+<!--                </div>-->
                 <div class="mb-3">
                     <label for="createdAt" class="form-label">작성일</label> <input
                         type="text" class="form-control" id="createdAt" name="createdAt"
@@ -36,21 +36,21 @@
                 <div class="mb-3">
                     <label for="writer" class="form-label">작성자</label> <input
                         type="text" class="form-control" id="writer" name="writer"
-                        th:value="${dto.username}" disabled>
+                        th:value="${dto.user_id}" disabled>
                 </div>
-<!--                <a href="/static" class="btn btn-outline-secondary">list</a>-->
-<!--                <th:block th:if="${dto.getEmail() == #authentication.principal.username}">-->
-<!--                    <a th:href="@{/templates/thymeleaf/post/{post_id}/update(post_id=${post_id})}" class="btn btn-outline-warning">modify</a>-->
-<!--                    <a th:href="@{/templates/thymeleaf/post/{post_id}/remove(post_id=${post_id})}" class="btn btn-outline-danger" onclick="return confirm('삭제하시겠습니까?')">remove</a>-->
-<!--                </th:block>-->
+                <a href="/static" class="btn btn-outline-secondary">list</a>
+                <th:block th:if="${dto.getEmail() == #authentication.principal.email}">
+                    <a th:href="@{/post/{post_id}/update(post_id=${post_id})}" class="btn btn-outline-warning">modify</a>
+                    <a th:href="@{/post/{post_id}/remove(post_id=${post_id})}" class="btn btn-outline-danger" onclick="return confirm('삭제하시겠습니까?')">remove</a>
+                </th:block>
             </form>
             <!-- Comments Form -->
             <div class="card my-4">
                 <h5 class="card-header">Leave a Comment:</h5>
                 <div class="card-body">
-                    <form th:action="@{/templates/thymeleaf/post/{post_id}/comment(comment_id=${comment_id})}" th:method="post">
+                    <form th:action="@{/post/{post_id}/comment(post_id=${post_id})}" th:method="post">
                         <div class="form-group" style="margin-bottom: 10px;">
-                            <input type="hidden" name="idx" th:value="*${idx}" />
+                            <input type="hidden" name="idx" th:value="${idx}" />
                             <textarea name="content" class="form-control" rows="3"></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
@@ -68,14 +68,14 @@
                                 <div class="d-flex align-items-start">
 <!--                                    <img class="d-flex mr-3 rounded-circle" th:src="${comment.getImageUrl()}" alt="User image" width="50">-->
                                     <div>
-                                        <h5 class="mt-0" th:text="${comment.getUsername()}">User Name</h5>
+                                        <h5 class="mt-0" th:text="${comment.getEmail()}">User Name</h5>
                                         <p th:text="${comment.getContent()}" th:id="'comment-' + ${comment.getComment_id()}">Comment content</p>
                                         <small class="text-muted" th:text="${#temporals.format(comment.getCreatedAt(), 'yyyy-MM-dd HH:mm')}">Comment Date</small>
                                     </div>
                                 </div>
-                                <div th:if="${comment.getEmail() == #authentication.principal.username}">
+                                <div th:if="${comment.getEmail() == #authentication.principal.email}">
                                     <button class="btn btn-sm btn-outline-warning" th:attr="data-id=${comment.getComment_id()}" onclick="editComment(this)">Edit</button>
-                                    <a th:href="@{/templates/thymeleaf/post/{post_id}/comment/{comment_id}/remove(post_id=${post_id}, comment_id=${comment.getComment_id()})}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this comment?')">Delete</a>
+                                    <a th:href="@{/post/{post_id}/comment/{comment_id}/remove(post_id=${post_id}, comment_id=${comment.getComment_id()})}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this comment?')">Delete</a>
                                 </div>
                             </div>
                         </div>
@@ -87,7 +87,7 @@
 
     <script th:inline="javascript">
         /*<![CDATA[*/
-        const id = [[${id}]];
+        const id = [[${post_id}]];
         /*]]>*/
     </script>
 </div>
