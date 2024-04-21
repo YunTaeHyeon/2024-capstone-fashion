@@ -50,7 +50,7 @@ public class PostController {
 
         logger.info("postImageDTO is {}", postImageUploadDTO);
         SecurityUserDetailsDto userDetails = (SecurityUserDetailsDto) authentication.getPrincipal();
-        postService.savePost(postWriteRequestDTO, postImageUploadDTO, userDetails.getUsername());
+        postService.savePost(postWriteRequestDTO, postImageUploadDTO, userDetails.getEmail());
 
         return "redirect:/";
     }
@@ -84,9 +84,9 @@ public class PostController {
     public String postUpdateForm(@PathVariable Long post_id, Model model, Authentication authentication) {
         SecurityUserDetailsDto userDetails = (SecurityUserDetailsDto) authentication.getPrincipal();
         PostResponseDTO result = postService.postDetail(post_id);
-//        if (!result.getEmail().equals(userDetails.getUsername())) {
-//            return "redirect:/";
-//        }
+        if (!result.getEmail().equals(userDetails.getEmail())) {
+            return "redirect:/";
+        }
 
         model.addAttribute("dto", result);
         model.addAttribute("post_id", post_id);
@@ -117,7 +117,7 @@ public class PostController {
     public String postRemove(@PathVariable Long post_id, Authentication authentication) {
         SecurityUserDetailsDto userDetails = (SecurityUserDetailsDto) authentication.getPrincipal();
         PostResponseDTO result = postService.postDetail(post_id);
-        if (!Objects.equals(result.getEmail() , userDetails.getUsername())) {
+        if (!Objects.equals(result.getEmail() , userDetails.getEmail())) {
             return "redirect:/";
         }
 

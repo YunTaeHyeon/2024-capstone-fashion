@@ -22,7 +22,7 @@ spring:
         highlight: true
         default_batch_fetch_size: 100
   thymeleaf:
-    prefix: classpath:templates/thymeleaf/
+    prefix: classpath:templates/
     check-template-location: true
     suffix: .html
     mode: HTML

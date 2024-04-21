@@ -27,7 +27,7 @@ public class ImageController {
     @PostMapping("/upload")
     public String upload(@ModelAttribute ImageUploadDTO imageUploadDTO, Authentication authentication) {
         SecurityUserDetailsDto userDetails = (SecurityUserDetailsDto) authentication.getPrincipal();
-        imageService.upload(imageUploadDTO, userDetails.getUsername());
+        imageService.upload(imageUploadDTO, userDetails.getEmail());
 
         return "redirect:/member/info";
     }
