@@ -6,7 +6,7 @@ spring:
     serialization-inclusion: non_null
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://34.47.98.129:3306/fashion?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3306/fashion?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
     username: capstone
     password: 1224
   jpa:
@@ -32,5 +32,7 @@ file:
   profileImagePath: /home/32190165/images/profileImageUpload
   postImagePath: /home/32190165/images/postImageUpload
 
+server:
+  port: 8080
 
 
