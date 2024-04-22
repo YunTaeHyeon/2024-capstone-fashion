@@ -98,17 +98,17 @@ public class PostServiceImpl implements PostService {
         return getPostResponseDTOS(pageable, posts);
     }
 
-    private Page<PostResponseDTO> getPostResponseDTOS(Pageable pageable, Page<Post> post) {
+    private Page<PostResponseDTO> getPostResponseDTOS(Pageable pageable, Page<Post> posts) {
         List<PostResponseDTO> postDTOs = new ArrayList<>();
 
-        for (Post posts : post) {
+        for (Post post : posts) {
             PostResponseDTO result = PostResponseDTO.builder()
-                    .post(posts)
+                    .post(post)
                     .build();
             postDTOs.add(result);
         }
 
-        return new PageImpl<>(postDTOs, pageable, post.getTotalElements());
+        return new PageImpl<>(postDTOs, pageable, posts.getTotalElements());
     }
 
     @Override

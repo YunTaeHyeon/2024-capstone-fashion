@@ -20,7 +20,7 @@ public class ImageController {
 
     /**
      * 프로필 사진 등록
-     * @param imageUploadDTO 사진 정보
+     * @param imageUploadDTO 이미지 정보
      * @param authentication 유저 정보
      * @return 프로필 페이지
      */
@@ -29,6 +29,6 @@ public class ImageController {
         SecurityUserDetailsDto userDetails = (SecurityUserDetailsDto) authentication.getPrincipal();
         imageService.upload(imageUploadDTO, userDetails.getEmail());
 
-        return "redirect:/member/info";
+        return "redirect:/user/info";
     }
 }
