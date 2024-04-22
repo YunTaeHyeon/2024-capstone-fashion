@@ -33,6 +33,10 @@ public class SecurityUserDetailsDto implements UserDetails {
         return userDto.loginId();
     }
 
+    public String getEmail() {
+        return userDto.email();
+    }
+
     @Override
     public boolean isAccountNonExpired() {return true;
     }

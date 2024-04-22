@@ -41,7 +41,7 @@ public class PostServiceImpl implements PostService {
     public Long savePost(PostWriteRequestDTO postWriteRequestDTO,
                          PostImageUploadDTO postImageUploadDTO,
                          String email) {
-        User user = userRepository.findUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException("이메일이 존재하지 않습니다."));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다."));
 
         Post result = Post.builder()
                 .title(postWriteRequestDTO.getTitle())
@@ -88,27 +88,27 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Page<PostResponseDTO> postList(Pageable pageable) {
-        Page<Post> post = postRepository.findAll(pageable);
-        return getPostResponseDTOS(pageable, post);
+        Page<Post> posts = postRepository.findAll(pageable);
+        return getPostResponseDTOS(pageable, posts);
     }
 
     @Override
     public Page<PostResponseDTO> searchingPostList(String keyword, Pageable pageable) {
-        Page<Post> post = postRepository.findByTitle(keyword, pageable);
-        return getPostResponseDTOS(pageable, post);
+        Page<Post> posts = postRepository.findByTitle(keyword, pageable);
+        return getPostResponseDTOS(pageable, posts);
     }
 
-    private Page<PostResponseDTO> getPostResponseDTOS(Pageable pageable, Page<Post> post) {
+    private Page<PostResponseDTO> getPostResponseDTOS(Pageable pageable, Page<Post> posts) {
         List<PostResponseDTO> postDTOs = new ArrayList<>();
 
-        for (Post posts : post) {
+        for (Post post : posts) {
             PostResponseDTO result = PostResponseDTO.builder()
-                    .post(posts)
+                    .post(post)
                     .build();
             postDTOs.add(result);
         }
 
-        return new PageImpl<>(postDTOs, pageable, post.getTotalElements());
+        return new PageImpl<>(postDTOs, pageable, posts.getTotalElements());
     }
 
     @Override

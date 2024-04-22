@@ -17,5 +17,5 @@ public interface ImageService {
      * @param email 유저 정보
      * @return 이미지 url
      */
-    ImageResponseDTO findImage(String email);
+    ImageResponseDTO findImage(String email); // user controller에 추가해야 됨
 }

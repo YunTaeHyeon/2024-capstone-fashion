@@ -32,7 +32,7 @@ public class ImageServiceImpl implements ImageService{
 
     @Override
     public void upload(ImageUploadDTO imageUploadDTO, String email) {
-        User user = userRepository.findUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException("이메일이 존재하지 않습니다."));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("이메일이 존재하지 않습니다."));
         MultipartFile file = imageUploadDTO.getFile();
 
         UUID uuid = UUID.randomUUID();
@@ -61,8 +61,8 @@ public class ImageServiceImpl implements ImageService{
     }
 
     @Override
-    public ImageResponseDTO findImage(String email) {
-        User user = userRepository.findUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException("이메일이 존재하지 않습니다."));
+    public ImageResponseDTO findImage(String email){
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("이메일이 존재하지 않습니다."));
         Image image = imageRepository.findByUser(user);
 
         String defaultImageUrl = "/profileImages/anonymous.png";
@@ -77,4 +77,5 @@ public class ImageServiceImpl implements ImageService{
                     .build();
         }
     }
+
 }

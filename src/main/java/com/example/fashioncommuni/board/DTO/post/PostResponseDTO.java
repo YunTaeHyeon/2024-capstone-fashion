@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor
@@ -33,8 +34,8 @@ public class PostResponseDTO {
         this.category_id = post.getCategory_id();
         this.status = post.getStatus();
         this.email = post.getUser().getEmail();
-        //this.imageUrls = post.getImages().stream()
-        //        .map(PostImage::getUrl)
-        //        .toList();
+        this.imageUrls = post.getPostImages().stream()
+                .map(PostImage::getUrl)
+                .collect(Collectors.toList());
     }
 }

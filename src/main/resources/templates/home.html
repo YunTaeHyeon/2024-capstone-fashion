@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="kr" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
@@ -22,7 +21,7 @@
         <tr th:each="post : ${postList}">
             <td th:text="${post.post_id}"></td>
             <td><a th:href="@{/post/{post_id}(post_id=${post.post_id})}" th:text="${post.title}"></a></td>
-            <td th:text="${post.username}"></td>
+            <td th:text="${post.email}"></td>
             <td th:text="${post.createdAt} ? ${#temporals.format(post.createdAt,'yyyy-MM-dd HH:mm')} : ${post.createdAt}"></td>
         </tr>
         </tbody>

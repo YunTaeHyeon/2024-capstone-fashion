@@ -1,38 +1,39 @@
 <!DOCTYPE html>
+<meta charset="UTF-8">
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <header th:fragment="headerFragment">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/">Home</a>
+            <a class="navbar-brand" href="/post/home">Home</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarColor01">
                 <ul class="navbar-nav me-auto">
-                    <th:block sec:authorize="anonymous">
+                    <th:block sec:authorize="isAnonymous()">
                         <li class="nav-item">
                             <a class="nav-link" href="/login">로그인</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/signup">회원가입</a>
+                            <a class="nav-link" href="/register">회원가입</a>
                         </li>
                     </th:block>
-                    <th:block sec:authorize="hasRole('USER')">
+                    <th:block sec:authorize="isAuthenticated()">
                         <li class="nav-item">
-                            <a class="nav-link" href="/member/list">회원목록</a>
+                            <a class="nav-link" href="/user/list">회원목록</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/member/info">프로필</a>
+                            <a class="nav-link" href="/user/info">프로필</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/board/write">게시글 작성</a>
+                            <a class="nav-link" href="/post/write">게시글 작성</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/logout">로그아웃</a>
                         </li>
                     </th:block>
                 </ul>
-                <form th:action="@{/}" method="get" class="d-flex">
+                <form th:action="@{/static}" method="get" class="d-flex">
                     <input class="form-control me-sm-2" type="text" placeholder="Search" name="keyword">
                     <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
                 </form>

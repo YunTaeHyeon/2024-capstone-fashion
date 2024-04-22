@@ -6,10 +6,13 @@ import com.example.fashioncommuni.board.DTO.post.PostResponseDTO;
 import com.example.fashioncommuni.board.DTO.post.PostWriteRequestDTO;
 import com.example.fashioncommuni.board.service.CommentService;
 import com.example.fashioncommuni.board.service.PostService;
+import com.example.fashioncommuni.member.dto.SecurityUserDetailsDto;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
@@ -20,7 +23,7 @@ import java.util.Objects;
 
 @Controller // ToDo: RestController로 변경
 @RequiredArgsConstructor
-@RequestMapping("/post") //toDO: URL 통합
+@RequestMapping("/post")
 public class PostController {
 
     private static final Logger logger = LoggerFactory.getLogger(PostController.class);
@@ -29,12 +32,27 @@ public class PostController {
     private final CommentService commentService;
 
     /**
+     * 홈 화면
+     * @return 홈 화면
+     */
+    @GetMapping("/home")
+    public String home(Model model, Pageable pageable, String keyword) { // @PageableDefault(page = 0, size = 10, sort = "post_id", direction = Sort.Direction.DESC)
+        if(keyword == null) {
+            model.addAttribute("postList", postService.postList(pageable));
+        } else {
+            model.addAttribute("postList", postService.searchingPostList(keyword, pageable));
+        }
+
+        return "home";
+    }
+
+    /**
      * 게시글 작성
      * @return 게시글 작성 페이지
      */
     @GetMapping("/write")
     public String writeForm() {
-        return "post/write";
+        return "write";
     }
 
     /**
@@ -49,8 +67,8 @@ public class PostController {
                         Authentication authentication) {
 
         logger.info("postImageDTO is {}", postImageUploadDTO);
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        postService.savePost(postWriteRequestDTO, postImageUploadDTO, userDetails.getUsername());
+        SecurityUserDetailsDto userDetails = (SecurityUserDetailsDto) authentication.getPrincipal();
+        postService.savePost(postWriteRequestDTO, postImageUploadDTO, userDetails.getEmail());
 
         return "redirect:/";
     }
@@ -68,9 +86,9 @@ public class PostController {
 
         model.addAttribute("comments", commentResponseDTO);
         model.addAttribute("dto", result);
-        model.addAttribute("id", post_id);
+        model.addAttribute("post_id", post_id);
 
-        return "post/detail";
+        return "detail";
     }
 
     /**
@@ -82,16 +100,16 @@ public class PostController {
      */
     @GetMapping("/{post_id}/update")
     public String postUpdateForm(@PathVariable Long post_id, Model model, Authentication authentication) {
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        SecurityUserDetailsDto userDetails = (SecurityUserDetailsDto) authentication.getPrincipal();
         PostResponseDTO result = postService.postDetail(post_id);
-        if (result.getEmail() != userDetails.getUsername()) {
-            return "redirect:/";
+        if (!result.getEmail().equals(userDetails.getEmail())) {
+            return "detail";
         }
 
         model.addAttribute("dto", result);
-        model.addAttribute("id", post_id);
+        model.addAttribute("post_id", post_id);
 
-        return "post/update";
+        return "update";
     }
 
     /**
@@ -115,9 +133,9 @@ public class PostController {
      */
     @GetMapping("/{post_id}/remove")
     public String postRemove(@PathVariable Long post_id, Authentication authentication) {
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        SecurityUserDetailsDto userDetails = (SecurityUserDetailsDto) authentication.getPrincipal();
         PostResponseDTO result = postService.postDetail(post_id);
-        if (!Objects.equals(result.getEmail() , userDetails.getUsername())) {
+        if (!Objects.equals(result.getEmail() , userDetails.getEmail())) {
             return "redirect:/";
         }
 

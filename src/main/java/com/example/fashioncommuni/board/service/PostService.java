@@ -11,6 +11,8 @@ public interface PostService {
     /**
      * 게시글 작성
      * @param postWriteRequestDTO 게시글 정보
+     * @param postImageUploadDTO 이미지 정보
+     * @param email 작성자
      * @return 게시글 ID
      */
     Long savePost(PostWriteRequestDTO postWriteRequestDTO,
