@@ -36,7 +36,7 @@ public class PostController {
      * @return 홈 화면
      */
     @GetMapping("/home")
-    public String home(Model model, @PageableDefault(page = 0, size = 10, sort = "post_id", direction = Sort.Direction.DESC) Pageable pageable, String keyword) {
+    public String home(Model model, Pageable pageable, String keyword) { // @PageableDefault(page = 0, size = 10, sort = "post_id", direction = Sort.Direction.DESC)
         if(keyword == null) {
             model.addAttribute("postList", postService.postList(pageable));
         } else {
