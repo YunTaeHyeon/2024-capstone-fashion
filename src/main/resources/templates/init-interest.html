@@ -1,19 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Init Interest</title>
     <style>
-        /* 스타일링 추가 */
+        /* 이미지 컨테이너 스타일 */
+        #image-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        /* 이미지 스타일 */
         .image {
             cursor: pointer;
-            /* 선택된 이미지에 적용되는 스타일 */
+            width: 200px; /* 이미지 너비 설정 */
+            height: auto; /* 이미지 높이 자동 조정 */
+            border: 1px solid #ccc; /* 테두리 스타일 */
+            border-radius: 5px; /* 테두리 둥글게 */
         }
+
+        /* 선택된 이미지 스타일 */
         .disabled {
-            /* 비활성화된 이미지에 적용되는 스타일 */
-            pointer-events: none;
             opacity: 0.5;
+        }
+
+        /* 선택 완료 버튼 스타일 */
+        #select-button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -21,30 +42,54 @@
 <h1>Init Interest</h1>
 <div id="image-container">
     <!-- 이미지 목록 -->
-    <img class="image" src="image1.jpg" alt="Image 1" data-category-id="1">
-    <img class="image" src="image2.jpg" alt="Image 2" data-category-id="2">
-    <!-- 나머지 이미지들도 동일하게 추가 -->
-</div>
+    <img class="image" src="/home/32190165/images/init_recommend_images/athleisure 1.jpg" alt="Image 1" data-category-id="1">
+    <img class="image" src="/home/32190165/images/init_recommend_images/athleisure 2.jpg" alt="Image 2" data-category-id="1">
+    <img class="image" src="/home/32190165/images/init_recommend_images/grunge 1.jpg" alt="Image 3" data-category-id="2">
+    <img class="image" src="/home/32190165/images/init_recommend_images/grunge 2.jpg" alt="Image 4" data-category-id="2">
+    <img class="image" src="/home/32190165/images/init_recommend_images/hippie 1.jpg" alt="Image 5" data-category-id="3">
+    <img class="image" src="/home/32190165/images/init_recommend_images/hippie 2.jpg" alt="Image 6" data-category-id="3">
+    <img class="image" src="/home/32190165/images/init_recommend_images/military 1.jpg" alt="Image 7" data-category-id="4">
+    <img class="image" src="/home/32190165/images/init_recommend_images/military 2.jpg" alt="Image 8" data-category-id="4">
+    <img class="image" src="/home/32190165/images/init_recommend_images/normcore 1.jpg" alt="Image 9" data-category-id="5">
+    <img class="image" src="/home/32190165/images/init_recommend_images/normcore 2.jpg" alt="Image 10" data-category-id="5">
+    <img class="image" src="/home/32190165/images/init_recommend_images/preppy 1.jpg" alt="Image 11" data-category-id="6">
+    <img class="image" src="/home/32190165/images/init_recommend_images/preppy 2.jpg" alt="Image 12" data-category-id="6">
+    <img class="image" src="/home/32190165/images/init_recommend_images/street 1.jpg" alt="Image 13" data-category-id="7">
+    <img class="image" src="/home/32190165/images/init_recommend_images/street 2.jpg" alt="Image 14" data-category-id="7">
 
-<script>
+    <!-- 추가 이미지들도 동일하게 추가 -->
+</div>
+<button id="select-button" disabled>선택 완료</button>
+
+<script th:inline="javascript">
     // 이미지 요소들을 가져옴
     const images = document.querySelectorAll('.image');
+    const selectButton = document.getElementById('select-button');
+
+    let selectedImageCount = 0;
 
     // 각 이미지에 클릭 이벤트 리스너 추가
     images.forEach(image => {
         image.addEventListener('click', function() {
             // 이미지가 클릭되면 해당 categoryId를 가져옴
-            const categoryId = this.getAttribute('data-category-id');
+            const categoryId = parseInt(this.getAttribute('data-category-id')); // categoryId를 정수로 변환
             // 이미지를 비활성화
             this.classList.add('disabled');
+            selectedImageCount++;
+
+            // 선택된 이미지가 최소 1개 이상인 경우 버튼 활성화
+            if (selectedImageCount > 0) {
+                selectButton.disabled = false;
+            }
+
+            console.log(categoryId);
             // POST 요청 보내기
-            fetch(`/${userId}/${categoryId}`, {
+            fetch("/init-interest/selectImage", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                // 필요한 경우 body에 데이터 추가
-                // body: JSON.stringify({ userId: userId, categoryId: categoryId })
+                body: JSON.stringify({ categoryId: categoryId }) // categoryId를 숫자로 보냄
             })
                 .then(response => {
                     if (!response.ok) {
@@ -58,6 +103,27 @@
                 });
         });
     });
+
+    // "선택 완료" 버튼 클릭 시 리다이렉션
+    selectButton.addEventListener('click', function() {
+        fetch("/post/home", {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                window.location.href = "/home";
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // 에러 발생 시 처리할 내용 추가
+            });
+    });
+
 </script>
 </body>
 </html>

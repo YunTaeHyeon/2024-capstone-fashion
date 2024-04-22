@@ -84,7 +84,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .formLogin(login -> login
                         .loginPage("/login")
-                        .successHandler(new SimpleUrlAuthenticationSuccessHandler("/main/rootPage"))
+                        .successHandler(new SimpleUrlAuthenticationSuccessHandler("/post/home"))
                         .permitAll()
                 )
                 .addFilterBefore(customAuthenticationFilter, JwtAuthorizationFilter.class)

@@ -42,6 +42,6 @@ public class MainController {
         }
 
         log.info("초기가 아닌 화면");
-        return "rootPage";
+        return "home";
     }
 }
