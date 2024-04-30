@@ -15,8 +15,8 @@ public class AutoTrainingKnnModel{
         //모델 학습 코드
         Runtime runtime = Runtime.getRuntime();
         try {
-            Process process = runtime.exec("python3 /Users/taehyeonyun/coding/2024-capstone-fashion/recommendation-system/train_category_recommendation_model.py");
-            //toDo: 서버에 올리고 경로 변환 필요
+            Process process = runtime.exec("python3 recommendation-system/train_category_recommendation_model.py");
+            //toDo: 서버에 올리고 경로 변환 필요 -> 완료
             process.waitFor();
         } catch (Exception e) {
             e.printStackTrace();
