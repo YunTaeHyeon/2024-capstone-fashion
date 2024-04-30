@@ -1,59 +1,51 @@
 package com.example.fashioncommuni.board.domain;
 
+import com.example.fashioncommuni.member.domain.User;
 import jakarta.persistence.*;
-import lombok.Getter;
+import jakarta.validation.constraints.NotEmpty;
+import lombok.*;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
-@Table(name = "posts")
-public class Post { // toDO: set이라고 쓴 애들 이름 잘 짓기.
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "post")
+public class Post extends BaseEntity {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 생성
-    private Long postId; // 게시글 식별자
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long post_id;
 
-    private String title; // 제목
+    @NotEmpty(message = "제목은 필수 입력값입니다.")
+    private String title;
 
-    @Column(columnDefinition = "TEXT") // TEXT 타입
-    private String body; // 내용
+    @NotEmpty(message = "내용은 필수 입력값입니다.")
+    @Column(columnDefinition = "TEXT")
+    private String content; // toDo: ERD 타입명 변경하기
 
-    @Column(name = "user_id")  // user_id 컬럼
-    private Long userId; // 사용자 식별자
+    @Column(name = "category_id")
+    private Long category_id;
 
-    @Column(name = "category_id") // category_id 컬럼
-    private Long categoryId; // 카테고리 식별자
+    private String status;
 
-    private String status; // 상태
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt; // 생성 시간
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OrderBy("comment_id asc")
+    private List<Comment> comments;
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OrderBy("image_id asc")
+    private List<PostImage> postImages;
 
-    public void setPostId(Long postId) {
-        this.postId = postId;
-    }
-
-    public void setTitle(String title) {
+    public void update(String title, String content) {
         this.title = title;
+        this.content = content;
     }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
 }

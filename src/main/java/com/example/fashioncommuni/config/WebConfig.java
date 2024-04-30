@@ -1,5 +1,6 @@
 package com.example.fashioncommuni.config;
 
+import com.example.fashioncommuni.security.interceptor.JwtTokenInterceptor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;

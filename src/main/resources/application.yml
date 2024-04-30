@@ -1,8 +1,13 @@
 spring:
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
+    default-property-inclusion: non_null
+    serialization-inclusion: non_null
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/fashion?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
-    username: root
+    username: capstone
     password: 1224
   jpa:
     hibernate:
@@ -16,8 +21,18 @@ spring:
         show_sql: true
         highlight: true
         default_batch_fetch_size: 100
+  thymeleaf:
+    prefix: classpath:templates/
+    check-template-location: true
+    suffix: .html
+    mode: HTML
+    cache: true
 
-jwt:
-  secret: 8897432e515e9d654b9e9f1192022aff99c5e7a009546b63ba5aff741a1bff1d
+file:
+  profileImagePath: /home/32190165/images/profileImageUpload
+  postImagePath: /home/32190165/images/postImageUpload
+
+server:
+  port: 8080
 
 

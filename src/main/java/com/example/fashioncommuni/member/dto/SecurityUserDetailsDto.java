@@ -1,13 +1,18 @@
 package com.example.fashioncommuni.member.dto;
 
+import com.example.fashioncommuni.member.domain.User;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.experimental.Delegate;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
-
+@Slf4j @Getter
+@AllArgsConstructor
 public class SecurityUserDetailsDto implements UserDetails {
     @Delegate
     private UserDto userDto;
@@ -28,23 +33,26 @@ public class SecurityUserDetailsDto implements UserDetails {
         return userDto.loginId();
     }
 
+    public String getEmail() {
+        return userDto.email();
+    }
+
     @Override
-    public boolean isAccountNonExpired() {
-        return false;
+    public boolean isAccountNonExpired() {return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }

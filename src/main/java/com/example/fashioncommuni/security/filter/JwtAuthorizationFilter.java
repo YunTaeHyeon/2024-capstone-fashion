@@ -1,5 +1,8 @@
 package com.example.fashioncommuni.security.filter;
 
+import com.example.fashioncommuni.security.exception.ErrorCode;
+import com.example.fashioncommuni.security.exception.ProfileApplicationException;
+import com.example.fashioncommuni.security.jwt.TokenUtils;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.io.IOException;
@@ -12,7 +15,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONException;
 import org.json.JSONObject;
+
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,7 +38,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             HttpServletRequest request,
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
-    ) throws ServletException, IOException {
+    ) throws ServletException, IOException, java.io.IOException {
 
         // 1. 토큰이 필요하지 않은 API URL에 대해서 배열로 구성한다.
         List<String> list = Arrays.asList(
@@ -41,7 +46,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 "/login",  // 로그인 페이지의 URL을 추가합니다.
                 "/css/**",
                 "/js/**",
-                "/images/**"
+                "/images/**",
+                "/user/register",
+                "/register"
         );
 
         // 2. 토큰이 필요하지 않은 API URL의 경우 -> 로직 처리없이 다음 필터로 이동한다.
@@ -100,7 +107,12 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             }
         } catch (Exception e) {
             // 로그 메시지 생성
-            String logMessage = jsonResponseWrapper(e).getString("message");
+            String logMessage = null;
+            try {
+                logMessage = jsonResponseWrapper(e).getString("message");
+            } catch (JSONException ex) {
+                throw new RuntimeException(ex);
+            }
             log.error(logMessage, e);  // 로그에만 해당 메시지를 출력합니다.
 
             // 클라이언트에게 전송할 고정된 메시지
@@ -110,8 +122,16 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
             PrintWriter printWriter = response.getWriter();
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("error", true);
-            jsonObject.put("message", "로그인 에러");
+            try {
+                jsonObject.put("error", true);
+            } catch (JSONException ex) {
+                throw new RuntimeException(ex);
+            }
+            try {
+                jsonObject.put("message", "로그인 에러");
+            } catch (JSONException ex) {
+                throw new RuntimeException(ex);
+            }
 
             printWriter.print(jsonObject);
             printWriter.flush();
