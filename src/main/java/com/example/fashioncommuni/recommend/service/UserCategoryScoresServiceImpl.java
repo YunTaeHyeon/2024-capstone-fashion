@@ -103,9 +103,12 @@ public class UserCategoryScoresServiceImpl implements UserCategoryScoresService 
         List<Double> finalScores = new ArrayList<>();
         finalScores.add(userId.doubleValue());
 
-        for (double score : categorySumMap.values()) {
+        // 각 카테고리에 대한 가중치를 계산하여 리스트에 추가합니다.
+        for (String category : categorySumMap.keySet()) {
+            double score = categorySumMap.get(category);
             finalScores.add(score / totalScore);
         }
+
         return finalScores;
     }
 
