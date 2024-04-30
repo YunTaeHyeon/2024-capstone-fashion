@@ -7,8 +7,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/fashion?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
-    username: root
-    password: 1234
+    username: capstone
+    password: 1224
   jpa:
     hibernate:
       ddl-auto: update
@@ -29,8 +29,10 @@ spring:
     cache: true
 
 file:
-  profileImagePath: C:/Temp/profileImageUpload/
-  postImagePath: C:/Temp/postImageUpload/
+  profileImagePath: /home/32190165/images/profileImageUpload
+  postImagePath: /home/32190165/images/postImageUpload
 
+server:
+  port: 8080
 
 

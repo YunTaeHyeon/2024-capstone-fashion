@@ -6,8 +6,13 @@ import com.example.fashioncommuni.board.DTO.post.PostResponseDTO;
 import com.example.fashioncommuni.board.DTO.post.PostWriteRequestDTO;
 import com.example.fashioncommuni.board.service.CommentService;
 import com.example.fashioncommuni.board.service.PostService;
+import com.example.fashioncommuni.member.domain.User;
 import com.example.fashioncommuni.member.dto.SecurityUserDetailsDto;
+import com.example.fashioncommuni.member.service.SecurityUserService;
+import com.example.fashioncommuni.recommend.domain.UserCategoryScores;
+import com.example.fashioncommuni.recommend.service.UserCategoryScoresService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -30,13 +35,27 @@ public class PostController {
 
     private final PostService postService;
     private final CommentService commentService;
+    private final SecurityUserService securityUserService;
+    private final UserCategoryScoresService userCategoryScoresService;
 
     /**
      * 홈 화면
      * @return 홈 화면
      */
     @GetMapping("/home")
-    public String home(Model model, Pageable pageable, String keyword) { // @PageableDefault(page = 0, size = 10, sort = "post_id", direction = Sort.Direction.DESC)
+    public String home(Authentication authentication , Model model, Pageable pageable, String keyword) { // @PageableDefault(page = 0, size = 10, sort = "post_id", direction = Sort.Direction.DESC)
+
+        SecurityUserDetailsDto userDetailsDto = (SecurityUserDetailsDto) authentication.getPrincipal();
+        String authLoginId = userDetailsDto.getUsername();
+
+        User user = securityUserService.findByLoginId(authLoginId).orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+
+        try {
+            UserCategoryScores userCategoryScores = userCategoryScoresService.findUserCategoryScoresByUserId(user.getId());
+        } catch (Exception e) {
+            return "init-interest";
+        }
+
         if(keyword == null) {
             model.addAttribute("postList", postService.postList(pageable));
         } else {

@@ -1,23 +1,47 @@
-from PIL import Image
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[1]:
+
+
+from IPython.display import display
 import os
+from PIL import Image
 
 def resize_images_in_directory(directory, target_size=(640, 640)):
-    # 디렉토리 내의 모든 파일에 대해 반복
+    resized_images = []
     for filename in os.listdir(directory):
         if filename.endswith(".jpg") or filename.endswith(".jpeg"):
             filepath = os.path.join(directory, filename)
             try:
-                # 이미지 열기
+                # Open the image
                 img = Image.open(filepath)
-                # 이미지 크기 조정
+                # Resize the image
                 img_resized = img.resize(target_size, Image.ANTIALIAS)
-                # 원본 파일 덮어쓰기
+                # Save the resized image
                 img_resized.save(filepath)
+                resized_images.append(img_resized)
                 print(f"{filename} resized successfully.")
             except Exception as e:
                 print(f"Error resizing {filename}: {e}")
+    return resized_images
 
-# 디렉토리 경로 설정
+# Directory path
 directory_path = "/Users/taehyeonyun/coding/2024-capstone-fashion/recommendation-system/init_recommend_images"
-# 이미지 크기 조정
-resize_images_in_directory(directory_path)
+# Resize images
+resized_images = resize_images_in_directory(directory_path)
+
+
+# In[2]:
+
+
+# Display resized images
+for image in resized_images:
+    display(image)
+
+
+# In[ ]:
+
+
+
+

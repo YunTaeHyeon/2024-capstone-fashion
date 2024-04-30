@@ -26,19 +26,19 @@ public class UserCategoryScores {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userCategoryScores", orphanRemoval = true)
     @MapKey(name = "category")
-    private Map<Long, CategoryScores> scores = new LinkedHashMap<>();
+    private Map<String, CategoryScores> scores = new LinkedHashMap<>();
     //코드 설명: 사용자의 카테고리별 별점 점수를 저장
     //Long -> category_id   CategoryScores -> 별점들을 저장
 
 
     @Builder
-    public UserCategoryScores(Long id, User user, Map<Long, CategoryScores> scores) {
+    public UserCategoryScores(Long id, User user, Map<String, CategoryScores> scores) {
         this.id = id;
         this.user = user;
         this.scores = scores;
     }
 
-    public static UserCategoryScores of(User user, Map<Long, CategoryScores> scores) {
+    public static UserCategoryScores of(User user, Map<String, CategoryScores> scores) {
         return new UserCategoryScores(null, user, scores);
     }
 

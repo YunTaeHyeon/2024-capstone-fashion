@@ -35,6 +35,7 @@ public class UserCategoryScoresServiceImpl implements UserCategoryScoresService 
     //toDo: 카테고리 점수를 계산할 때 점수를 남겼을 때, 조회했을 때 등등 각각 다른 메서드로 구현해야 할 듯.
     @Scheduled(fixedDelay = 1000 * 60 * 60 * 24 * 7)
     @Override
+    @Transactional
     public void writeCsvUserCategoryScores() { //csv 파일로 사용자의 카테고리 점수를 저장하는 함수(KNN 모델의 학습 자료 생성)
         List<List<Double>> writeCsv = new ArrayList<>(); //writeCsv는 Double로 user_id와 각 카테고리의 가중치로 이루어진 리스트
 
@@ -49,7 +50,7 @@ public class UserCategoryScoresServiceImpl implements UserCategoryScoresService 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String dateString = currentDate.format(formatter);
         String fileName = "user_category_scores_" + dateString + ".csv"; //파일 이름 변경 가능
-        String filePath = fileName;
+        String filePath = "category_scores/"+fileName;
         //String filePath = "path/to/save/" + fileName; //파일 경로 변경 가능 toDo: 서버에 올리면 파일 경로 설정
 
         // CSV 파일에 데이터 쓰기
@@ -73,22 +74,23 @@ public class UserCategoryScoresServiceImpl implements UserCategoryScoresService 
 
 
     @Override
+    @Transactional
     public List<Double> calculateUserCategoryScores(Long userId) {  // 사용자의 카테고리 점수를 계산하는 함수
         UserCategoryScores userCategoryScores = userCategoryScoresRepository.findByUserId(userId)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다.: " + userId));
 
         // 최근 MAX_USE_SCORES 개의 카테고리 점수만 유지하기 위해 LinkedHashmap을 사용합니다.
-        Map<Long, CategoryScores> scoresMap = userCategoryScores.getScores();
+        Map<String, CategoryScores> scoresMap = userCategoryScores.getScores();
 
         // LinkedHashmap의 크기가 50을 초과하면, 가장 오래된 데이터를 삭제합니다.
         if (scoresMap.size() > MAX_USE_SCORES) {
-            List<Long> keysToRemove = new ArrayList<>(scoresMap.keySet()); //scoresMap에 저장된 키의 순서대로 가져옴
+            List<String> keysToRemove = new ArrayList<>(scoresMap.keySet()); //scoresMap에 저장된 키의 순서대로 가져옴
             for (int i = 0; i < scoresMap.size() - MAX_USE_SCORES; i++) { //MAX_USE_SCORES 넘었을 경우에 그 다음부터 삭제
                 scoresMap.remove(keysToRemove.get(i));
             }
         }
         // 각 카테고리의 점수를 합산하여 카테고리별 총 점수 맵을 생성합니다.
-        Map<Long, Double> categorySumMap = scoresMap.entrySet().stream()
+        Map<String, Double> categorySumMap = scoresMap.entrySet().stream()
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         entry -> entry.getValue().getScores().stream().mapToDouble(Double::doubleValue).sum()
@@ -101,9 +103,15 @@ public class UserCategoryScoresServiceImpl implements UserCategoryScoresService 
         List<Double> finalScores = new ArrayList<>();
         finalScores.add(userId.doubleValue());
 
-        for (double score : categorySumMap.values()) {
-            finalScores.add(score / totalScore);
+        // 각 카테고리에 대한 가중치를 계산하여 리스트에 추가합니다.
+        int maxCategoryCount = categorySumMap.keySet().stream().mapToInt(String::length).max().orElse(0);
+        for (int i = 0; i < maxCategoryCount; i++) {
+            for (String category : categorySumMap.keySet()) {
+                double score = categorySumMap.getOrDefault(category, 0.0);
+                finalScores.add(score / totalScore);
+            }
         }
+
         return finalScores;
     }
 
@@ -114,14 +122,14 @@ public class UserCategoryScoresServiceImpl implements UserCategoryScoresService 
                 .orElseThrow(() -> new IllegalArgumentException("게시물을 찾을 수 없습니다.: " + postId));
 
         // 게시물의 카테고리를 가져옵니다.
-        Long categoryId = post.getCategory_id();
+        String categoryId = post.getCategory_id().toString();
 
         // 사용자의 카테고리 점수를 가져옵니다.
         UserCategoryScores userCategoryScores = userCategoryScoresRepository.findByUserId(userId)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다.: " + userId));
 
         // 사용자의 카테고리 점수 맵을 가져옵니다.
-        Map<Long, CategoryScores> scoresMap = userCategoryScores.getScores();
+        Map<String, CategoryScores> scoresMap = userCategoryScores.getScores();
 
         // userCategoryScores에서 categoryId와 대치되는 CategoryScores를 가져옵니다.
         CategoryScores categoryScores = scoresMap.get(categoryId);
