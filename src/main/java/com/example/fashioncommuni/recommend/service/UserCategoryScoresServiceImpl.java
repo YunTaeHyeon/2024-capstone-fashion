@@ -104,9 +104,12 @@ public class UserCategoryScoresServiceImpl implements UserCategoryScoresService 
         finalScores.add(userId.doubleValue());
 
         // 각 카테고리에 대한 가중치를 계산하여 리스트에 추가합니다.
-        for (String category : categorySumMap.keySet()) {
-            double score = categorySumMap.get(category);
-            finalScores.add(score / totalScore);
+        int maxCategoryCount = categorySumMap.keySet().stream().mapToInt(String::length).max().orElse(0);
+        for (int i = 0; i < maxCategoryCount; i++) {
+            for (String category : categorySumMap.keySet()) {
+                double score = categorySumMap.getOrDefault(category, 0.0);
+                finalScores.add(score / totalScore);
+            }
         }
 
         return finalScores;
