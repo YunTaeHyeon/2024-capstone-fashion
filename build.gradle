@@ -55,6 +55,15 @@ dependencies {
 	implementation 'com.querydsl:querydsl-core:5.0.0'
 	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
 
+	// socket
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+	implementation 'org.webjars:sockjs-client:1.5.1'
+	implementation 'org.webjars:stomp-websocket:2.3.4'
+	implementation 'org.springframework:spring-messaging:6.0.3'
+	implementation 'org.springframework.security:spring-security-messaging:6.0.2'
+
+
+
 }
 
 tasks.named('test') {
