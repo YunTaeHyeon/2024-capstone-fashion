@@ -7,8 +7,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/fashion?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
-    username: capstone
-    password: 1224
+    username: root
+    password: 1234
   jpa:
     hibernate:
       ddl-auto: update
@@ -29,8 +29,15 @@ spring:
     cache: true
 
 file:
-  profileImagePath: /home/32190165/images/profileImageUpload
-  postImagePath: /home/32190165/images/postImageUpload
+  profileImagePath: /home/32190165/images/profileImageUpload/
+  postImagePath: /home/32190165/images/postImageUpload/
+
+userCategory:
+  maxUseScores : 50
+  maxCategoryCount : 8
+  filePath : category_scores/
+
+autoTraining: python3 recommendation-system/train_category_recommendation_model.py
 
 server:
   port: 8080

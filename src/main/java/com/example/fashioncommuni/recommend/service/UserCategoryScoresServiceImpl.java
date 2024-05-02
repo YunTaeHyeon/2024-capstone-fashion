@@ -6,6 +6,7 @@ import com.example.fashioncommuni.recommend.domain.CategoryScores;
 import com.example.fashioncommuni.recommend.domain.UserCategoryScores;
 import com.example.fashioncommuni.recommend.repository.UserCategoryScoresRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +26,16 @@ import java.util.stream.Collectors;
 public class UserCategoryScoresServiceImpl implements UserCategoryScoresService {
     private final UserCategoryScoresRepository userCategoryScoresRepository;
     private final PostRepository postRepository;
-    private static final int MAX_USE_SCORES = 50; //추천에 사용할 최대 점수의 개수 //toDo: 변경 가능
+
+    @Value("${userCategory.maxUseScores}")
+    private int MAX_USE_SCORES; //추천에 사용할 최대 점수의 개수
+
+    @Value("${userCategory.maxCategoryCount}")
+    private int maxCategoryCount; //추천에 사용할 카테고리의 개수
+
+    @Value("${userCategory.filePath}")
+    private String privateFilePath;
+
 
     public UserCategoryScoresServiceImpl(UserCategoryScoresRepository userCategoryScoresRepository, PostRepository postRepository){
         this.userCategoryScoresRepository = userCategoryScoresRepository;
@@ -49,9 +59,10 @@ public class UserCategoryScoresServiceImpl implements UserCategoryScoresService 
         LocalDate currentDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String dateString = currentDate.format(formatter);
+
         String fileName = "user_category_scores_" + dateString + ".csv"; //파일 이름 변경 가능
-        String filePath = "category_scores/"+fileName;
-        //String filePath = "path/to/save/" + fileName; //파일 경로 변경 가능 toDo: 서버에 올리면 파일 경로 설정
+        //String filePath = privateFilePath+fileName;
+        String filePath = fileName; //ToDo: 서버에 올릴 때는 위의 경로로 변경
 
         // CSV 파일에 데이터 쓰기
         try {
@@ -103,12 +114,15 @@ public class UserCategoryScoresServiceImpl implements UserCategoryScoresService 
         List<Double> finalScores = new ArrayList<>();
         finalScores.add(userId.doubleValue());
 
+        log.info(categorySumMap.keySet().toString());
+
         // 각 카테고리에 대한 가중치를 계산하여 리스트에 추가합니다.
-        int maxCategoryCount = categorySumMap.keySet().stream().mapToInt(String::length).max().orElse(0);
-        for (int i = 0; i < maxCategoryCount; i++) {
-            for (String category : categorySumMap.keySet()) {
-                double score = categorySumMap.getOrDefault(category, 0.0);
+        for (int i = 1; i < maxCategoryCount + 1; i++) {
+            if (categorySumMap.containsKey("{\"categoryId\":" + i + "}")) {
+                double score = categorySumMap.get("{\"categoryId\":" + i + "}");
                 finalScores.add(score / totalScore);
+            } else {
+                finalScores.add(0.0);
             }
         }
 
