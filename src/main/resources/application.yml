@@ -29,8 +29,8 @@ spring:
     cache: true
 
 file:
-  profileImagePath: /home/32190165/images/profileImageUpload/
-  postImagePath: /home/32190165/images/postImageUpload/
+  profileImagePath: C:/Temp/profileImageUpload/
+  postImagePath: C:/Temp/postImageUpload/
 
 userCategory:
   maxUseScores : 50

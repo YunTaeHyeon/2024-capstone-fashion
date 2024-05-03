@@ -11,4 +11,5 @@ public class PostWriteRequestDTO {
 
     private String title;
     private String content;
+    private Long category_id;
 }
