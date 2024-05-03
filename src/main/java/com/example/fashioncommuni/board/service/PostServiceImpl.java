@@ -46,6 +46,7 @@ public class PostServiceImpl implements PostService {
         Post result = Post.builder()
                 .title(postWriteRequestDTO.getTitle())
                 .content(postWriteRequestDTO.getContent())
+                .category_id(postWriteRequestDTO.getCategory_id())
                 .user(user)
                 .build();
 
