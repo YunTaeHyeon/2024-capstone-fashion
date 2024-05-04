@@ -30,7 +30,7 @@ spring:
   data:
     redis:
       port: 6379
-      host: redis
+      host: localhost
 
 file:
   profileImagePath: C:/Temp/profileImageUpload/
