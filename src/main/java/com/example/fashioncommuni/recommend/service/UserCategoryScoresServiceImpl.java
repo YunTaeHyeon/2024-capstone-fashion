@@ -5,6 +5,9 @@ import com.example.fashioncommuni.board.repository.PostRepository;
 import com.example.fashioncommuni.recommend.domain.CategoryScores;
 import com.example.fashioncommuni.recommend.domain.UserCategoryScores;
 import com.example.fashioncommuni.recommend.repository.UserCategoryScoresRepository;
+import com.example.fashioncommuni.redis.GetSaveFromRedis;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -16,16 +19,18 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class UserCategoryScoresServiceImpl implements UserCategoryScoresService {
     private final UserCategoryScoresRepository userCategoryScoresRepository;
     private final PostRepository postRepository;
+    private final GetSaveFromRedis getSaveFromRedis;
 
     @Value("${userCategory.maxUseScores}")
     private int MAX_USE_SCORES; //추천에 사용할 최대 점수의 개수
@@ -36,11 +41,6 @@ public class UserCategoryScoresServiceImpl implements UserCategoryScoresService 
     @Value("${userCategory.filePath}")
     private String privateFilePath;
 
-
-    public UserCategoryScoresServiceImpl(UserCategoryScoresRepository userCategoryScoresRepository, PostRepository postRepository){
-        this.userCategoryScoresRepository = userCategoryScoresRepository;
-        this.postRepository = postRepository;
-    }
 
     //toDo: 카테고리 점수를 계산할 때 점수를 남겼을 때, 조회했을 때 등등 각각 다른 메서드로 구현해야 할 듯.
     @Scheduled(fixedDelay = 1000 * 60 * 60 * 24 * 7)
@@ -130,7 +130,6 @@ public class UserCategoryScoresServiceImpl implements UserCategoryScoresService 
     }
 
     @Override
-    @Transactional
     public CategoryScores viewPost(Long userId, Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("게시물을 찾을 수 없습니다.: " + postId));
@@ -162,10 +161,27 @@ public class UserCategoryScoresServiceImpl implements UserCategoryScoresService 
         categoryScores.addCategoryScores(1.0);
 
         // 사용자의 카테고리 점수를 저장합니다.
-        userCategoryScoresRepository.save(userCategoryScores);
+        //userCategoryScoresRepository.save(userCategoryScores);
+        //redis에 저장
+
+        try {
+            getSaveFromRedis.saveCategoryScoresData(categoryId, categoryScores);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
 
         return categoryScores;
 
+    }
+
+    @Scheduled(fixedDelay = 1000 * 60 * 60 * 24)
+    public void saveScoreViewPost(){
+        for (int i = 1; i < maxCategoryCount + 1; i++) {
+            Set<CategoryScores> set = getSaveFromRedis.getCategoryScoresData("{\"categoryId\":" + i + "}");
+            set.forEach(categoryScores -> {
+                userCategoryScoresRepository.save(categoryScores.getUserCategoryScores());
+            });
+        }
     }
 
     @Override
