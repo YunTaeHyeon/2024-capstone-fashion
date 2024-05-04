@@ -65,6 +65,7 @@ public class PostController {
         return "home";
     }
 
+
     /**
      * 게시글 작성
      * @return 게시글 작성 페이지
@@ -89,7 +90,7 @@ public class PostController {
         SecurityUserDetailsDto userDetails = (SecurityUserDetailsDto) authentication.getPrincipal();
         postService.savePost(postWriteRequestDTO, postImageUploadDTO, userDetails.getEmail());
 
-        return "redirect:/";
+        return "redirect:/post/home";
     }
 
     /**
@@ -122,7 +123,7 @@ public class PostController {
         SecurityUserDetailsDto userDetails = (SecurityUserDetailsDto) authentication.getPrincipal();
         PostResponseDTO result = postService.postDetail(post_id);
         if (!result.getEmail().equals(userDetails.getEmail())) {
-            return "detail";
+            return "redirect:/post/home";
         }
 
         model.addAttribute("dto", result);
@@ -155,11 +156,11 @@ public class PostController {
         SecurityUserDetailsDto userDetails = (SecurityUserDetailsDto) authentication.getPrincipal();
         PostResponseDTO result = postService.postDetail(post_id);
         if (!Objects.equals(result.getEmail() , userDetails.getEmail())) {
-            return "redirect:/";
+            return "redirect:/post/home";
         }
 
         postService.postRemove(post_id);
 
-        return "redirect:/";
+        return "redirect:/post/home";
     }
 }

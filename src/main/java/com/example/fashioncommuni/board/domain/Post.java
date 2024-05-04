@@ -25,7 +25,7 @@ public class Post extends BaseEntity {
 
     @NotEmpty(message = "내용은 필수 입력값입니다.")
     @Column(columnDefinition = "TEXT")
-    private String content; // toDo: ERD 타입명 변경하기
+    private String content;
 
     @Column(name = "category_id")
     private Long category_id;
