@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  mysqldb:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: fashion
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 1224
+    ports:
+      - "3306:3306"
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
+  backend:
+    build: ../java
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/fashion
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 1224
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysqldb
+      - redis

@@ -27,6 +27,10 @@ spring:
     suffix: .html
     mode: HTML
     cache: true
+  data:
+    redis:
+      port: 6379
+      host: redis
 
 file:
   profileImagePath: C:/Temp/profileImageUpload/
@@ -41,5 +45,6 @@ autoTraining: python3 recommendation-system/train_category_recommendation_model.
 
 server:
   port: 8080
+
 
 
