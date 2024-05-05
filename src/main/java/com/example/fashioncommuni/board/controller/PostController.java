@@ -42,7 +42,6 @@ public class PostController {
      * 홈 화면
      * @return 홈 화면
      */
-    /* //RecommendPostController로 이동
     @GetMapping("/home")
     public String home(Authentication authentication , Model model, Pageable pageable, String keyword) { // @PageableDefault(page = 0, size = 10, sort = "post_id", direction = Sort.Direction.DESC)
 
@@ -65,7 +64,7 @@ public class PostController {
 
         return "home";
     }
-    */
+
 
     /**
      * 게시글 작성
