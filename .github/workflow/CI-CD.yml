@@ -22,7 +22,7 @@ on:
 env:
   PROJECT_ID: fashioncommuni
   GCE_INSTANCE: cicd # TODO: update to instance name
-  GCE_INSTANCE_ZONE: asia-northeast-a # TODO: update to instance zone
+  GCE_INSTANCE_ZONE: us-west4-b # TODO: update to instance zone
 
 jobs:
   setup-build-publish-deploy:
