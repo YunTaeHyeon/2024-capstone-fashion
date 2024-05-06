@@ -65,6 +65,7 @@ dependencies {
 
 	// redis
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'org.python:jython-slim:2.7.3rc1' //jython
 }
 
 tasks.named('test') {

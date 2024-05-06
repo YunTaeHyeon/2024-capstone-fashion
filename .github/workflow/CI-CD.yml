@@ -17,12 +17,12 @@ name: CI & CD
 on:
   push:
     branches:
-      - master
+      - develop
 
 env:
-  PROJECT_ID: $
-  GCE_INSTANCE: mariadb-1-vm # TODO: update to instance name
-  GCE_INSTANCE_ZONE: us-central1-a # TODO: update to instance zone
+  PROJECT_ID: fashioncommuni
+  GCE_INSTANCE: cicd # TODO: update to instance name
+  GCE_INSTANCE_ZONE: asia-northeast-a # TODO: update to instance zone
 
 jobs:
   setup-build-publish-deploy:

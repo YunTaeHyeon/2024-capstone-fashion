@@ -1,9 +1,11 @@
 package com.example.fashioncommuni.recommend.autoTraining;
 
 import lombok.extern.slf4j.Slf4j;
+import org.python.util.PythonInterpreter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 @Component
 @Slf4j
@@ -18,11 +20,8 @@ public class AutoTrainingKnnModel{
         log.info("Auto training model Start");
 
         //모델 학습 코드
-        Runtime runtime = Runtime.getRuntime();
         try {
-            Process process = runtime.exec(autoTraining);
-            //toDo: 서버에 올리고 경로 변환 필요 -> 완료
-            process.waitFor();
+            Process process = new ProcessBuilder(autoTraining).start();
         } catch (Exception e) {
             e.printStackTrace();
             log.info("Auto training model Error");
