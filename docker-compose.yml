@@ -2,30 +2,29 @@ version: "3"
 
 services:
   mysqldb:
-    image: mysql
+    image: mysql:latest
     restart: always
     environment:
       MYSQL_DATABASE: fashion
-      MYSQL_USER: root
-      MYSQL_PASSWORD: 1224
+      MYSQL_ROOT_PASSWORD: 1224
     ports:
       - "3306:3306"
 
   redis:
     image: redis:latest
+    restart: always
     ports:
       - "6379:6379"
 
   backend:
     build:
-        context: .
-        dockerfile: Dockerfile
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/fashion
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: 1224
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
+    volumes:
+      - ./recommendation-system:/recommendation-system
     depends_on:
       - mysqldb
       - redis
+
