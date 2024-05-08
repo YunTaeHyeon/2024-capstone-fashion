@@ -61,8 +61,12 @@ jobs:
 
       # 3. 최신 이미지를 컨테이너화하여 실행시킵니다
       - name: docker run new container
-        run: sudo docker run --name capstone --rm -d -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/capstone
-
+        env: 
+          COMPOSE: "/home/32190165/2024-capstone-fashion/2024-capstone-fashion"
+        run: |
+          sudo docker-compose -f $COMPOSE down --rmi all
+          sudo docker-compose -f $COMPOSE up -d
+    
       # 4. 미사용 이미지를 정리합니다
       - name: delete old docker image
         run: sudo docker system prune -f
