@@ -72,6 +72,9 @@ dependencies {
 
 	// mongodb
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+
+	implementation 'com.google.guava:guava:31.0.1-jre'
+
 }
 
 tasks.named('test') {
