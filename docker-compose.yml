@@ -4,6 +4,7 @@ services:
   mysqldb:
     image: mysql:latest
     restart: always
+    hostname: mysqldb
     environment:
       MYSQL_DATABASE: fashion
       MYSQL_ROOT_PASSWORD: 1224
@@ -27,4 +28,9 @@ services:
     depends_on:
       - mysqldb
       - redis
-
+    command:
+      - bash
+      - -c
+      - |
+        ./wait-for-it.sh mysqldb:3306 -s -t 100
+        java -jar /app.jar
