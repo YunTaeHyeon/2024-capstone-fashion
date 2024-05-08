@@ -62,7 +62,7 @@ jobs:
       # 3. 최신 이미지를 컨테이너화하여 실행시킵니다
       - name: docker run new container
         env: 
-          COMPOSE: "/home/32190165/2024-capstone-fashion/2024-capstone-fashion"
+          COMPOSE: "/home/32190165/2024-capstone-fashion/docker-compose.yml"
         run: |
           sudo docker-compose -f $COMPOSE down --rmi all
           sudo docker-compose -f $COMPOSE up -d
