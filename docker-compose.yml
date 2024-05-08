@@ -4,6 +4,7 @@ services:
   mysqldb:
     image: mysql:latest
     restart: always
+    hostname: mysqldb
     environment:
       MYSQL_DATABASE: fashion
       MYSQL_ROOT_PASSWORD: 1224
@@ -15,20 +16,6 @@ services:
     restart: always
     ports:
       - "6379:6379"
-  kafka:
-    image: bitnami/kafka
-    container_name: kafka
-    ports:
-      - "9092:9092"
-    environment:
-      KAFKA_ADVERTISED_HOST_NAME: localhost
-      KAFKA_CREATE_TOPICS: "Topic:1:1"
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-  zookeeper:
-    image: bitnami/zookeeper
-    container_name: zookeeper
-    ports:
-      - "2181:2181"
 
   backend:
     build:
@@ -41,7 +28,9 @@ services:
     depends_on:
       - mysqldb
       - redis
-      - zookeeper
-      - kafka
-
-
+    command:
+      - bash
+      - -c
+      - |
+        ./wait-for-it.sh mysqldb:3306 -s -t 100
+        java -jar /app.jar
