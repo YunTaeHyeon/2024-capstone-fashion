@@ -21,20 +21,27 @@ services:
     container_name: zookeeper
     ports:
       - "2181:2181"
+    environment:
+      - ZOO_SERVER_ID=1
+      - ZOO_SERVERS=zookeeper:2888:3888::1
+      - ALLOW_ANONYMOUS_LOGIN=yes
 
   kafka:
     image: bitnami/kafka
     container_name: kafka
     ports:
       - "9092:9092"
-    environment:
-      KAFKA_ADVERTISED_HOST_NAME: localhost
-      KAFKA_CREATE_TOPICS: "Topic:1:1"
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-    volumes:
-      - /var/run/docker.sock
+      - "8083:8083"
     depends_on:
       - zookeeper
+    environment:
+      - KAFKA_BROKER_ID=1    # Kafka 브로커 ID
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092    # Kafka 브로커 리스너 설정 (Kafka 내부에서 접속할 정보)
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://192.168.255.255:9092    # 외부에서 접근 가능한 Kafka 브로커 주소
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181  #ZooKeeper의 주소를 KAFKA_CFG_ZOOKEEPER_CONNECT 환경 변수에 설정
+      - ALLOW_PLAINTEXT_LISTENER=yes    # PLAINTEXT 리스너 허용 설정 (yes : 보안 없이 접속 가능)
+      - KAFKA_ENABLE_KRAFT=no    # Kafka KRaft 활성화 여부 설정 (no : Zookeeper 사용/ yes : Zookeeper 사용x)
+      - KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR=1
 
   backend:
     build:
