@@ -1,62 +1,47 @@
 package com.example.fashioncommuni.chat.domain;
 
 import com.example.fashioncommuni.member.domain.User;
-import com.example.fashioncommuni.member.dto.AuditingFields;
-import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
-import java.util.Objects;
+import java.io.Serializable;
 
-@ToString(callSuper = true)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Entity
-public class Message extends AuditingFields {
+@ToString
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class Message implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "message_id")
-    private Long id;                    // pk
+    private Long chatRoomId;
 
-    @ToString.Exclude
-    @JoinColumn(name = "user_id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User user;                // 유저
+    private Long senderId;
 
-    @ToString.Exclude
-    @JoinColumn(name = "chatroom_id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private ChatRoom chatRoom;          // 채팅방
+    private String content;
 
-    @Column(name = "text")
-    private String text;                // 채팅내용
+    private String createdAt;
+    private int readCount;
 
-    // private 생성자 선언 -> factory method 생성을 위함
-    private Message(User user, ChatRoom chatRoom, String text) {
-        this.user = user;
-        this.chatRoom = chatRoom;
-        this.text = text;
+    private ChatType chatType; // 채팅 타입 필드 추가('TEXT', 'IMAGE')
+
+    private String imageName; // 이미지 파일 이름
+    private String imageUrl; // 이미지 URL
+
+    public void prepareMessageForSending(User senderId, String createdAt, int readCount) {
+        this.senderId = senderId.getId();
+        this.createdAt = createdAt;
+        this.readCount = readCount;
     }
 
-    // 생성자 factory method of 선언
-    public static Message of(User user, ChatRoom chatRoom, String text) {
-        return new Message(user, chatRoom, text);
+    public ChatMessage convertToChatMessage() {
+        return ChatMessage.builder()
+                .chatRoomId(chatRoomId)
+                .senderId(senderId)
+                .content(content)
+                .createdAt(createdAt)
+                .readCount(readCount)
+                .chatType(chatType)
+                .imageName(imageName)
+                .imageUrl(imageUrl)
+                .build();
     }
-
-    // equals & hashCode 최적화
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Message message)) return false;
-        return this.id != null && Objects.equals(getId(), message.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId());
-    }
-
 }
