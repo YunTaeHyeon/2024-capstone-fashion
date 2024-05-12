@@ -31,6 +31,9 @@ spring:
     redis:
       host: redis
       port: 6379
+  kafka:
+    bootstrap-servers: 34.47.98.129:9094
+
 
 file:
   profileImagePath: C:/Temp/profileImageUpload/
@@ -45,5 +48,3 @@ autoTraining: recommendation-system/dist/train.exe
 
 server:
   port: 8080
-kafka:
-  server: 192.168.255.255:9092
