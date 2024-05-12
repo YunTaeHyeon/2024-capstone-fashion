@@ -3,8 +3,8 @@ package com.example.fashioncommuni.config.kafka;
 import com.example.fashioncommuni.chat.domain.Message;
 import com.example.fashioncommuni.chat.domain.Notification;
 import com.google.common.collect.ImmutableMap;
-import lombok.Value;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
@@ -20,7 +20,7 @@ import java.util.Map;
 @Configuration
 public class ProducerConfig {
 
-    //@Value("${kafka.server}") - 추후 설정추가
+    @Value("${kafka.server}")
     private String kafkaServer;
 
     // Kafka ProducerFactory를 생성하는 Bean 메서드
