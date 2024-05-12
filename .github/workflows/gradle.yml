@@ -61,5 +61,7 @@ jobs:
 
       # 2. docker compose up 합니다.    
       - name: docker compose up
+        env: 
+          COMPOSE: "/home/32190165/2024-capstone-fashion/docker-compose.yml"
         run: sudo docker-compose -f $COMPOSE up -d
 
