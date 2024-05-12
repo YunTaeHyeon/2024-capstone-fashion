@@ -20,7 +20,7 @@ import java.util.Map;
 @Configuration
 public class ProducerConfig {
 
-    @Value("${kafka.server}")
+    @Value("${spring.kafka.bootstrap-servers}")
     private String kafkaServer;
 
     // Kafka ProducerFactory를 생성하는 Bean 메서드
