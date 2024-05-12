@@ -30,4 +30,4 @@ public class AutoTrainingKnnModel{
         log.info("Auto training model End");
     }
 
-}
+}//
