@@ -18,9 +18,12 @@ services:
       - "6379:6379"
 
   backend:
+    container_name: capstone
+    image: capstone:latest
     build:
       context: .
       dockerfile: Dockerfile
+    restart: on-failure
     ports:
       - "8080:8080"
     volumes:
