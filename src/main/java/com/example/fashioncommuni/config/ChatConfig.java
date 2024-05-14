@@ -31,9 +31,9 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         // 구독하는 클라이언트에게 메시지 전달 엔드포인트를 더 추가해서 구독을 여러개 할수도 있다.
-        registry.enableSimpleBroker("/subscribe");
+        registry.enableSimpleBroker("/sub");
         // 클라이언트의 전송요청을 처리
-        registry.setApplicationDestinationPrefixes("/publish");
+        registry.setApplicationDestinationPrefixes("/pub");
 
     }
 
