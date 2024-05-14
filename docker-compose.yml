@@ -34,9 +34,11 @@ services:
       - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
 
   backend:
+    image: capstone:latest
     build:
       context: .
       dockerfile: Dockerfile
+    restart: on-failure
     ports:
       - "8080:8080"
     volumes:
