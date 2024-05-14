@@ -33,6 +33,8 @@ spring:
       port: 6379
   kafka:
     bootstrap-servers: 34.47.98.129:9094
+    consumer:
+      topic: chatting
 
 
 file:
