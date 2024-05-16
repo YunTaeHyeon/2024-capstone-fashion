@@ -26,11 +26,6 @@ public class Message implements Serializable {
     private String imageName; // 이미지 파일 이름
     private String imageUrl; // 이미지 URL
 
-    public void prepareMessageForSending(User senderId, String createdAt, int readCount) {
-        this.senderId = senderId.getId();
-        this.createdAt = createdAt;
-        this.readCount = readCount;
-    }
 
     public ChatMessage convertToChatMessage() {
         return ChatMessage.builder()
@@ -38,9 +33,7 @@ public class Message implements Serializable {
                 .senderId(senderId)
                 .content(content)
                 .createdAt(createdAt)
-                .readCount(readCount)
                 .chatType(chatType)
-                .imageName(imageName)
                 .imageUrl(imageUrl)
                 .build();
     }

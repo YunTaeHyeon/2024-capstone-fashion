@@ -24,8 +24,8 @@ public class ListenerConfig {
     @Value("${spring.kafka.bootstrap-servers}")
     private String kafkaServer;
 
-    //@Value("${kafka.consumer.id}")
-    private String kafkaConsumerGroupId;
+    @Value("${kafka.consumer.topic}")
+    private String topic;
 
     @Bean
     ConcurrentKafkaListenerContainerFactory<String, Message> kafkaChatContainerFactory() {
@@ -46,7 +46,7 @@ public class ListenerConfig {
         Map<String, Object> consumerConfigurations =
                 ImmutableMap.<String, Object>builder()
                         .put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaServer)
-                        .put(ConsumerConfig.GROUP_ID_CONFIG, kafkaConsumerGroupId)
+                        .put(ConsumerConfig.GROUP_ID_CONFIG, topic)
                         .put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class)
                         .put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, deserializer)
                         .put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest")
@@ -76,7 +76,7 @@ public class ListenerConfig {
         Map<String, Object> consumerConfigurations =
                 ImmutableMap.<String, Object>builder()
                         .put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaServer)
-                        .put(ConsumerConfig.GROUP_ID_CONFIG, kafkaConsumerGroupId)
+                        .put(ConsumerConfig.GROUP_ID_CONFIG, topic)
                         .put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class)
                         .put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, deserializer)
                         .put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest")
