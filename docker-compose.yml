@@ -46,6 +46,7 @@ services:
       - "8080:8080"
     volumes:
       - ./recommendation-system:/recommendation-system
+      - ./temp:/temp
     depends_on:
       - mysqldb
       - redis
