@@ -24,7 +24,7 @@ public class ListenerConfig {
     @Value("${spring.kafka.bootstrap-servers}")
     private String kafkaServer;
 
-    @Value("${kafka.consumer.topic}")
+    @Value("${spring.kafka.consumer.topic}")
     private String topic;
 
     @Bean
