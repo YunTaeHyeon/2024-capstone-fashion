@@ -10,9 +10,9 @@ public class MvcConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/profileImages/**")
-                .addResourceLocations("file:/C:/Temp/profileImageUpload/");
+                .addResourceLocations("./Temp/profileImageUpload/");
 
         registry.addResourceHandler("/postImages/**")
-                .addResourceLocations("file:/C:/Temp/postImageUpload/");
+                .addResourceLocations("./Temp/postImageUpload/");
     }
 }
