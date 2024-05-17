@@ -39,9 +39,11 @@ services:
     ports:
       - "27017:27017"
   backend:
+    image: capstone:latest
     build:
       context: .
       dockerfile: Dockerfile
+    restart: on-failure
     ports:
       - "8080:8080"
     volumes:
