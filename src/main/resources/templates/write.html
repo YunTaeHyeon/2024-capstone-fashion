@@ -24,9 +24,20 @@
 <!--                <label for="files">이미지 업로드</label>-->
 <!--            </div>-->
             <div class="form-floating mb-3">
-                <input type="number" name="category_id" class="form-control" id="category_id" required>
+                <select name="category_id" class="form-control" id="category_id" required>
+                    <option value="1">athleisure</option>
+                    <option value="2">punk</option>
+                    <option value="3">grunge</option>
+                    <option value="4">hippie</option>
+                    <option value="5">military</option>
+                    <option value="6">minimal</option>
+                    <option value="7">normcore</option>
+                    <option value="8">preppy</option>
+                    <option value="9">street</option>
+                </select>
                 <label for="category_id">카테고리</label>
             </div>
+
         </div>
         <button type="submit" class="btn btn-primary">등록</button>
     </form>
