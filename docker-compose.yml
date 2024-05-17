@@ -41,11 +41,12 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: 1234
+
   backend:
-    image: capstone:latest
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: yuntaehyeon/capstone
+    #build:
+    #  context: .
+    #  dockerfile: Dockerfile
     restart: on-failure
     ports:
       - "8080:8080"
@@ -63,4 +64,4 @@ services:
       - |
         ./wait-for-it.sh mysqldb:3306 -s -t 100
         java -jar /app.jar
-  
+
