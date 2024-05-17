@@ -51,7 +51,6 @@ jobs:
       run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/capstone
     
   deploy: 
-  
     runs-on: ubuntu-latest
     permissions: write-all
     needs: build
@@ -70,8 +69,17 @@ jobs:
         strip_components: 3
         overwrite: true
         debug: true
-
-
+  
+    - name: Verify docker-compose.yml on remote
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{secrets.GCP_HOST}}
+        username: ${{secrets.GCP_USERNAME}}
+        key: ${{secrets.GCP_PRIVATEKEY}}
+        script: |
+          ls -al /home/${{secrets.GCP_USERNAME}}/docker-compose.yml
+          cat /home/${{secrets.GCP_USERNAME}}/docker-compose.yml
+  
     - name: Deploy to Instance
       uses: appleboy/ssh-action@master     #가장 최신 버젼 appleboy 사용
       with:
@@ -83,5 +91,6 @@ jobs:
           sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/capstone
           sudo docker rm -f $(docker ps -qa) 2>/dev/null || true
           cd /home/${{secrets.GCP_USERNAME}}
+          ls -al
           sudo docker-compose up -d
           sudo docker image prune -f
