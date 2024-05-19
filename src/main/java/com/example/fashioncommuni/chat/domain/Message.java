@@ -12,9 +12,9 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class Message implements Serializable {
 
-    private Long chatRoomId;
+    private String chatRoomId;
 
-    private Long senderId;
+    private String senderId;
 
     private String content;
 
@@ -26,15 +26,15 @@ public class Message implements Serializable {
     private String imageName; // 이미지 파일 이름
     private String imageUrl; // 이미지 URL
 
-
-    public ChatMessage convertToChatMessage() {
-        return ChatMessage.builder()
-                .chatRoomId(chatRoomId)
-                .senderId(senderId)
-                .content(content)
-                .createdAt(createdAt)
-                .chatType(chatType)
-                .imageUrl(imageUrl)
-                .build();
+    @Builder
+    private Message(String chatRoomId, User sender, String content, String createdAt, int readCount, ChatType chatType, String imageName, String imageUrl) {
+        this.chatRoomId = chatRoomId;
+        this.senderId = sender.getLoginId();
+        this.content = content;
+        this.createdAt = createdAt;
+        this.readCount = readCount;
+        this.chatType = chatType;
+        this.imageName = imageName;
+        this.imageUrl = imageUrl;
     }
 }
