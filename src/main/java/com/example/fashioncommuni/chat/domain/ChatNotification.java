@@ -24,14 +24,14 @@ public class ChatNotification {
     private String recipientId;
 
     @Column(name = "chat_room_id", nullable = false)
-    private Long chatRoomId;
+    private String chatRoomId;
 
     @Column(name = "content", nullable = false)
     private String content;
 
 
 
-    public ChatNotification(User senderId, User recipientId, Long chatRoomId, String content) {
+    public ChatNotification(User senderId, User recipientId, String chatRoomId, String content) {
         this.senderId = senderId;
         this.recipientId = recipientId.getLoginId();
         this.chatRoomId = chatRoomId;
