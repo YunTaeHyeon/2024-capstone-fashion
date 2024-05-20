@@ -34,6 +34,21 @@
                     </th:block>
                 </ul>
                 <form th:action="@{/post/home}" method="get" class="d-flex">
+                    <select class="form-control me-sm-2" name="category_id">
+                        <option value="">전체</option>
+                        <option value="1">athleisure</option>
+                        <option value="2">punk</option>
+                        <option value="3">grunge</option>
+                        <option value="4">hippie</option>
+                        <option value="5">military</option>
+                        <option value="6">minimal</option>
+                        <option value="7">normcore</option>
+                        <option value="8">preppy</option>
+                        <option value="9">street</option>
+                    </select>
+                    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+                </form>
+                <form th:action="@{/post/home}" method="get" class="d-flex">
                     <input class="form-control me-sm-2" type="text" placeholder="Search" name="keyword">
                     <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
                 </form>

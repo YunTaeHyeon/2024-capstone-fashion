@@ -13,6 +13,7 @@
         <tr>
             <th class="col-md-1">번호</th>
             <th class="col-md-1">제목</th>
+            <th class="col-md-1">카테고리</th>
             <th class="col-md-1">작성자</th>
             <th class="col-md-1">작성일</th>
         </tr>
@@ -21,6 +22,7 @@
         <tr th:each="post : ${postList}">
             <td th:text="${post.post_id}"></td>
             <td><a th:href="@{/post/{post_id}(post_id=${post.post_id})}" th:text="${post.title}"></a></td>
+            <td th:text="${post.category_id}"></td>
             <td th:text="${post.email}"></td>
             <td th:text="${post.createdAt} ? ${#temporals.format(post.createdAt,'yyyy-MM-dd HH:mm')} : ${post.createdAt}"></td>
         </tr>

@@ -39,11 +39,16 @@ public class PostController {
     private final UserCategoryScoresService userCategoryScoresService;
 
     /**
-     * 홈 화면
-     * @return 홈 화면
+     * 메인 페이지
+     * @param authentication 유저 정보
+     * @param model
+     * @param pageable 페이징 처리
+     * @param keyword 검색어
+     * @param category_id 카테고리 ID
+     * @return 메인 페이지
      */
     @GetMapping("/home")
-    public String home(Authentication authentication , Model model, Pageable pageable, String keyword) { // @PageableDefault(page = 0, size = 10, sort = "post_id", direction = Sort.Direction.DESC)
+    public String home(Authentication authentication , Model model, Pageable pageable, String keyword, Long category_id) { // @PageableDefault(page = 0, size = 10, sort = "post_id", direction = Sort.Direction.DESC)
 
         SecurityUserDetailsDto userDetailsDto = (SecurityUserDetailsDto) authentication.getPrincipal();
         String authLoginId = userDetailsDto.getUsername();
@@ -58,6 +63,8 @@ public class PostController {
 
         if(keyword == null) {
             model.addAttribute("postList", postService.postList(pageable));
+        } else if (category_id != null) {
+            model.addAttribute("postList", postService.searchingPostCategory(category_id, pageable));
         } else {
             model.addAttribute("postList", postService.searchingPostList(keyword, pageable));
         }
