@@ -126,4 +126,10 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findById(post_id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
         postRepository.delete(post);
     }
+
+    @Override
+    public Page<PostResponseDTO> searchingPostCategory(Long category_id, Pageable pageable) {
+        Page<Post> posts = postRepository.findByCategoryId(category_id, pageable);
+        return getPostResponseDTOS(pageable, posts);
+    }
 }
