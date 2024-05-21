@@ -4,7 +4,9 @@ import com.example.fashioncommuni.board.domain.Post;
 import com.example.fashioncommuni.board.repository.PostRepository;
 import com.example.fashioncommuni.recommend.domain.CategoryScores;
 import com.example.fashioncommuni.recommend.domain.UserCategoryScores;
+import com.example.fashioncommuni.recommend.domain.UserLookedPost;
 import com.example.fashioncommuni.recommend.repository.UserCategoryScoresRepository;
+import com.example.fashioncommuni.recommend.repository.UserLookedPostRepository;
 import com.example.fashioncommuni.redis.GetSaveFromRedis;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +33,7 @@ public class UserCategoryScoresServiceImpl implements UserCategoryScoresService 
     private final UserCategoryScoresRepository userCategoryScoresRepository;
     private final PostRepository postRepository;
     private final GetSaveFromRedis getSaveFromRedis;
+    private final UserLookedPostRepository userLookedPostRepository;
 
     @Value("${userCategory.maxUseScores}")
     private int MAX_USE_SCORES; //추천에 사용할 최대 점수의 개수
@@ -169,6 +172,19 @@ public class UserCategoryScoresServiceImpl implements UserCategoryScoresService 
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
+
+        // 사용자가 본 게시물을 저장합니다.
+        //toDo: 개선 사항 있음
+        UserLookedPost userLookedPost = userLookedPostRepository.findByUserId(userId)
+                .orElseGet(() -> {
+                    UserLookedPost newUserLookedPost = UserLookedPost.builder()
+                            .userId(userId)
+                            .postId(new ArrayList<>())
+                            .build();
+                    return userLookedPostRepository.save(newUserLookedPost);
+                });
+
+        userLookedPost.getPostId().add(postId);
 
         return categoryScores;
 
