@@ -28,7 +28,7 @@ if __name__ == "__main__":
     # 추천 함수 호출
     similar_people = category_recommend(user_data)
     
-    print(sys.argv[1])
+    print(similar_people)
 
 #이후 스프링에서 similar_people을 검색 -> 이 사람들의 행적을 분석(같은 카테고리의 취향을 가졌다면 비슷한 게시물을 볼 것이기 떄문)
 # 이 추천으로도 보여주고 롱테일 문제를 해결하기 위해 일부 게시물은 랜덤으로 보여줄 수도 있음
