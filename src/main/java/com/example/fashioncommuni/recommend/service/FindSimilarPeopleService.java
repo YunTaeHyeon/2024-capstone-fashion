@@ -1,11 +1,15 @@
 package com.example.fashioncommuni.recommend.service;
 
+import com.example.fashioncommuni.board.DTO.post.PostResponseDTO;
+import com.example.fashioncommuni.board.domain.Post;
 import com.example.fashioncommuni.recommend.domain.CategoryScores;
 import com.example.fashioncommuni.recommend.domain.UserCategoryScores;
 import com.example.fashioncommuni.recommend.domain.UserLookedPost;
 import com.example.fashioncommuni.recommend.repository.UserCategoryScoresRepository;
 import com.example.fashioncommuni.recommend.repository.UserLookedPostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -64,4 +68,5 @@ public class FindSimilarPeopleService {
         }
         return recommendPostIds;
     }
+
 }
