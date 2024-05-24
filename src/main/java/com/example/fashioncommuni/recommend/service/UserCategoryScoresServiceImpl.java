@@ -138,7 +138,7 @@ public class UserCategoryScoresServiceImpl implements UserCategoryScoresService 
                 .orElseThrow(() -> new IllegalArgumentException("게시물을 찾을 수 없습니다.: " + postId));
 
         // 게시물의 카테고리를 가져옵니다.
-        String categoryId = post.getCategory_id().toString();
+        String categoryId = post.getCategoryId().toString();
 
         // 사용자의 카테고리 점수를 가져옵니다.
         UserCategoryScores userCategoryScores = userCategoryScoresRepository.findByUserId(userId)
@@ -175,16 +175,24 @@ public class UserCategoryScoresServiceImpl implements UserCategoryScoresService 
 
         // 사용자가 본 게시물을 저장합니다.
         //toDo: 개선 사항 있음
-        UserLookedPost userLookedPost = userLookedPostRepository.findByUserId(userId)
-                .orElseGet(() -> {
+        userLookedPostRepository.findByUserId(userId).orElseGet(() -> {
                     UserLookedPost newUserLookedPost = UserLookedPost.builder()
                             .userId(userId)
-                            .postId(new ArrayList<>())
+                            .post(post)
                             .build();
                     return userLookedPostRepository.save(newUserLookedPost);
                 });
+        //userId로 검색했을 때 없으면 새로 생성하고 있으면 그대로 반환
 
-        userLookedPost.getPostId().add(postId);
+        userLookedPostRepository.findByPost(post).orElseGet(() -> {
+            UserLookedPost newUserLookedPost = UserLookedPost.builder()
+                    .userId(userId)
+                    .post(post)
+                    .build();
+            return userLookedPostRepository.save(newUserLookedPost);
+        });
+        //postId로 검색했을 때 없으면 새로 생성하고 있으면 그대로 반환
+
 
         return categoryScores;
 

@@ -43,11 +43,11 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: 1234
 
   backend:
-    image: yuntaehyeon/capstone
-    #build:
-    #  context: .
-    #  dockerfile: Dockerfile
-    restart: on-failure
+    #image: yuntaehyeon/capstone
+    build:
+      context: .
+      dockerfile: Dockerfile
+    #restart: on-failure
     ports:
       - "8080:8080"
     volumes:

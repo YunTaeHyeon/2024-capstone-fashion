@@ -52,17 +52,15 @@ public class FindSimilarPeopleService {
         List<Long> recommendUserIds = getSimilarUserIds(userId);
 
         for (Long recommendUserId : recommendUserIds){
-            UserLookedPost recommendUser = userLookedPostRepository.findByUserId(recommendUserId)
-                    .orElseThrow(() -> new IllegalArgumentException("User not found"));
+            List<UserLookedPost> recommendUser = userLookedPostRepository.findAllByUserId(recommendUserId);
+            List<UserLookedPost> userLookedPost = userLookedPostRepository.findAllByUserId(userId);
 
-            //recommendUser이 조회한 게시물에서 userId가 조회하지 않은 게시물을 추천
-            for (Long postId : recommendUser.getPostId()){
-                Optional<UserLookedPost> userLookedPost = userLookedPostRepository.findByUserId(userId);
-                if (userLookedPost.isPresent() && !userLookedPost.get().getPostId().contains(postId)){
-                    recommendPostIds.add(postId);
+            //recommendUser의 Post와 userLookedPost의 Post를 비교하여 recommendPostIds에 추가
+            for (UserLookedPost recommendPost : recommendUser){
+                if (!userLookedPost.contains(recommendPost)){
+                    recommendPostIds.add(recommendPost.getPost().getPost_id());
                 }
             }
-
         }
         return recommendPostIds;
     }

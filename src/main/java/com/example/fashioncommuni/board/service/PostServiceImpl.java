@@ -46,7 +46,7 @@ public class PostServiceImpl implements PostService {
         Post result = Post.builder()
                 .title(postWriteRequestDTO.getTitle())
                 .content(postWriteRequestDTO.getContent())
-                .category_id(postWriteRequestDTO.getCategory_id())
+                .categoryId(postWriteRequestDTO.getCategoryId())
                 .user(user)
                 .build();
 
@@ -129,7 +129,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Page<PostResponseDTO> searchingPostCategory(Long category_id, Pageable pageable) {
-        Page<Post> posts = postRepository.findByCategory_id(category_id, pageable);
+        Page<Post> posts = postRepository.findByCategoryId(category_id, pageable);
         return getPostResponseDTOS(pageable, posts);
     }
 }
