@@ -37,7 +37,7 @@ public class ChatService {
     public List<ChatMessage> getChatMessagesByRoomId(String chatRoomId) {
         return chatMessageRepository.findByChatRoomId(chatRoomId);
     }
-    public ChatRoom createChatRoom(String chatRoomId, String chatRoomName) {
+    public ChatRoom createChatRoom(String chatRoomName) {
         ChatRoom chatRoom = ChatRoom.builder()
                 .chatRoomId(UUID.randomUUID().toString())
                 .chatRoomName(chatRoomName)
