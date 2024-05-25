@@ -32,7 +32,6 @@
                 <span th:case="7">normcore</span>
                 <span th:case="8">preppy</span>
                 <span th:case="9">street</span>
-                <span th:case="*">Unknown</span> <!-- 기본값 -->
             </td>
             <td th:text="${post.email}"></td>
             <td th:text="${post.createdAt} ? ${#temporals.format(post.createdAt,'yyyy-MM-dd HH:mm')} : ${post.createdAt}"></td>
