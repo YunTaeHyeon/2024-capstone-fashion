@@ -27,19 +27,20 @@ public class FindSimilarPeopleService {
                 ()-> new IllegalArgumentException("User not found"));
 
         try {
-            ProcessBuilder processBuilder = new ProcessBuilder("python3", "recommend.py", userCategoryScores.getScores().toString());
+            ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c", "cd recommendation-system && python3 recommend.py " + userCategoryScores.getScores().toString());
             processBuilder.redirectErrorStream(true);
             Process process = processBuilder.start();
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
             while ((line = reader.readLine()) != null) {
-                // Assuming the output is comma separated IDs
-                String[] ids = line.split(",");
-                for (String id : ids) {
-                    similarUserIds.add(Long.parseLong(id.trim()));
+                // Assuming the output is a list of lists, each representing a category
+                String[] categoryValues = line.substring(2, line.length() - 2).split(" ");
+                for (String value : categoryValues) {
+                    similarUserIds.add(Long.parseLong(value.trim()));
                 }
             }
+
             process.waitFor();
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
