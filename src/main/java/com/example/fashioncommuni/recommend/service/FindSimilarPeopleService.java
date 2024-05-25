@@ -59,7 +59,7 @@ public class FindSimilarPeopleService {
             //recommendUser의 Post와 userLookedPost의 Post를 비교하여 recommendPostIds에 추가
             for (UserLookedPost recommendPost : recommendUser){
                 if (!userLookedPost.contains(recommendPost)){
-                    recommendPostIds.add(recommendPost.getPost().getPost_id());
+                    recommendPostIds.add(recommendPost.getPost().getPostId());
                 }
             }
         }

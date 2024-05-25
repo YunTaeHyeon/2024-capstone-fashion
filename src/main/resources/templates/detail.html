@@ -45,15 +45,15 @@
                 </div>
                 <a href="/static" class="btn btn-outline-secondary">list</a>
                 <th:block th:if="${dto.getEmail() == #authentication.principal.email}">
-                    <a th:href="@{/post/{post_id}/update(post_id=${post_id})}" class="btn btn-outline-warning">modify</a>
-                    <a th:href="@{/post/{post_id}/remove(post_id=${post_id})}" class="btn btn-outline-danger" onclick="return confirm('삭제하시겠습니까?')">remove</a>
+                    <a th:href="@{/post/{postId}/update(postId=${postId})}" class="btn btn-outline-warning">modify</a>
+                    <a th:href="@{/post/{postId}/remove(postId=${postId})}" class="btn btn-outline-danger" onclick="return confirm('삭제하시겠습니까?')">remove</a>
                 </th:block>
             </form>
             <!-- Comments Form -->
             <div class="card my-4">
                 <h5 class="card-header">Leave a Comment:</h5>
                 <div class="card-body">
-                    <form th:action="@{/post/{post_id}/comment(post_id=${post_id})}" th:method="post">
+                    <form th:action="@{/post/{postId}/comment(postId=${postId})}" th:method="post">
                         <div class="form-group" style="margin-bottom: 10px;">
                             <input type="hidden" name="idx" th:value="${idx}" />
                             <textarea name="content" class="form-control" rows="3"></textarea>
@@ -80,7 +80,7 @@
                                 </div>
                                 <div th:if="${comment.getEmail() == #authentication.principal.email}">
                                     <button class="btn btn-sm btn-outline-warning" th:attr="data-id=${comment.getComment_id()}" onclick="editComment(this)">Edit</button>
-                                    <a th:href="@{/post/{post_id}/comment/{comment_id}/remove(post_id=${post_id}, comment_id=${comment.getComment_id()})}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this comment?')">Delete</a>
+                                    <a th:href="@{/post/{postId}/comment/{comment_id}/remove(postId=${postId}, comment_id=${comment.getComment_id()})}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this comment?')">Delete</a>
                                 </div>
                             </div>
                         </div>

@@ -24,10 +24,10 @@ public interface PostService {
 
     /**
      * 게시글 상세조회
-     * @param post_id 게시글 ID
+     * @param postId 게시글 ID
      * @return 게시글 정보
      */
-    PostResponseDTO postDetail(Long post_id);
+    PostResponseDTO postDetail(Long postId);
 
     /**
      * 게시글 전체조회
@@ -46,17 +46,17 @@ public interface PostService {
 
     /**
      * 게시글 수정
-     * @param post_id 게시글 ID
+     * @param postId 게시글 ID
      * @param postWriteRequestDTO 수정 정보
      * @return 게시글 ID
      */
-    Long postUpdate(Long post_id, PostWriteRequestDTO postWriteRequestDTO);
+    Long postUpdate(Long postId, PostWriteRequestDTO postWriteRequestDTO);
 
     /**
      * 게시글 삭제
-     * @param post_id 게시글 ID
+     * @param postId 게시글 ID
      */
-    void postRemove(Long post_id);
+    void postRemove(Long postId);
 
     /**
      * 카테고리별 게시글 조회

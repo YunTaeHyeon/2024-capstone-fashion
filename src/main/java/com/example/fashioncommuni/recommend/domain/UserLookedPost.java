@@ -22,7 +22,7 @@ public class UserLookedPost {
     private Long userId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "postId")
     private Post post;
 
     @Builder
