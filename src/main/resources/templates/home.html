@@ -22,7 +22,18 @@
         <tr th:each="post : ${postList}">
             <td th:text="${post.post_id}"></td>
             <td><a th:href="@{/post/{post_id}(post_id=${post.post_id})}" th:text="${post.title}"></a></td>
-            <td th:text="${post.category_id}"></td>
+            <td th:switch="${post.categoryId}">
+                <span th:case="1">athleisure</span>
+                <span th:case="2">punk</span>
+                <span th:case="3">grunge</span>
+                <span th:case="4">hippie</span>
+                <span th:case="5">military</span>
+                <span th:case="6">minimal</span>
+                <span th:case="7">normcore</span>
+                <span th:case="8">preppy</span>
+                <span th:case="9">street</span>
+                <span th:case="*">Unknown</span> <!-- 기본값 -->
+            </td>
             <td th:text="${post.email}"></td>
             <td th:text="${post.createdAt} ? ${#temporals.format(post.createdAt,'yyyy-MM-dd HH:mm')} : ${post.createdAt}"></td>
         </tr>
