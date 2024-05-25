@@ -31,11 +31,14 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/logout">로그아웃</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/post/recommend">오늘의 추천</a>
+                        </li>
                     </th:block>
                 </ul>
                 <form th:action="@{/post/home}" method="get" class="d-flex">
-                    <select class="form-control me-sm-2" name="category_id">
-                        <option value="">전체</option>
+                    <select class="form-control me-sm-2" name="categoryId">
+                        <option value="">카테고리검색</option>
                         <option value="1">athleisure</option>
                         <option value="2">punk</option>
                         <option value="3">grunge</option>
