@@ -17,9 +17,9 @@ import java.util.List;
 public class Post extends BaseEntity {
 
     @Id
-    @Column(name = "post_id")
+    @Column(name = "postId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long post_id;
+    private Long postId;
 
     @NotEmpty(message = "제목은 필수 입력값입니다.")
     private String title;

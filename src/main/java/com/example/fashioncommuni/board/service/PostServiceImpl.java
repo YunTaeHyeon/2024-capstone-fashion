@@ -74,12 +74,12 @@ public class PostServiceImpl implements PostService {
             }
         }
 
-        return result.getPost_id();
+        return result.getPostId();
     }
 
     @Override
-    public PostResponseDTO postDetail(Long post_id) {
-        Post post = postRepository.findById(post_id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
+    public PostResponseDTO postDetail(Long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
         PostResponseDTO result = PostResponseDTO.builder()
                 .post(post)
                 .build();
@@ -113,17 +113,17 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Long postUpdate(Long post_id, PostWriteRequestDTO postWriteRequestDTO) {
-        Post post = postRepository.findById(post_id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
+    public Long postUpdate(Long postId, PostWriteRequestDTO postWriteRequestDTO) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
         post.update(postWriteRequestDTO.getTitle(), postWriteRequestDTO.getContent());
         postRepository.save(post);
 
-        return post.getPost_id();
+        return post.getPostId();
     }
 
     @Override
-    public void postRemove(Long post_id) {
-        Post post = postRepository.findById(post_id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
+    public void postRemove(Long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
         postRepository.delete(post);
     }
 

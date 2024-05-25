@@ -21,6 +21,6 @@ public class PostImage {
     private String url;
 
     @ManyToOne
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "postId")
     private Post post;
 }

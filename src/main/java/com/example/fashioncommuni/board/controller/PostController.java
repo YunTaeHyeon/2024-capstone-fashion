@@ -48,7 +48,7 @@ public class PostController {
      * @return 메인 페이지
      */
     @GetMapping("/home")
-    public String home(Authentication authentication , Model model, Pageable pageable, String keyword, Long category_id) { // @PageableDefault(page = 0, size = 10, sort = "post_id", direction = Sort.Direction.DESC)
+    public String home(Authentication authentication , Model model, Pageable pageable, String keyword, Long category_id) { // @PageableDefault(page = 0, size = 10, sort = "postId", direction = Sort.Direction.DESC)
 
         SecurityUserDetailsDto userDetailsDto = (SecurityUserDetailsDto) authentication.getPrincipal();
         String authLoginId = userDetailsDto.getUsername();
@@ -102,71 +102,71 @@ public class PostController {
 
     /**
      * 게시글 상세 조회
-     * @param post_id 게시글 ID
+     * @param postId 게시글 ID
      * @param model
      * @return 게시글 상세 페이지
      */
-    @GetMapping("/{post_id}")
-    public String postDetail(@PathVariable Long post_id, Model model) {
-        PostResponseDTO result = postService.postDetail(post_id);
-        List<CommentResponseDTO> commentResponseDTO = commentService.commentList(post_id);
+    @GetMapping("/{postId}")
+    public String postDetail(@PathVariable Long postId, Model model) {
+        PostResponseDTO result = postService.postDetail(postId);
+        List<CommentResponseDTO> commentResponseDTO = commentService.commentList(postId);
 
         model.addAttribute("comments", commentResponseDTO);
         model.addAttribute("dto", result);
-        model.addAttribute("post_id", post_id);
+        model.addAttribute("postId", postId);
 
         return "detail";
     }
 
     /**
      * 게시글 수정
-     * @param post_id 게시글 ID
+     * @param postId 게시글 ID
      * @param model
      * @param authentication 유저 정보
      * @return 게시글 수정 페이지
      */
-    @GetMapping("/{post_id}/update")
-    public String postUpdateForm(@PathVariable Long post_id, Model model, Authentication authentication) {
+    @GetMapping("/{postId}/update")
+    public String postUpdateForm(@PathVariable Long postId, Model model, Authentication authentication) {
         SecurityUserDetailsDto userDetails = (SecurityUserDetailsDto) authentication.getPrincipal();
-        PostResponseDTO result = postService.postDetail(post_id);
+        PostResponseDTO result = postService.postDetail(postId);
         if (!result.getEmail().equals(userDetails.getEmail())) {
             return "redirect:/post/home";
         }
 
         model.addAttribute("dto", result);
-        model.addAttribute("post_id", post_id);
+        model.addAttribute("postId", postId);
 
         return "update";
     }
 
     /**
      * 게시글 수정 post
-     * @param post_id 게시글 ID
+     * @param postId 게시글 ID
      * @param postWriteRequestDTO 수정 정보
      * @return 게시글 상세 조회 페이지
      */
-    @PostMapping("/{post_id}/update")
-    public String postUpdate(@PathVariable Long post_id, PostWriteRequestDTO postWriteRequestDTO) {
-        postService.postUpdate(post_id, postWriteRequestDTO);
+    @PostMapping("/{postId}/update")
+    public String postUpdate(@PathVariable Long postId, PostWriteRequestDTO postWriteRequestDTO) {
+        postService.postUpdate(postId, postWriteRequestDTO);
 
-        return "redirect:/post/" + post_id;
+        return "redirect:/post/" + postId;
     }
 
     /**
      * 게시글 삭제
-     * @param post_id 게시글 ID
+     * @param postId 게시글 ID
      * @param authentication 유저 정보
      * @return 메인 페이지
      */
-    @GetMapping("/{post_id}/remove")
-    public String postRemove(@PathVariable Long post_id, Authentication authentication) {
+    @GetMapping("/{postId}/remove")
+    public String postRemove(@PathVariable Long postId, Authentication authentication) {
         SecurityUserDetailsDto userDetails = (SecurityUserDetailsDto) authentication.getPrincipal();
-        PostResponseDTO result = postService.postDetail(post_id);
+        PostResponseDTO result = postService.postDetail(postId);
         if (!Objects.equals(result.getEmail() , userDetails.getEmail())) {
             return "redirect:/post/home";
         }
 
-        postService.postRemove(post_id);
+        postService.postRemove(postId);
 
         return "redirect:/post/home";
     }

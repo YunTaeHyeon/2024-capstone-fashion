@@ -20,8 +20,8 @@
         </thead>
         <tbody>
         <tr th:each="post : ${postList}">
-            <td th:text="${post.post_id}"></td>
-            <td><a th:href="@{/post/{post_id}(post_id=${post.post_id})}" th:text="${post.title}"></a></td>
+            <td th:text="${post.postId}"></td>
+            <td><a th:href="@{/post/{postId}(postId=${post.postId})}" th:text="${post.title}"></a></td>
             <td th:switch="${post.categoryId}">
                 <span th:case="1">athleisure</span>
                 <span th:case="2">punk</span>

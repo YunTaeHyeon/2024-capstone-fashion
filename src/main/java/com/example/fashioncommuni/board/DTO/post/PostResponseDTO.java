@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class PostResponseDTO {
 
-    private Long post_id;
+    private Long postId;
     private String title;
     private String content;
     private LocalDateTime createdAt;
@@ -26,7 +26,7 @@ public class PostResponseDTO {
 
     @Builder
     public PostResponseDTO(Post post) {
-        this.post_id = post.getPost_id();
+        this.postId = post.getPostId();
         this.title = post.getTitle();
         this.content = post.getContent();
         this.createdAt = post.getCreatedAt();
