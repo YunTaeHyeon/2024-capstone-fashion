@@ -47,7 +47,7 @@ userCategory:
   maxCategoryCount : 8
   filePath : category_scores/
 
-autoTraining: recommendation-system/dist/train.exe
+autoTraining: recommendation-system/train_recommendation_model.py
 
 
 server:
