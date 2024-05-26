@@ -66,5 +66,9 @@ services:
       - -c
       - |
         ./wait-for-it.sh mysqldb:3306 -s -t 100
+        apt-get update
+        apt install -y python3-pip
+        pip3 install numpy sklearn joblib pandas
         java -jar /app.jar
+
 
