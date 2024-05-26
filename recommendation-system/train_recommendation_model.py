@@ -13,7 +13,7 @@ import re
 from datetime import datetime
 
 # 데이터 디렉토리
-data_dir = '/home/32190165/server/category_scores'
+data_dir = '/'
 
 # 파일 이름에서 날짜 추출
 def extract_date(filename):
@@ -44,7 +44,7 @@ else:
 user_item_matrix = pd.read_csv(os.path.join(data_dir, latest_file)).iloc[:, 1:].values
 
 # 모델 학습
-k = 3 #비슷한 사람을 몇명 추출할 것인가
+k = 1 #비슷한 사람을 몇명 추출할 것인가
 knn_model = NearestNeighbors(n_neighbors=k, metric='cosine')
 knn_model.fit(user_item_matrix)
 
