@@ -10,11 +10,11 @@ public interface CommentService {
     /**
      * 댓글 작성
      * @param commentRequestDTO 댓글 정보
-     * @param post_id 게시물
+     * @param postId 게시물
      * @param email 작성자
      * @return 댓글 ID
      */
-    Long writeComment(CommentRequestDTO commentRequestDTO, Long post_id, String email);
+    Long writeComment(CommentRequestDTO commentRequestDTO, Long postId, String email);
 
     /**
      * 댓글 조회
