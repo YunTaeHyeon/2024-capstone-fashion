@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+<div class="container" layout:fragment="content">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th class="col-md-1">번호</th>
+            <th class="col-md-1">제목</th>
+            <th class="col-md-1">카테고리</th>
+            <th class="col-md-1">작성자</th>
+            <th class="col-md-1">작성일</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="post : ${postList}">
+            <td th:text="${post.postId}"></td>
+            <td><a th:href="@{/post/{postId}(postId=${post.postId})}" th:text="${post.title}"></a></td>
+            <td th:switch="${post.categoryId}">
+                <span th:case="1">athleisure</span>
+                <span th:case="2">punk</span>
+                <span th:case="3">grunge</span>
+                <span th:case="4">hippie</span>
+                <span th:case="5">military</span>
+                <span th:case="6">minimal</span>
+                <span th:case="7">normcore</span>
+                <span th:case="8">preppy</span>
+                <span th:case="9">street</span>
+            </td>
+            <td th:text="${post.email}"></td>
+            <td th:text="${post.createdAt} ? ${#temporals.format(post.createdAt,'yyyy-MM-dd HH:mm')} : ${post.createdAt}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div th:if="${!postList.isEmpty()}">
+        <ul class="pagination"
+            th:with="
+                pageNumber = ${postList.pageable.pageNumber},
+                pageSize = ${postList.pageable.pageSize},
+                totalPages = ${postList.totalPages},
+                startPage = ${T(java.lang.Math).floor(pageNumber / pageSize) * pageSize + 1},
+                tempEndPage = ${startPage + pageSize - 1},
+                endPage = (${tempEndPage < totalPages ? tempEndPage : totalPages})">
+
+            <li th:classappend="${postList.first} ? 'disabled'" class="page-item">
+                <a class="page-link" th:if="${param.keyword == null}" th:href="${postList.first} ? '#' : @{/(page=${pageNumber - 1})}" aria-label="Previous">
+                    <span aria-hidden="true">&lt;</span>
+                </a>
+                <a class="page-link" th:if="${param.keyword != null}" th:href="${postList.first} ? '#' : @{/(page=${pageNumber - 1}, keyword=${param.keyword})}" aria-label="Previous">
+                    <span aria-hidden="true">&lt;</span>
+                </a>
+            </li>
+
+            <li th:each="page: ${#numbers.sequence(startPage, endPage)}" th:classappend="${page == pageNumber + 1} ? 'active'" class="page-item">
+                <a th:text="${page}" th:if="${param.keyword == null}" class="page-link" th:href="@{/(page=${page - 1})}"></a>
+                <a th:text="${page}" th:if="${param.keyword != null}" class="page-link" th:href="@{/(page=${page - 1}, keyword=${param.keyword})}"></a>
+            </li>
+
+            <li th:classappend="${postList.last} ? 'disabled'" class="page-item">
+                <a class="page-link" th:if="${param.keyword == null}" th:href="${postList.last} ? '#' : @{/(page=${pageNumber + 1})}" aria-label="Next">
+                    <span aria-hidden="true">&gt;</span>
+                </a>
+                <a class="page-link" th:if="${param.keyword != null}" th:href="${postList.last} ? '#' : @{/(page=${pageNumber + 1}, keyword=${param.keyword})}" aria-label="Next">
+                    <span aria-hidden="true">&gt;</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        /*]]>*/
+    </script>
+</div>
+</body>
+</html>
