@@ -19,16 +19,13 @@ import java.util.UUID;
 public class ChatService {
     private final ChatMessageRepository chatMessageRepository;
     private final ChatRoomRepository chatRoomRepository;
-    private final UserRepository userRepository;
 
     // 채팅을 채팅방에 추가하는 메서드
     public void addChatToRoom(String chatRoomId, String senderId, String content) {
-        User sender = userRepository.findUserByLoginId(senderId)
-                .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다: " + senderId));
 
         ChatMessage chatMessage=new ChatMessage();
         chatMessage.setChatRoomId(chatRoomId);
-        chatMessage.setSenderId(sender.getLoginId());
+        chatMessage.setSenderId(senderId);
         chatMessage.setContent(content);
         chatMessageRepository.save(chatMessage);
     }
