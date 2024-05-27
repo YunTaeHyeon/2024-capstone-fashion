@@ -27,8 +27,23 @@ public class ChatController {
 
     private final ChatService chatService;
     private final MessageSender sender;
+    @GetMapping("/chat")
+    public String chat(){return "chat";}
 
-    @MessageMapping("/chat/sendMessage")
+
+    @GetMapping("/chat/room/list")
+    @ResponseBody
+    public List<ChatRoom> list() {
+        return chatService.getAllChatRooms();
+    }
+
+
+    @PostMapping("/chat/rooms")
+    @ResponseBody
+    public ChatRoom createChatRoom(@RequestParam("chatRoomName") String chatRoomName) {
+        return chatService.createChatRoom(chatRoomName);
+    }
+    @MessageMapping("/chatRoom/sendMessage")
     public void sendMessage(@Payload ChatMessage chatMessage){
         chatService.addChatToRoom(chatMessage.getChatRoomId(),chatMessage.getSenderId(),chatMessage.getContent());
         Message message=Message.builder()
@@ -43,21 +58,10 @@ public class ChatController {
         sender.send(topic,message);
 
     }
-    @GetMapping("/chat/room/list")
-    @ResponseBody
-    public List<ChatRoom> list() {
-        return chatService.getAllChatRooms();
-    }
-
-    @GetMapping("/chat/message/list")
+    @GetMapping("/chatRoom/message/list")
     @ResponseBody
     public List<ChatMessage> getChatMessagesByRoomId(@RequestParam("chatRoomId") String chatRoomId) {
         return chatService.getChatMessagesByRoomId(chatRoomId);
-    }
-    @PostMapping("/chat/rooms")
-    @ResponseBody
-    public ChatRoom createChatRoom(@RequestParam("chatRoomName") String chatRoomName) {
-        return chatService.createChatRoom(chatRoomName);
     }
 
 }
