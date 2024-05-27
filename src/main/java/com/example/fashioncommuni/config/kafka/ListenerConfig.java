@@ -28,8 +28,8 @@ public class ListenerConfig {
     private String topic;
 
     @Bean
-    ConcurrentKafkaListenerContainerFactory<String, Message> kafkaChatContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, Message> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    ConcurrentKafkaListenerContainerFactory<String, String> kafkaChatContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
 
         factory.setConsumerFactory(kafkaChatConsumer());
         factory.setConcurrency(1);
@@ -37,9 +37,9 @@ public class ListenerConfig {
     }
 
     @Bean
-    public ConsumerFactory<String, Message> kafkaChatConsumer() {
+    public ConsumerFactory<String, String> kafkaChatConsumer() {
 
-        JsonDeserializer<Message> deserializer = new JsonDeserializer<>();
+        JsonDeserializer<String> deserializer = new JsonDeserializer<>();
 
         deserializer.addTrustedPackages("*");
 
