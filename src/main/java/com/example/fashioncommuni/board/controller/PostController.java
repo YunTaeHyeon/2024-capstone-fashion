@@ -85,7 +85,7 @@ public class PostController {
     /**
      * 게시글 작성 post
      * @param postWriteRequestDTO 게시글 정보
-     * @param authentication 유저 정보
+     * @param postImageUploadDTO 이미지 정보
      * @return 게시글 디테일 페이지
      */
     @PostMapping("/write")
