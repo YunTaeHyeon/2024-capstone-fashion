@@ -71,7 +71,7 @@
                         <div class="media mb-4">
                             <div class="media-body">
                                 <div class="d-flex align-items-start">
-                                    <img class="d-flex mr-3 rounded-circle" th:src="${comment.getImageUrl()}" alt="User image" width="50">
+<!--                                <img class="d-flex mr-3 rounded-circle" th:src="${comment.getImageUrl()}" alt="User image" width="50">-->
                                     <div>
                                         <h5 class="mt-0" th:text="${comment.getEmail()}">User Name</h5>
                                         <p th:text="${comment.getContent()}" th:id="'comment-' + ${comment.getComment_id()}">Comment content</p>
