@@ -43,7 +43,8 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: 1234
-
+    volumes:
+        - ./db/mongodb/data:/data/db
 
 
   backend:
