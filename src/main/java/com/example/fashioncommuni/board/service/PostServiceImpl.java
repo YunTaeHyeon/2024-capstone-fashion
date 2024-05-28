@@ -128,8 +128,8 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Page<PostResponseDTO> searchingPostCategory(Long category_id, Pageable pageable) {
-        Page<Post> posts = postRepository.findByCategoryId(category_id, pageable);
+    public Page<PostResponseDTO> searchingPostCategory(Long categoryId, Pageable pageable) {
+        Page<Post> posts = postRepository.findByCategoryId(categoryId, pageable);
         return getPostResponseDTOS(pageable, posts);
     }
 }

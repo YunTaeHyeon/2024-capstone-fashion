@@ -60,9 +60,9 @@ public interface PostService {
 
     /**
      * 카테고리별 게시글 조회
-     * @param category_id 카테고리 ID
+     * @param categoryId 카테고리 ID
      * @param pageable 페이징 처리
      * @return 카테고리별 게시글 목록
      */
-    Page<PostResponseDTO> searchingPostCategory(Long category_id, Pageable pageable);
+    Page<PostResponseDTO> searchingPostCategory(Long categoryId, Pageable pageable);
 }

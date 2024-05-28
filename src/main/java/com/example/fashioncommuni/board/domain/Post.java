@@ -28,7 +28,7 @@ public class Post extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    @Column(name = "category_id")
+    @Column(name = "categoryId")
     private Long categoryId;
 
     private String status;
