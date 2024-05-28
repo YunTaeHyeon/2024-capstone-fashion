@@ -20,6 +20,13 @@ public class UserService {
         // UserDto에서 비밀번호를 가져와서 암호화합니다.
         String encodedPassword = passwordEncoder.encode(userDto.password());
 
+        if (userRepository.findByEmail(userDto.email()).isPresent()) {
+            throw new RuntimeException("이미 이메일이 존재합니다.");
+        }
+        if (userRepository.findUserByLoginId(userDto.loginId()).isPresent()) {
+            throw new RuntimeException("이미 로그인 아이디가 존재합니다.");
+        }
+
         // 암호화된 비밀번호를 가진 새로운 UserDto 인스턴스를 생성합니다.
         // 여기서는 UserDto가 record이므로, 직접 수정이 불가능하고 새 인스턴스를 생성해야 합니다.
         UserDto encryptedUserDto = new UserDto(
