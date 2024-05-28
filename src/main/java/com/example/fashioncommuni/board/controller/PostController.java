@@ -44,11 +44,11 @@ public class PostController {
      * @param model
      * @param pageable 페이징 처리
      * @param keyword 검색어
-     * @param category_id 카테고리 ID
+     * @param categoryId 카테고리 ID
      * @return 메인 페이지
      */
     @GetMapping("/home")
-    public String home(Authentication authentication , Model model, Pageable pageable, String keyword, Long category_id) { // @PageableDefault(page = 0, size = 10, sort = "postId", direction = Sort.Direction.DESC)
+    public String home(Authentication authentication , Model model, Pageable pageable, String keyword, Long categoryId) { // @PageableDefault(page = 0, size = 10, sort = "postId", direction = Sort.Direction.DESC)
 
         SecurityUserDetailsDto userDetailsDto = (SecurityUserDetailsDto) authentication.getPrincipal();
         String authLoginId = userDetailsDto.getUsername();
@@ -61,12 +61,12 @@ public class PostController {
             return "init-interest";
         }
 
-        if(keyword == null) {
-            model.addAttribute("postList", postService.postList(pageable));
-        } else if (category_id != null) {
-            model.addAttribute("postList", postService.searchingPostCategory(category_id, pageable));
-        } else {
+        if(keyword != null) {
             model.addAttribute("postList", postService.searchingPostList(keyword, pageable));
+        } else if (categoryId != null) {
+            model.addAttribute("postList", postService.searchingPostCategory(categoryId, pageable));
+        } else {
+            model.addAttribute("postList", postService.postList(pageable));
         }
 
         return "home";
@@ -103,7 +103,7 @@ public class PostController {
     /**
      * 게시글 작성 post
      * @param postWriteRequestDTO 게시글 정보
-     * @param authentication 유저 정보
+     * @param postImageUploadDTO 이미지 정보
      * @return 게시글 디테일 페이지
      */
     @PostMapping("/write")

@@ -20,7 +20,7 @@
                     </th:block>
                     <th:block sec:authorize="isAuthenticated()">
                         <li class="nav-item">
-                            <a class="nav-link" href="/user/list">채팅</a>
+                            <a class="nav-link" href="/chat">채팅</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/user/info">프로필</a>
@@ -37,7 +37,7 @@
                     </th:block>
                 </ul>
                 <form th:action="@{/post/home}" method="get" class="d-flex">
-                    <select class="form-control me-sm-2" name="category_id">
+                    <select class="form-control me-sm-2" name="categoryId">
                         <option value="">카테고리검색</option>
                         <option value="1">athleisure</option>
                         <option value="2">punk</option>

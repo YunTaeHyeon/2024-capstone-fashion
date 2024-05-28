@@ -28,7 +28,7 @@ public class Post extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    @Column(name = "category_id")
+    @Column(name = "categoryId")
     private Long categoryId;
 
     private String status;
@@ -42,7 +42,7 @@ public class Post extends BaseEntity {
     private List<Comment> comments;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    @OrderBy("image_id asc")
+    @OrderBy("imageId asc")
     private List<PostImage> postImages;
 
     public void update(String title, String content) {

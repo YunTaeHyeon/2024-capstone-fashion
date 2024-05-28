@@ -28,7 +28,7 @@ public class UserCategoryScores {
     @MapKey(name = "category")
     private Map<String, CategoryScores> scores = new LinkedHashMap<>();
     //코드 설명: 사용자의 카테고리별 별점 점수를 저장
-    //Long -> category_id   CategoryScores -> 별점들을 저장
+    //Long -> categoryId   CategoryScores -> 별점들을 저장
 
 
     @Builder
