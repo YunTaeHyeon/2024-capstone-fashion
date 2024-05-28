@@ -72,6 +72,24 @@ public class PostController {
         return "home";
     }
 
+    @GetMapping("/recommend")
+    public String recommend(Authentication authentication , Model model, Pageable pageable, String keyword, Long category_id) { // @PageableDefault(page = 0, size = 10, sort = "postId", direction = Sort.Direction.DESC)
+
+        SecurityUserDetailsDto userDetailsDto = (SecurityUserDetailsDto) authentication.getPrincipal();
+        String authLoginId = userDetailsDto.getUsername();
+
+        User user = securityUserService.findByLoginId(authLoginId).orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+
+        if(keyword == null) {
+            model.addAttribute("postList", postService.recommendPostList(user.getId(), pageable));
+        } else if (category_id != null) {
+            model.addAttribute("postList", postService.searchingPostCategory(category_id, pageable));
+        } else {
+            model.addAttribute("postList", postService.searchingPostList(keyword, pageable));
+        }
+
+        return "recommend";
+    }
 
     /**
      * 게시글 작성
@@ -107,9 +125,17 @@ public class PostController {
      * @return 게시글 상세 페이지
      */
     @GetMapping("/{postId}")
-    public String postDetail(@PathVariable Long postId, Model model) {
+    public String postDetail(@PathVariable Long postId, Model model, Authentication authentication) {
         PostResponseDTO result = postService.postDetail(postId);
         List<CommentResponseDTO> commentResponseDTO = commentService.commentList(postId);
+
+        //아래가 추가한 부분
+        SecurityUserDetailsDto userDetailsDto = (SecurityUserDetailsDto) authentication.getPrincipal();
+        String authLoginId = userDetailsDto.getUsername();
+
+        User user = securityUserService.findByLoginId(authLoginId).orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+        userCategoryScoresService.viewPost(user.getId(), postId);
+        //여기까지
 
         model.addAttribute("comments", commentResponseDTO);
         model.addAttribute("dto", result);

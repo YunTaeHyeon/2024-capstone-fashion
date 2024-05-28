@@ -89,6 +89,7 @@
                         success: function(validationResult) {
                             if (validationResult.isValid) {
                                 window.location.href = "/post/home";
+                                localStorage.setItem('currentUserId', loginId);
                             } else {
                                 $('#error-message').text("토큰이 유효하지 않습니다.");
                             }

@@ -36,6 +36,9 @@ public interface PostService {
      */
     Page<PostResponseDTO> postList(Pageable pageable);
 
+    //위 기능에서 추천 기능을 추가한 메소드
+    Page<PostResponseDTO> recommendPostList(Long userId,Pageable pageable);
+
     /**
      * 게시글 검색
      * @param keyword 검색어

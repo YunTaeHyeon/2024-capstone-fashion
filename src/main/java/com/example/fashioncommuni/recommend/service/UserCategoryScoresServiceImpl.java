@@ -164,14 +164,16 @@ public class UserCategoryScoresServiceImpl implements UserCategoryScoresService 
         categoryScores.addCategoryScores(1.0);
 
         // 사용자의 카테고리 점수를 저장합니다.
-        //userCategoryScoresRepository.save(userCategoryScores);
-        //redis에 저장
+        userCategoryScoresRepository.save(userCategoryScores);
+        //redis에 저장 -> toDo: 추후에 변경
 
+        /*
         try {
             getSaveFromRedis.saveCategoryScoresData(categoryId, categoryScores);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
+         */
 
         // 사용자가 본 게시물을 저장합니다.
         //toDo: 개선 사항 있음
