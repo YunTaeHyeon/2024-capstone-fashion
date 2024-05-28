@@ -47,6 +47,7 @@ public class ChatController {
     public void sendMessage(@Payload ChatMessage chatMessage){
         chatService.addChatToRoom(chatMessage.getChatRoomId(),chatMessage.getSenderId(),chatMessage.getContent());
         Message message=Message.builder()
+                .chatRoomId(chatMessage.getChatRoomId())
                 .senderId(chatMessage.getSenderId())
                 .content(chatMessage.getContent())
                 .createdAt(chatMessage.getCreatedAt())
