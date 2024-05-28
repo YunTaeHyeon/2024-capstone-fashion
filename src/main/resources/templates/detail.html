@@ -21,7 +21,7 @@
                     <textarea class="form-control" id="content" name="content" disabled th:text="${dto.content}"></textarea>
                 </div>
                 <div class="mb-3" th:if="${dto.imageUrls != null}">
-                    <label class="form-label">Images</label>
+                    <label class="form-label">이미지</label>
                     <div>
                         <th:block th:each="imageUrl : ${dto.imageUrls}">
                             <img th:src="${imageUrl}" alt="Image" width="200px" height="200px">
@@ -71,7 +71,7 @@
                         <div class="media mb-4">
                             <div class="media-body">
                                 <div class="d-flex align-items-start">
-<!--                                    <img class="d-flex mr-3 rounded-circle" th:src="${comment.getImageUrl()}" alt="User image" width="50">-->
+                                    <img class="d-flex mr-3 rounded-circle" th:src="${comment.getImageUrl()}" alt="User image" width="50">
                                     <div>
                                         <h5 class="mt-0" th:text="${comment.getEmail()}">User Name</h5>
                                         <p th:text="${comment.getContent()}" th:id="'comment-' + ${comment.getComment_id()}">Comment content</p>

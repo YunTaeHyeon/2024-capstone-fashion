@@ -42,8 +42,8 @@ spring:
 
 
 file:
-  profileImagePath: classpath:/temp/profileImageUpload/
-  postImagePath: classpath:/temp/postImageUpload/
+  profileImagePath: /temp/profileImageUpload/
+  postImagePath: /temp/postImageUpload/
 userCategory:
   maxUseScores : 50
   maxCategoryCount : 8

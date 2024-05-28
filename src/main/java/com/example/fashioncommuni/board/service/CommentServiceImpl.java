@@ -20,12 +20,12 @@ public class CommentServiceImpl implements CommentService {
 
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
-    private final PostRepository postsRepository;
+    private final PostRepository postRepository;
 
     @Override
     public Long writeComment(CommentRequestDTO commentRequestDTO, Long postId, String email) {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
-        Post post = postsRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("게시물을 찾을 수 없습니다."));
+        Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("게시물을 찾을 수 없습니다."));
         Comment result = Comment.builder()
                 .content(commentRequestDTO.getContent())
                 .post(post)
@@ -38,7 +38,7 @@ public class CommentServiceImpl implements CommentService {
     // 댓글 작성
     @Override
     public List<CommentResponseDTO> commentList(Long comment_id) {
-        Post post = postsRepository.findById(comment_id).orElseThrow(() -> new IllegalArgumentException("게시물을 찾을 수 없습니다."));
+        Post post = postRepository.findById(comment_id).orElseThrow(() -> new IllegalArgumentException("게시물을 찾을 수 없습니다."));
         List<Comment> comments = commentRepository.findByPost(post);
 
         return comments.stream()
