@@ -71,18 +71,25 @@
             position: absolute;
             top: 20px;
             left: 20px;
-            background-color: #007BFF;
-            color: #fff;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            color: #007BFF;
+        }
+        #homeButton {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 14px;
+            text-decoration: none;
+            color: #007BFF;
         }
     </style>
 </head>
 <body>
 <h1>채팅</h1>
-<button id="backButton" onclick="goBack()">뒤로 가기</button>
+<button id="backButton" onclick="goBack()">채팅방 목록으로</button>
+<button id="homeButton" onclick="goHome()">홈</button>
+
 <div id="chatRoomList">
     <input type="text" id="chatRoomName" placeholder="채팅방 이름을 입력하시오." />
     <button onclick="createChatRoom()">채팅방 생성</button>
@@ -105,7 +112,6 @@
         stompClient.connect({}, () => {
             console.log('Connected to WebSocket');
             loadChatRooms();
-            alert('웹페이지에서 연결이 성공했습니다!');
         }, (error) => {
             console.error('WebSocket connection failed:', error);
             alert('웹페이지에서 연결이 실패했습니다.');
@@ -130,12 +136,7 @@
         // 채팅방 주제를 구독하여 실시간 메시지 수신 시작
         stompClient.subscribe(`/sub/chatRoom/enter${chatRoomId}`, (message) => {
             const messageData = JSON.parse(message.body);
-            const messageList = document.getElementById('messageList');
-            const div = document.createElement('div');
-            div.textContent = `${messageData.senderId}: ${messageData.content}`;
-            messageList.appendChild(div);
-            // 새로운 메시지가 추가될 때 맨 아래로 스크롤
-            messageList.scrollTop = messageList.scrollHeight;
+            appendMessageToChat(messageData); // 채팅방 메시지 목록에 추가
         });
     }
 
@@ -143,7 +144,7 @@
     function unsubscribeFromChatRoom() {
         if (currentChatRoomId) {
             // 현재 채팅방에 대한 구독을 해제
-            stompClient.unsubscribe(`/sub/chatRoom/enter${currentChatRoomId}`);
+            stompClient.unsubscribe(`/sub/chatRoom/enter${currentChatRoomRoomId}`);
             currentChatRoomId = null;
         }
     }
@@ -227,15 +228,27 @@
         };
 
         stompClient.send("/pub/chatRoom/sendMessage", {}, JSON.stringify(message));
-        appendMessageToChat(message);
         messageInput.value = '';
     };
+
+    // 채팅 메시지를 화면에 추가하는 함수
     function appendMessageToChat(message) {
         const messageList = document.getElementById('messageList');
         const div = document.createElement('div');
+
+        // 현재 사용자의 메시지인지 확인하고 클래스를 다르게 지정하여 스타일링
+        const isCurrentUser = message.senderId === localStorage.getItem('currentUserId');
+        div.classList.add(isCurrentUser ? 'current-user-message' : 'other-user-message');
         div.textContent = `${message.senderId}: ${message.content}`;
         messageList.appendChild(div);
+
+        // 새로운 메시지가 추가될 때 맨 아래로 스크롤
         messageList.scrollTop = messageList.scrollHeight;
+    }
+
+    // 홈으로 이동하는 함수
+    function goHome() {
+        window.location.href = "/home"; // 홈 페이지의 URL로 이동
     }
 </script>
 </body>
