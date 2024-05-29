@@ -11,18 +11,18 @@
 
 ### 팀원
 - 곽동윤 (소프트웨어학과) - 총괄 및 채팅 기능 개발 및 채팅 화면 구성 및 JWT를 활용한 로그인 기능 개발 및 화면구성
-- 윤태현 (소프트웨어학과) - KNN과 스프링을 사용한 추천 시스템 로직 및 스케쥴링 기능 개발, GCP와 도커로 CI/CD 파이프라인 구축
+- 윤태현 (소프트웨어학과) - KNN과 스프링을 사용한 추천 시스템 로직 및 스케쥴링 기능 개발, IT 인프라 구축
 - 이관현 (소프트웨어학과) - 게시판 및 유저 랭킹 기능 개발 및 게시판 화면 구성
 
 ### 기술스택
 - 벡엔드
-  - Spring
+  - Spring, Kafka
 - AI
   - KNN
 - 프론트엔드
-  - React, HTML5/CSS5/JS
+  - HTML5/CSS5/JS
 - 데이터베이스
-  - Redis, MySQL
+  - Redis, MySQL, MongoDB
 - 서버 인프라
   - Docker, Docker Hub, GCP, git action
  
@@ -36,12 +36,12 @@
 ### CI/CD 파이프라인 (지속적 통합/지속적 배포)
 - main 브랜치의 코드 변경 사항이 생기면
 - git action을 통해 Spring Boot 애플리케이션과 도커 이미지가 빌드되고 이 도커 이미지가 도커 허브에 자동으로 푸시됩니다.
-- GCP 서버에서 self-hosted runner로 도커 이미지를 풀 하고 기존의 컨테이너를 중지합니다.
+- GCP 서버에서 도커 이미지를 풀 하고 기존의 컨테이너를 중지합니다.
 - 최신 이미지를 컨테이너화 해서 실행시키고 사옹하지 않는 이미지를 정리합니다.
 
-### ERD
-<img width="999" alt="image" src="https://github.com/YunTaeHyeon/2024-capstone-fashion/assets/71334400/519f282f-d7cd-47f6-a97b-d71fedd630ab">
+### 인프라
+![image](https://github.com/YunTaeHyeon/2024-capstone-fashion/assets/67150311/9f5b6384-d8e7-4b82-800a-71013ba8d39c)
 
 
-### 서비스 조직도
-<img width="938" alt="image" src="https://github.com/YunTaeHyeon/2024-capstone-fashion/assets/67150311/16f6722e-e465-4706-b7d9-cc87600f3441">
+### 시스템 블록 다이어그램
+![image](https://github.com/YunTaeHyeon/2024-capstone-fashion/assets/67150311/1b737cff-0784-4cc3-b23a-d67659fd604a)
