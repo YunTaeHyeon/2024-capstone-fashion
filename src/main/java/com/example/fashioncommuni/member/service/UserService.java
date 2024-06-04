@@ -4,7 +4,6 @@ import com.example.fashioncommuni.member.domain.User;
 import com.example.fashioncommuni.member.dto.UserDto;
 import com.example.fashioncommuni.member.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,11 +14,8 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void registerUser(UserDto userDto) {
-        // UserDto에서 비밀번호를 가져와서 암호화합니다.
-        String encodedPassword = passwordEncoder.encode(userDto.password());
-
         if (userRepository.findByEmail(userDto.email()).isPresent()) {
             throw new RuntimeException("이미 이메일이 존재합니다.");
         }
@@ -27,8 +23,8 @@ public class UserService {
             throw new RuntimeException("이미 로그인 아이디가 존재합니다.");
         }
 
-        // 암호화된 비밀번호를 가진 새로운 UserDto 인스턴스를 생성합니다.
-        // 여기서는 UserDto가 record이므로, 직접 수정이 불가능하고 새 인스턴스를 생성해야 합니다.
+        String encodedPassword = passwordEncoder.encode(userDto.password());
+
         UserDto encryptedUserDto = new UserDto(
                 userDto.userId(),
                 userDto.loginId(),
@@ -41,10 +37,7 @@ public class UserService {
                 userDto.status()
         );
 
-        // 암호화된 비밀번호를 포함하는 UserDto를 기반으로 User 엔티티 인스턴스를 생성합니다.
         User user = User.of(encryptedUserDto);
-
-        // UserRepository를 통해 데이터베이스에 저장합니다.
         userRepository.save(user);
     }
 }
