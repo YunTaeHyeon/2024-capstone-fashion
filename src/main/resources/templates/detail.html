@@ -13,11 +13,11 @@
         <div class="card-body">
             <form>
                 <div class="mb-3">
-                    <label for="title" class="form-label">title</label>
+                    <label for="title" class="form-label">제목</label>
                     <input type="text" class="form-control" id="title" name="title" th:value="${dto.title}" disabled>
                 </div>
                 <div class="mb-3">
-                    <label for="content" class="form-label">content</label>
+                    <label for="content" class="form-label">내용</label>
                     <textarea class="form-control" id="content" name="content" disabled th:text="${dto.content}"></textarea>
                 </div>
                 <div class="mb-3" th:if="${dto.imageUrls != null}">
