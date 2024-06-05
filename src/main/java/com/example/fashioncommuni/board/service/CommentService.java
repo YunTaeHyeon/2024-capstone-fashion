@@ -18,21 +18,21 @@ public interface CommentService {
 
     /**
      * 댓글 조회
-     * @param comment_id 게시물
+     * @param commentId 게시물
      * @return 게시물 별 댓글
      */
-    List<CommentResponseDTO> commentList(Long comment_id);
+    List<CommentResponseDTO> commentList(Long commentId);
 
     /**
      * 댓글 수정
      * @param commentRequestDTO 댓글 정보
-     * @param comment_id 댓글 ID
+     * @param commentId 댓글 ID
      */
-    void updateComment(CommentRequestDTO commentRequestDTO, Long comment_id);
+    void updateComment(CommentRequestDTO commentRequestDTO, Long commentId);
 
     /**
      * 댓글 삭제
-     * @param comment_id 댓글 ID
+     * @param commentId 댓글 ID
      */
-    void deleteComment(Long comment_id);
+    void deleteComment(Long commentId);
 }

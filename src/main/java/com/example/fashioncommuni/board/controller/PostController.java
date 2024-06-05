@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
@@ -106,7 +107,7 @@ public class PostController {
      * @param postImageUploadDTO 이미지 정보
      * @return 게시글 디테일 페이지
      */
-    @PostMapping("/write")
+    @PostMapping(value="/write", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String write(PostWriteRequestDTO postWriteRequestDTO,
                         @ModelAttribute PostImageUploadDTO postImageUploadDTO,
                         Authentication authentication) {
@@ -130,11 +131,11 @@ public class PostController {
         List<CommentResponseDTO> commentResponseDTO = commentService.commentList(postId);
 
         //아래가 추가한 부분
-        SecurityUserDetailsDto userDetailsDto = (SecurityUserDetailsDto) authentication.getPrincipal();
-        String authLoginId = userDetailsDto.getUsername();
-
-        User user = securityUserService.findByLoginId(authLoginId).orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
-        userCategoryScoresService.viewPost(user.getId(), postId);
+//        SecurityUserDetailsDto userDetailsDto = (SecurityUserDetailsDto) authentication.getPrincipal();
+//        String authLoginId = userDetailsDto.getUsername();
+//
+//        User user = securityUserService.findByLoginId(authLoginId).orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+//        userCategoryScoresService.viewPost(user.getId(), postId);
         //여기까지
 
         model.addAttribute("comments", commentResponseDTO);

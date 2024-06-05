@@ -32,26 +32,26 @@ public class CommentController {
     /**
      * 댓글 수정
      * @param postId 게시물
-     * @param comment_id 댓글 ID
+     * @param commentId 댓글 ID
      * @param commentRequestDTO 댓글 정보
      * @return 해당 게시물 리다이렉트
      */
     @ResponseBody
-    @PostMapping("/post/{postId}/comment/{comment_id}/update")
-    public String updateComment(@PathVariable Long postId, @PathVariable Long comment_id, CommentRequestDTO commentRequestDTO) {
-        commentService.updateComment(commentRequestDTO, comment_id);
+    @PostMapping("/post/{postId}/comment/{commentId}/update")
+    public String updateComment(@PathVariable Long postId, @PathVariable Long commentId, CommentRequestDTO commentRequestDTO) {
+        commentService.updateComment(commentRequestDTO, commentId);
         return "redirect:/post/" + postId;
     }
 
     /**
      * 댓글 삭제
      * @param postId 게시물
-     * @param comment_id 댓글 ID
+     * @param commentId 댓글 ID
      * @return 해당 게시물 리다이렉트
      */
-    @GetMapping("/post/{postId}/comment/{comment_id}/remove")
-    public String deleteComment(@PathVariable Long postId, @PathVariable Long comment_id) {
-        commentService.deleteComment(comment_id);
+    @GetMapping("/post/{postId}/comment/{commentId}/remove")
+    public String deleteComment(@PathVariable Long postId, @PathVariable Long commentId) {
+        commentService.deleteComment(commentId);
         return "redirect:/post/" + postId;
     }
 }
