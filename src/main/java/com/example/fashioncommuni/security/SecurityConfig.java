@@ -26,7 +26,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -71,7 +70,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/resources/**", "/static/**").permitAll()
-                        .requestMatchers("/temp/**").permitAll()
+                        .requestMatchers("/templates/temp/**").permitAll()
                         .requestMatchers("/css/**").permitAll()
                         .requestMatchers("/main/rootPage").permitAll()
                         .requestMatchers("/error.html").permitAll()

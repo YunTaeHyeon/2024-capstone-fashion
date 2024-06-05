@@ -33,12 +33,12 @@ public class CommentServiceImpl implements CommentService {
                 .build();
         commentRepository.save(result);
 
-        return result.getComment_id();
+        return result.getCommentId();
     }
     // 댓글 작성
     @Override
-    public List<CommentResponseDTO> commentList(Long comment_id) {
-        Post post = postRepository.findById(comment_id).orElseThrow(() -> new IllegalArgumentException("게시물을 찾을 수 없습니다."));
+    public List<CommentResponseDTO> commentList(Long commentId) {
+        Post post = postRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("게시물을 찾을 수 없습니다."));
         List<Comment> comments = commentRepository.findByPost(post);
 
         return comments.stream()
@@ -50,14 +50,14 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void updateComment(CommentRequestDTO commentRequestDTO, Long comment_id) {
-        Comment comment = commentRepository.findById(comment_id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
+    public void updateComment(CommentRequestDTO commentRequestDTO, Long commentId) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
         comment.update(commentRequestDTO.getContent());
         commentRepository.save(comment);
     }
 
     @Override
-    public void deleteComment(Long comment_id) {
-        commentRepository.deleteById(comment_id);
+    public void deleteComment(Long commentId) {
+        commentRepository.deleteById(commentId);
     }
 }

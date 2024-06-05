@@ -42,7 +42,6 @@ spring:
 
 
 file:
-  profileImagePath: /temp/profileImageUpload/
   postImagePath: /temp/postImageUpload/
 userCategory:
   maxUseScores : 50

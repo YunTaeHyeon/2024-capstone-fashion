@@ -13,15 +13,15 @@
         <div class="card-body">
             <form>
                 <div class="mb-3">
-                    <label for="title" class="form-label">title</label>
+                    <label for="title" class="form-label">제목</label>
                     <input type="text" class="form-control" id="title" name="title" th:value="${dto.title}" disabled>
                 </div>
                 <div class="mb-3">
-                    <label for="content" class="form-label">content</label>
+                    <label for="content" class="form-label">내용</label>
                     <textarea class="form-control" id="content" name="content" disabled th:text="${dto.content}"></textarea>
                 </div>
                 <div class="mb-3" th:if="${dto.imageUrls != null}">
-                    <label class="form-label">이미지</label>
+                    <label class="form-label">Images</label>
                     <div>
                         <th:block th:each="imageUrl : ${dto.imageUrls}">
                             <img th:src="${imageUrl}" alt="Image" width="200px" height="200px">
@@ -43,15 +43,15 @@
                         type="text" class="form-control" id="writer" name="writer"
                         th:value="${dto.user_id}" disabled>
                 </div>
-                <a href="/static" class="btn btn-outline-secondary">list</a>
+                <a href="home.html" class="btn btn-outline-secondary">홈</a>
                 <th:block th:if="${dto.getEmail() == #authentication.principal.email}">
-                    <a th:href="@{/post/{postId}/update(postId=${postId})}" class="btn btn-outline-warning">modify</a>
-                    <a th:href="@{/post/{postId}/remove(postId=${postId})}" class="btn btn-outline-danger" onclick="return confirm('삭제하시겠습니까?')">remove</a>
+                    <a th:href="@{/post/{postId}/update(postId=${postId})}" class="btn btn-outline-warning">수정하기</a>
+                    <a th:href="@{/post/{postId}/remove(postId=${postId})}" class="btn btn-outline-danger" onclick="return confirm('삭제하시겠습니까?')">삭제하기</a>
                 </th:block>
             </form>
             <!-- Comments Form -->
             <div class="card my-4">
-                <h5 class="card-header">Leave a Comment:</h5>
+                <h5 class="card-header">댓글:</h5>
                 <div class="card-body">
                     <form th:action="@{/post/{postId}/comment(postId=${postId})}" th:method="post">
                         <div class="form-group" style="margin-bottom: 10px;">
@@ -73,14 +73,14 @@
                                 <div class="d-flex align-items-start">
 <!--                                <img class="d-flex mr-3 rounded-circle" th:src="${comment.getImageUrl()}" alt="User image" width="50">-->
                                     <div>
-                                        <h5 class="mt-0" th:text="${comment.getEmail()}">User Name</h5>
-                                        <p th:text="${comment.getContent()}" th:id="'comment-' + ${comment.getComment_id()}">Comment content</p>
-                                        <small class="text-muted" th:text="${#temporals.format(comment.getCreatedAt(), 'yyyy-MM-dd HH:mm')}">Comment Date</small>
+                                        <h5 class="mt-0" th:text="${comment.getEmail()}">이름</h5>
+                                        <p th:text="${comment.getContent()}" th:id="'comment-' + ${comment.getCommentId()}">내용</p>
+                                        <small class="text-muted" th:text="${#temporals.format(comment.getCreatedAt(), 'yyyy-MM-dd HH:mm')}">댓글 날짜</small>
                                     </div>
                                 </div>
                                 <div th:if="${comment.getEmail() == #authentication.principal.email}">
-                                    <button class="btn btn-sm btn-outline-warning" th:attr="data-id=${comment.getComment_id()}" onclick="editComment(this)">Edit</button>
-                                    <a th:href="@{/post/{postId}/comment/{comment_id}/remove(postId=${postId}, comment_id=${comment.getComment_id()})}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this comment?')">Delete</a>
+                                    <button class="btn btn-sm btn-outline-warning" th:attr="data-id=${comment.getCommentId()}" onclick="editComment(this)">수정하기</button>
+                                    <a th:href="@{/post/{postId}/comment/{commentId}/remove(postId=${postId}, commentId=${comment.getCommentId()})}" class="btn btn-sm btn-outline-danger" onclick="return confirm('댓글을 삭제하시겠습니까?')">삭제하기</a>
                                 </div>
                             </div>
                         </div>

@@ -38,11 +38,10 @@ public class Post extends BaseEntity {
     private User user;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    @OrderBy("comment_id asc")
+    @OrderBy("commentId asc")
     private List<Comment> comments;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    @OrderBy("imageId asc")
     private List<PostImage> postImages;
 
     public void update(String title, String content) {
