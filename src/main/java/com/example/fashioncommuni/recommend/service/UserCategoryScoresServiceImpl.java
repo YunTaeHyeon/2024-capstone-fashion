@@ -177,22 +177,26 @@ public class UserCategoryScoresServiceImpl implements UserCategoryScoresService 
 
         // 사용자가 본 게시물을 저장합니다.
         //toDo: 개선 사항 있음
-        userLookedPostRepository.findByUserId(userId).orElseGet(() -> {
-                    UserLookedPost newUserLookedPost = UserLookedPost.builder()
-                            .userId(userId)
-                            .post(post)
-                            .build();
-                    return userLookedPostRepository.save(newUserLookedPost);
-                });
-        //userId로 검색했을 때 없으면 새로 생성하고 있으면 그대로 반환
+        List<UserLookedPost> userLookedPosts = userLookedPostRepository.findAllByUserId(userId);
 
-        userLookedPostRepository.findByPost(post).orElseGet(() -> {
+        if (userLookedPosts.stream().count() == 0){
             UserLookedPost newUserLookedPost = UserLookedPost.builder()
                     .userId(userId)
                     .post(post)
                     .build();
-            return userLookedPostRepository.save(newUserLookedPost);
-        });
+            userLookedPostRepository.save(newUserLookedPost);
+        }
+        //userId로 검색했을 때 없으면 새로 생성하고 있으면 그대로 반환
+
+        List<UserLookedPost> userLookedPosts1 = userLookedPostRepository.findAllByPost(post);
+
+        if (userLookedPosts1.stream().count() == 0){
+            UserLookedPost newUserLookedPost = UserLookedPost.builder()
+                    .userId(postId)
+                    .post(post)
+                    .build();
+            userLookedPostRepository.save(newUserLookedPost);
+        }
         //postId로 검색했을 때 없으면 새로 생성하고 있으면 그대로 반환
 
 

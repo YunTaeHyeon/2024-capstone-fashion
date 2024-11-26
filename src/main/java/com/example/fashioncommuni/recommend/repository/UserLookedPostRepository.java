@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserLookedPostRepository extends JpaRepository<UserLookedPost, Long> {
-    Optional<UserLookedPost> findByUserId(Long userId);
-    Optional<UserLookedPost> findByPost(Post post);
     List<UserLookedPost> findAllByUserId(Long userId);
+    List<UserLookedPost> findAllByPost(Post post);
 }
