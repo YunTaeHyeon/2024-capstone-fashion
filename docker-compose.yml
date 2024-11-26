@@ -50,8 +50,8 @@ services:
   backend:
     image: yuntaehyeon/capstone
     #build:
-      #context: .
-      #dockerfile: Dockerfile
+    #  context: .
+    #  dockerfile: Dockerfile
     restart: on-failure
     ports:
       - "8080:8080"
@@ -70,5 +70,6 @@ services:
         ./wait-for-it.sh mysqldb:3306 -s -t 100
         apt-get update
         apt install -y python3-pip
-        pip3 install numpy sklearn joblib pandas
+        pip3 install numpy joblib pandas
+        pip install scikit-learn==1.5.0
         java -jar /app.jar
