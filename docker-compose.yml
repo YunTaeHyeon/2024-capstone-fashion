@@ -68,8 +68,8 @@ services:
       - -c
       - |
         ./wait-for-it.sh mysqldb:3306 -s -t 100
-        apt-get update
-        apt install -y python3-pip
-        pip3 install numpy joblib pandas
-        pip install scikit-learn==1.5.0
+        sudo apt-get update
+        sudo apt install -y python3-pip
+        sudo pip3 install numpy joblib pandas
+        sudo pip install scikit-learn==1.3.2
         java -jar /app.jar
