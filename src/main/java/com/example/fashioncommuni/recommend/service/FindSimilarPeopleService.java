@@ -41,8 +41,11 @@ public class FindSimilarPeopleService {
 
         System.out.println("userScore : "+ input);
         System.out.println("bash -c cd recommendation-system && python3 recommend.py " + input);
+
         try {
-            ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c", "cd recommendation-system && python3 recommend.py " + input);
+            String safeInput = "\"" + input + "\"";  // 입력값을 쿼터로 감싸기
+            ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c", "cd recommendation-system && python3 recommend.py " + safeInput);
+            //ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c", "cd recommendation-system && python3 recommend.py " + input);
             processBuilder.redirectErrorStream(true);
             Process process = processBuilder.start();
 
