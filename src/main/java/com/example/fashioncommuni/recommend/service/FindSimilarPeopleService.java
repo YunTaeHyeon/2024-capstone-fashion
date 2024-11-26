@@ -40,6 +40,7 @@ public class FindSimilarPeopleService {
                 .collect(Collectors.joining(" "));
 
         System.out.println("userScore : "+ input);
+        System.out.println("bash -c cd recommendation-system && python3 recommend.py " + input);
         try {
             ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c", "cd recommendation-system && python3 recommend.py " + input);
             processBuilder.redirectErrorStream(true);
