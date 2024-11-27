@@ -39,9 +39,70 @@
             <div class="mb-3">
               <label class="form-label">Images</label>
               <div class="post-images">
-                <img
-                  src="https://github.com/YunTaeHyeon/2024-capstone-fashion/blob/main/recommendation-system/init_recommend_images/athleisure1.jpg?raw=true"
-                />
+                <th:block th:switch="${dto.categoryId}">
+                  <!-- Athleisure -->
+                  <img
+                    th:case="1"
+                    th:src="|https://github.com/YunTaeHyeon/2024-capstone-fashion/blob/main/recommendation-system/init_recommend_images/athleisure${(post_id % 5) + 1}.jpg?raw=true|"
+                    class="post-image"
+                  />
+
+                  <!-- Punk -->
+                  <img
+                    th:case="2"
+                    th:src="|https://github.com/YunTaeHyeon/2024-capstone-fashion/blob/main/recommendation-system/init_recommend_images/goth_punk${(post_id % 5) + 1}.jpg?raw=true|"
+                    class="post-image"
+                  />
+
+                  <!-- Grunge -->
+                  <img
+                    th:case="3"
+                    th:src="|https://github.com/YunTaeHyeon/2024-capstone-fashion/blob/main/recommendation-system/init_recommend_images/grunge${(post_id % 5) + 1}.jpg?raw=true|"
+                    class="post-image"
+                  />
+
+                  <!-- Hippie -->
+                  <img
+                    th:case="4"
+                    th:src="|https://github.com/YunTaeHyeon/2024-capstone-fashion/blob/main/recommendation-system/init_recommend_images/hippie${(post_id % 5) + 1}.jpg?raw=true|"
+                    class="post-image"
+                  />
+
+                  <!-- Military -->
+                  <img
+                    th:case="5"
+                    th:src="|https://github.com/YunTaeHyeon/2024-capstone-fashion/blob/main/recommendation-system/init_recommend_images/military${(post_id % 5) + 1}.jpg?raw=true|"
+                    class="post-image"
+                  />
+
+                  <!-- Minimal -->
+                  <img
+                    th:case="6"
+                    th:src="|https://github.com/YunTaeHyeon/2024-capstone-fashion/blob/main/recommendation-system/init_recommend_images/minimal${(post_id % 5) + 1}.jpg?raw=true|"
+                    class="post-image"
+                  />
+
+                  <!-- Normcore -->
+                  <img
+                    th:case="7"
+                    th:src="|https://github.com/YunTaeHyeon/2024-capstone-fashion/blob/main/recommendation-system/init_recommend_images/normcore${(post_id % 5) + 1}.jpg?raw=true|"
+                    class="post-image"
+                  />
+
+                  <!-- Preppy -->
+                  <img
+                    th:case="8"
+                    th:src="|https://github.com/YunTaeHyeon/2024-capstone-fashion/blob/main/recommendation-system/init_recommend_images/preppy${(post_id % 5) + 1}.jpg?raw=true|"
+                    class="post-image"
+                  />
+
+                  <!-- Street -->
+                  <img
+                    th:case="9"
+                    th:src="|https://github.com/YunTaeHyeon/2024-capstone-fashion/blob/main/recommendation-system/init_recommend_images/street${(post_id % 5) + 1}.jpg?raw=true|"
+                    class="post-image"
+                  />
+                </th:block>
               </div>
             </div>
             <div class="mb-3">
