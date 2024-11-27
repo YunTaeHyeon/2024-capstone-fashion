@@ -48,10 +48,10 @@ services:
 
 
   backend:
-    #image: yuntaehyeon/capstone
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: yuntaehyeon/capstone
+    #build:
+    #  context: .
+    #  dockerfile: Dockerfile
     restart: on-failure
     ports:
       - "8080:8080"
