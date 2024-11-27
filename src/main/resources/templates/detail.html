@@ -42,55 +42,55 @@
                 <th:block>
                   <img
                     th:if="${dto.categoryId == 1}"
-                    src="https://github.com/YunTaeHyeon/2024-capstone-fashion/blob/main/recommendation-system/init_recommend_images/athleisure${dto.postId % 5 + 1}.jpg?raw=true"
+                    th:src="'https://github.com/YunTaeHyeon/2024-capstone-fashion/blob/main/recommendation-system/init_recommend_images/athleisure' + ${dto.postId % 5 + 1} + '.jpg?raw=true'"
                     class="post-image"
                   />
 
                   <img
                     th:if="${dto.categoryId == 2}"
-                    src="https://github.com/YunTaeHyeon/2024-capstone-fashion/blob/main/recommendation-system/init_recommend_images/goth_punk${dto.postId % 5 + 1}.jpg?raw=true"
+                    th:src="'https://github.com/YunTaeHyeon/2024-capstone-fashion/blob/main/recommendation-system/init_recommend_images/goth_punk' + ${dto.postId % 5 + 1} + '.jpg?raw=true'"
                     class="post-image"
                   />
 
                   <img
                     th:if="${dto.categoryId == 3}"
-                    src="https://github.com/YunTaeHyeon/2024-capstone-fashion/blob/main/recommendation-system/init_recommend_images/grunge${dto.postId % 5 + 1}.jpg?raw=true"
+                    th:src="'https://github.com/YunTaeHyeon/2024-capstone-fashion/blob/main/recommendation-system/init_recommend_images/grunge' + ${dto.postId % 5 + 1} + '.jpg?raw=true'"
                     class="post-image"
                   />
 
                   <img
                     th:if="${dto.categoryId == 4}"
-                    src="https://github.com/YunTaeHyeon/2024-capstone-fashion/blob/main/recommendation-system/init_recommend_images/hippie${dto.postId % 5 + 1}.jpg?raw=true"
+                    th:src="'https://github.com/YunTaeHyeon/2024-capstone-fashion/blob/main/recommendation-system/init_recommend_images/hippie' + ${dto.postId % 5 + 1} + '.jpg?raw=true'"
                     class="post-image"
                   />
 
                   <img
                     th:if="${dto.categoryId == 5}"
-                    src="https://github.com/YunTaeHyeon/2024-capstone-fashion/blob/main/recommendation-system/init_recommend_images/military${dto.postId % 5 + 1}.jpg?raw=true"
+                    th:src="'https://github.com/YunTaeHyeon/2024-capstone-fashion/blob/main/recommendation-system/init_recommend_images/military' + ${dto.postId % 5 + 1} + '.jpg?raw=true'"
                     class="post-image"
                   />
 
                   <img
                     th:if="${dto.categoryId == 6}"
-                    src="https://github.com/YunTaeHyeon/2024-capstone-fashion/blob/main/recommendation-system/init_recommend_images/minimal${dto.postId % 5 + 1}.jpg?raw=true"
+                    th:src="'https://github.com/YunTaeHyeon/2024-capstone-fashion/blob/main/recommendation-system/init_recommend_images/minimal' + ${dto.postId % 5 + 1} + '.jpg?raw=true'"
                     class="post-image"
                   />
 
                   <img
                     th:if="${dto.categoryId == 7}"
-                    src="https://github.com/YunTaeHyeon/2024-capstone-fashion/blob/main/recommendation-system/init_recommend_images/normcore${dto.postId % 5 + 1}.jpg?raw=true"
+                    th:src="'https://github.com/YunTaeHyeon/2024-capstone-fashion/blob/main/recommendation-system/init_recommend_images/normcore' + ${dto.postId % 5 + 1} + '.jpg?raw=true'"
                     class="post-image"
                   />
 
                   <img
                     th:if="${dto.categoryId == 8}"
-                    src="https://github.com/YunTaeHyeon/2024-capstone-fashion/blob/main/recommendation-system/init_recommend_images/preppy${dto.postId % 5 + 1}.jpg?raw=true"
+                    th:src="'https://github.com/YunTaeHyeon/2024-capstone-fashion/blob/main/recommendation-system/init_recommend_images/preppy' + ${dto.postId % 5 + 1} + '.jpg?raw=true'"
                     class="post-image"
                   />
 
                   <img
                     th:if="${dto.categoryId == 9}"
-                    src="https://github.com/YunTaeHyeon/2024-capstone-fashion/blob/main/recommendation-system/init_recommend_images/street${dto.postId % 5 + 1}.jpg?raw=true"
+                    th:src="'https://github.com/YunTaeHyeon/2024-capstone-fashion/blob/main/recommendation-system/init_recommend_images/street' + ${dto.postId % 5 + 1} + '.jpg?raw=true'"
                     class="post-image"
                   />
                 </th:block>
