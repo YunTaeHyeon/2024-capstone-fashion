@@ -133,6 +133,7 @@ public class UserCategoryScoresServiceImpl implements UserCategoryScoresService 
     }
 
     @Override
+    @Transactional
     public CategoryScores viewPost(Long userId, Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("게시물을 찾을 수 없습니다.: " + postId));
@@ -187,6 +188,7 @@ public class UserCategoryScoresServiceImpl implements UserCategoryScoresService 
                 .build();
 
         userLookedPostRepository.save(userLookedPost);
+        System.out.println("userLookedPost : " + userLookedPost.toString());
 
         return categoryScores;
 

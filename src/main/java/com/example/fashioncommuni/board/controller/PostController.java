@@ -131,11 +131,11 @@ public class PostController {
         List<CommentResponseDTO> commentResponseDTO = commentService.commentList(postId);
 
         //아래가 추가한 부분
-//        SecurityUserDetailsDto userDetailsDto = (SecurityUserDetailsDto) authentication.getPrincipal();
-//        String authLoginId = userDetailsDto.getUsername();
-//
-//        User user = securityUserService.findByLoginId(authLoginId).orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
-//        userCategoryScoresService.viewPost(user.getId(), postId);
+        SecurityUserDetailsDto userDetailsDto = (SecurityUserDetailsDto) authentication.getPrincipal();
+        String authLoginId = userDetailsDto.getUsername();
+
+        User user = securityUserService.findByLoginId(authLoginId).orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+        userCategoryScoresService.viewPost(user.getId(), postId);
         //여기까지
 
         model.addAttribute("comments", commentResponseDTO);
