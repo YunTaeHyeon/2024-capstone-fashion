@@ -22,10 +22,18 @@
                 </div>
                 <div class="mb-3" th:if="${dto.imageUrls != null}">
                     <label class="form-label">Images</label>
-                    <div>
-                        <th:block th:each="imageUrl : ${dto.imageUrls}">
-                            <img th:src="${imageUrl}" alt="Image" width="200px" height="200px">
-                        </th:block>
+                    <div class="post-images">
+                        <img th:if="${dto.category_id >= 1 and dto.category_id <= 8}"
+                             th:src="@{'/recommendation-system/post_images/' + 
+                                    ${T(com.example.fashioncommuni.utils.CategoryUtil).getCategoryName(dto.category_id)} + 
+                                    '/' +
+                                    ${T(com.example.fashioncommuni.utils.CategoryUtil).getCategoryName(dto.category_id)} +
+                                    '_' +
+                                    ${(post_id % 10) + 1} +
+                                    '.jpg'}"
+                             th:alt="${T(com.example.fashioncommuni.utils.CategoryUtil).getCategoryName(dto.category_id)} + ' Style'"
+                             class="post-image">
+                        </div>
                     </div>
                 </div>
                 <div class="mb-3">
