@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,6 +29,7 @@ public class ChatService {
         chatMessage.setChatRoomId(chatRoomId);
         chatMessage.setSenderId(senderId);
         chatMessage.setContent(content);
+        chatMessage.setCreatedAt(ZonedDateTime.now().format(DateTimeFormatter.ISO_INSTANT));
         chatMessageRepository.save(chatMessage);
     }
 
