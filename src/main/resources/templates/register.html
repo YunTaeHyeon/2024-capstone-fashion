@@ -119,7 +119,8 @@
           window.location.href = '/login'; // 회원가입 후 해당 URL로 리다이렉트
         },
         error: function(xhr) {
-          $('#error-message').text(xhr.responseJSON.message);
+          let errorMessage = xhr.responseText || "회원가입에 실패했습니다. 이메일과 로그인 아이디 중복";
+          $('#error-message').text(errorMessage)
         }
       });
     });

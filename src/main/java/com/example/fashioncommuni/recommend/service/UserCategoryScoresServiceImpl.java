@@ -4,7 +4,9 @@ import com.example.fashioncommuni.board.domain.Post;
 import com.example.fashioncommuni.board.repository.PostRepository;
 import com.example.fashioncommuni.recommend.domain.CategoryScores;
 import com.example.fashioncommuni.recommend.domain.UserCategoryScores;
+import com.example.fashioncommuni.recommend.domain.UserLookedPost;
 import com.example.fashioncommuni.recommend.repository.UserCategoryScoresRepository;
+import com.example.fashioncommuni.recommend.repository.UserLookedPostRepository;
 import com.example.fashioncommuni.redis.GetSaveFromRedis;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +33,7 @@ public class UserCategoryScoresServiceImpl implements UserCategoryScoresService 
     private final UserCategoryScoresRepository userCategoryScoresRepository;
     private final PostRepository postRepository;
     private final GetSaveFromRedis getSaveFromRedis;
+    private final UserLookedPostRepository userLookedPostRepository;
 
     @Value("${userCategory.maxUseScores}")
     private int MAX_USE_SCORES; //추천에 사용할 최대 점수의 개수
@@ -130,12 +133,13 @@ public class UserCategoryScoresServiceImpl implements UserCategoryScoresService 
     }
 
     @Override
+    @Transactional
     public CategoryScores viewPost(Long userId, Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("게시물을 찾을 수 없습니다.: " + postId));
 
         // 게시물의 카테고리를 가져옵니다.
-        String categoryId = post.getCategory_id().toString();
+        String categoryId = post.getCategoryId().toString();
 
         // 사용자의 카테고리 점수를 가져옵니다.
         UserCategoryScores userCategoryScores = userCategoryScoresRepository.findByUserId(userId)
@@ -161,14 +165,30 @@ public class UserCategoryScoresServiceImpl implements UserCategoryScoresService 
         categoryScores.addCategoryScores(1.0);
 
         // 사용자의 카테고리 점수를 저장합니다.
-        //userCategoryScoresRepository.save(userCategoryScores);
-        //redis에 저장
+        userCategoryScoresRepository.save(userCategoryScores);
+        //redis에 저장 -> toDo: 추후에 변경
 
+        /*
         try {
             getSaveFromRedis.saveCategoryScoresData(categoryId, categoryScores);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
+         */
+
+        UserLookedPost existing = userLookedPostRepository.findByUserIdAndPost(userId, post);
+
+        if (existing != null) {
+            return categoryScores;
+        }
+
+        UserLookedPost userLookedPost = UserLookedPost.builder()
+                .userId(userId)
+                .post(post)
+                .build();
+
+        userLookedPostRepository.save(userLookedPost);
+        System.out.println("userLookedPost : " + userLookedPost.toString());
 
         return categoryScores;
 

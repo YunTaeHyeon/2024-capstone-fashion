@@ -70,7 +70,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/resources/**", "/static/**").permitAll()
+                        .requestMatchers("/resources/**", "/static/**","/post/**").permitAll()
+                        .requestMatchers("/temp/**").permitAll()
                         .requestMatchers("/css/**").permitAll()
                         .requestMatchers("/main/rootPage").permitAll()
                         .requestMatchers("/error.html").permitAll()
@@ -78,6 +79,8 @@ public class SecurityConfig {
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/user/register").permitAll()
                         .requestMatchers("/register").permitAll()
+                        .requestMatchers("/chat/**").permitAll()
+                        .requestMatchers("/chatRoom/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
@@ -90,6 +93,8 @@ public class SecurityConfig {
                 .addFilterBefore(customAuthenticationFilter, JwtAuthorizationFilter.class)
                 .build();
     }
+
+
 
 
     /**

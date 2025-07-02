@@ -9,11 +9,13 @@ import com.example.fashioncommuni.board.repository.PostImageRepository;
 import com.example.fashioncommuni.board.repository.PostRepository;
 import com.example.fashioncommuni.member.domain.User;
 import com.example.fashioncommuni.member.repository.UserRepository;
+import com.example.fashioncommuni.recommend.service.FindSimilarPeopleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,6 +34,7 @@ public class PostServiceImpl implements PostService {
     private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final PostImageRepository postImageRepository;
+    private final FindSimilarPeopleService findSimilarPeopleService;
 
     @Value("${file.postImagePath}")
     private String uploadFolder;
@@ -46,7 +49,7 @@ public class PostServiceImpl implements PostService {
         Post result = Post.builder()
                 .title(postWriteRequestDTO.getTitle())
                 .content(postWriteRequestDTO.getContent())
-                .category_id(postWriteRequestDTO.getCategory_id())
+                .categoryId(postWriteRequestDTO.getCategoryId())
                 .user(user)
                 .build();
 
@@ -74,12 +77,12 @@ public class PostServiceImpl implements PostService {
             }
         }
 
-        return result.getPost_id();
+        return result.getPostId();
     }
 
     @Override
-    public PostResponseDTO postDetail(Long post_id) {
-        Post post = postRepository.findById(post_id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
+    public PostResponseDTO postDetail(Long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
         PostResponseDTO result = PostResponseDTO.builder()
                 .post(post)
                 .build();
@@ -90,6 +93,15 @@ public class PostServiceImpl implements PostService {
     @Override
     public Page<PostResponseDTO> postList(Pageable pageable) {
         Page<Post> posts = postRepository.findAll(pageable);
+        return getPostResponseDTOS(pageable, posts);
+    }
+
+    @Override
+    public Page<PostResponseDTO> recommendPostList(Long userId ,Pageable pageable) {
+        //FindSimilarPeopleService에서 유사한 유저들을 찾아서 그 유저들이 본 게시글을 추천하는 메소드
+
+        List<Long> recommendPostIds = findSimilarPeopleService.getRecommendPostIds(userId);
+        Page<Post> posts = postRepository.findByPostIdIn(recommendPostIds, pageable);
         return getPostResponseDTOS(pageable, posts);
     }
 
@@ -113,17 +125,23 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Long postUpdate(Long post_id, PostWriteRequestDTO postWriteRequestDTO) {
-        Post post = postRepository.findById(post_id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
+    public Long postUpdate(Long postId, PostWriteRequestDTO postWriteRequestDTO) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
         post.update(postWriteRequestDTO.getTitle(), postWriteRequestDTO.getContent());
         postRepository.save(post);
 
-        return post.getPost_id();
+        return post.getPostId();
     }
 
     @Override
-    public void postRemove(Long post_id) {
-        Post post = postRepository.findById(post_id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
+    public void postRemove(Long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시글입니다."));
         postRepository.delete(post);
+    }
+
+    @Override
+    public Page<PostResponseDTO> searchingPostCategory(Long categoryId, Pageable pageable) {
+        Page<Post> posts = postRepository.findByCategoryId(categoryId, pageable);
+        return getPostResponseDTOS(pageable, posts);
     }
 }

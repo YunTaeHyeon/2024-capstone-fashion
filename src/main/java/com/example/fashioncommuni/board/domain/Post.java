@@ -17,8 +17,9 @@ import java.util.List;
 public class Post extends BaseEntity {
 
     @Id
+    @Column(name = "postId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long post_id;
+    private Long postId;
 
     @NotEmpty(message = "제목은 필수 입력값입니다.")
     private String title;
@@ -27,8 +28,8 @@ public class Post extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    @Column(name = "category_id")
-    private Long category_id;
+    @Column(name = "categoryId")
+    private Long categoryId;
 
     private String status;
 
@@ -37,11 +38,10 @@ public class Post extends BaseEntity {
     private User user;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    @OrderBy("comment_id asc")
+    @OrderBy("commentId asc")
     private List<Comment> comments;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    @OrderBy("image_id asc")
     private List<PostImage> postImages;
 
     public void update(String title, String content) {

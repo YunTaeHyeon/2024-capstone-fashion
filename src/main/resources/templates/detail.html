@@ -1,100 +1,250 @@
 <!DOCTYPE html>
-<html lang="kr" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/default}">
-<head>
-    <meta charset="UTF-8">
-    <title th:text="게시글 + ${dto.title}">게시글 </title>
-</head>
-<body>
-<div class="container" layout:fragment="content">
-    <h1 class="mt-4">Board</h1>
-    <div class="card mb-4">
+<html
+  lang="kr"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/default}"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <title th:text="게시글 + ${dto.title}">게시글</title>
+  </head>
+  <body>
+    <div class="container" layout:fragment="content">
+      <h1 class="mt-4">Board</h1>
+      <div class="card mb-4">
         <div class="card-body">
-            <form>
-                <div class="mb-3">
-                    <label for="title" class="form-label">title</label>
-                    <input type="text" class="form-control" id="title" name="title" th:value="${dto.title}" disabled>
-                </div>
-                <div class="mb-3">
-                    <label for="content" class="form-label">content</label>
-                    <textarea class="form-control" id="content" name="content" disabled th:text="${dto.content}"></textarea>
-                </div>
-                <div class="mb-3" th:if="${dto.imageUrls != null}">
-                    <label class="form-label">Images</label>
-                    <div>
-                        <th:block th:each="imageUrl : ${dto.imageUrls}">
-                            <img th:src="${imageUrl}" alt="Image" width="200px" height="200px">
-                        </th:block>
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label for="createdAt" class="form-label">작성일</label> <input
-                        type="text" class="form-control" id="createdAt" name="createdAt"
-                        th:value="${#temporals.format(dto.createdAt, 'yyyy-MM-dd HH:mm')}" disabled>
-                </div>
-                <div class="mb-3">
-                    <label for="writer" class="form-label">카테고리</label> <input
-                        type="text" class="form-control" id="category_id" name="category_id"
-                        th:value="${dto.category_id}" disabled>
-                </div>
-                <div class="mb-3">
-                    <label for="writer" class="form-label">작성자</label> <input
-                        type="text" class="form-control" id="writer" name="writer"
-                        th:value="${dto.user_id}" disabled>
-                </div>
-                <a href="/static" class="btn btn-outline-secondary">list</a>
-                <th:block th:if="${dto.getEmail() == #authentication.principal.email}">
-                    <a th:href="@{/post/{post_id}/update(post_id=${post_id})}" class="btn btn-outline-warning">modify</a>
-                    <a th:href="@{/post/{post_id}/remove(post_id=${post_id})}" class="btn btn-outline-danger" onclick="return confirm('삭제하시겠습니까?')">remove</a>
+          <form>
+            <div class="mb-3">
+              <label for="title" class="form-label">제목</label>
+              <input
+                type="text"
+                class="form-control"
+                id="title"
+                name="title"
+                th:value="${dto.title}"
+                disabled
+              />
+            </div>
+            <div class="mb-3">
+              <label for="content" class="form-label">내용</label>
+              <textarea
+                class="form-control"
+                id="content"
+                name="content"
+                disabled
+                th:text="${dto.content}"
+              ></textarea>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Images</label>
+              <div class="post-images">
+                <th:block>
+                  <img
+                    th:if="${dto.categoryId == 1}"
+                    th:src="'https://github.com/YunTaeHyeon/2024-capstone-fashion/blob/main/recommendation-system/init_recommend_images/athleisure' + ${dto.postId % 5 + 1} + '.jpg?raw=true'"
+                    class="post-image"
+                  />
+
+                  <img
+                    th:if="${dto.categoryId == 2}"
+                    th:src="'https://github.com/YunTaeHyeon/2024-capstone-fashion/blob/main/recommendation-system/init_recommend_images/goth_punk' + ${dto.postId % 5 + 1} + '.jpg?raw=true'"
+                    class="post-image"
+                  />
+
+                  <img
+                    th:if="${dto.categoryId == 3}"
+                    th:src="'https://github.com/YunTaeHyeon/2024-capstone-fashion/blob/main/recommendation-system/init_recommend_images/grunge' + ${dto.postId % 5 + 1} + '.jpg?raw=true'"
+                    class="post-image"
+                  />
+
+                  <img
+                    th:if="${dto.categoryId == 4}"
+                    th:src="'https://github.com/YunTaeHyeon/2024-capstone-fashion/blob/main/recommendation-system/init_recommend_images/hippie' + ${dto.postId % 5 + 1} + '.jpg?raw=true'"
+                    class="post-image"
+                  />
+
+                  <img
+                    th:if="${dto.categoryId == 5}"
+                    th:src="'https://github.com/YunTaeHyeon/2024-capstone-fashion/blob/main/recommendation-system/init_recommend_images/military' + ${dto.postId % 5 + 1} + '.jpg?raw=true'"
+                    class="post-image"
+                  />
+
+                  <img
+                    th:if="${dto.categoryId == 6}"
+                    th:src="'https://github.com/YunTaeHyeon/2024-capstone-fashion/blob/main/recommendation-system/init_recommend_images/minimal' + ${dto.postId % 5 + 1} + '.jpg?raw=true'"
+                    class="post-image"
+                  />
+
+                  <img
+                    th:if="${dto.categoryId == 7}"
+                    th:src="'https://github.com/YunTaeHyeon/2024-capstone-fashion/blob/main/recommendation-system/init_recommend_images/normcore' + ${dto.postId % 5 + 1} + '.jpg?raw=true'"
+                    class="post-image"
+                  />
+
+                  <img
+                    th:if="${dto.categoryId == 8}"
+                    th:src="'https://github.com/YunTaeHyeon/2024-capstone-fashion/blob/main/recommendation-system/init_recommend_images/preppy' + ${dto.postId % 5 + 1} + '.jpg?raw=true'"
+                    class="post-image"
+                  />
+
+                  <img
+                    th:if="${dto.categoryId == 9}"
+                    th:src="'https://github.com/YunTaeHyeon/2024-capstone-fashion/blob/main/recommendation-system/init_recommend_images/street' + ${dto.postId % 5 + 1} + '.jpg?raw=true'"
+                    class="post-image"
+                  />
                 </th:block>
-            </form>
-            <!-- Comments Form -->
-            <div class="card my-4">
-                <h5 class="card-header">Leave a Comment:</h5>
-                <div class="card-body">
-                    <form th:action="@{/post/{post_id}/comment(post_id=${post_id})}" th:method="post">
-                        <div class="form-group" style="margin-bottom: 10px;">
-                            <input type="hidden" name="idx" th:value="${idx}" />
-                            <textarea name="content" class="form-control" rows="3"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
-                </div>
+              </div>
             </div>
+            <div class="mb-3">
+              <label for="createdAt" class="form-label">작성일</label>
+              <input
+                type="text"
+                class="form-control"
+                id="createdAt"
+                name="createdAt"
+                th:value="${#temporals.format(dto.createdAt, 'yyyy-MM-dd HH:mm')}"
+                disabled
+              />
+            </div>
+            <div class="mb-3">
+              <label for="writer" class="form-label">카테고리</label>
+              <input
+                type="text"
+                class="form-control"
+                id="category_name"
+                name="category_name"
+                disabled
+              />
+              <input
+                type="hidden"
+                id="categoryId"
+                name="categoryId"
+                th:value="${dto.categoryId}"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="writer" class="form-label">작성자</label>
+              <input
+                type="text"
+                class="form-control"
+                id="writer"
+                name="writer"
+                th:value="${dto.email}"
+                disabled
+              />
+            </div>
+            <a href="home.html" class="btn btn-outline-secondary">홈</a>
+            <th:block
+              th:if="${dto.getEmail() == #authentication.principal.email}"
+            >
+              <a
+                th:href="@{/post/{postId}/update(postId=${postId})}"
+                class="btn btn-outline-warning"
+                >수정하기</a
+              >
+              <a
+                th:href="@{/post/{postId}/remove(postId=${postId})}"
+                class="btn btn-outline-danger"
+                onclick="return confirm('삭제하시겠습니까?')"
+                >삭제하기</a
+              >
+            </th:block>
+          </form>
+          <!-- Comments Form -->
+          <div class="card my-4">
+            <h5 class="card-header">댓글:</h5>
+            <div class="card-body">
+              <form
+                th:action="@{/post/{postId}/comment(postId=${postId})}"
+                th:method="post"
+              >
+                <div class="form-group" style="margin-bottom: 10px">
+                  <input type="hidden" name="idx" th:value="${idx}" />
+                  <textarea
+                    name="content"
+                    class="form-control"
+                    rows="3"
+                  ></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+            </div>
+          </div>
 
-            <!-- Display Comments -->
-            <div class="card my-4" th:if="${comments.size()} != 0">
-                <h5 class="card-header">Comments:</h5>
-                <div class="card-body">
-                    <div th:each="comment : ${comments}">
-                        <div class="media mb-4">
-                            <div class="media-body">
-                                <div class="d-flex align-items-start">
-<!--                                    <img class="d-flex mr-3 rounded-circle" th:src="${comment.getImageUrl()}" alt="User image" width="50">-->
-                                    <div>
-                                        <h5 class="mt-0" th:text="${comment.getEmail()}">User Name</h5>
-                                        <p th:text="${comment.getContent()}" th:id="'comment-' + ${comment.getComment_id()}">Comment content</p>
-                                        <small class="text-muted" th:text="${#temporals.format(comment.getCreatedAt(), 'yyyy-MM-dd HH:mm')}">Comment Date</small>
-                                    </div>
-                                </div>
-                                <div th:if="${comment.getEmail() == #authentication.principal.email}">
-                                    <button class="btn btn-sm btn-outline-warning" th:attr="data-id=${comment.getComment_id()}" onclick="editComment(this)">Edit</button>
-                                    <a th:href="@{/post/{post_id}/comment/{comment_id}/remove(post_id=${post_id}, comment_id=${comment.getComment_id()})}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this comment?')">Delete</a>
-                                </div>
-                            </div>
-                        </div>
+          <!-- Display Comments -->
+          <div class="card my-4" th:if="${comments.size()} != 0">
+            <h5 class="card-header">Comments:</h5>
+            <div class="card-body">
+              <div th:each="comment : ${comments}">
+                <div class="media mb-4">
+                  <div class="media-body">
+                    <div class="d-flex align-items-start">
+                      <!--                                <img class="d-flex mr-3 rounded-circle" th:src="${comment.getImageUrl()}" alt="User image" width="50">-->
+                      <div>
+                        <h5 class="mt-0" th:text="${comment.getEmail()}">
+                          이름
+                        </h5>
+                        <p
+                          th:text="${comment.getContent()}"
+                          th:id="'comment-' + ${comment.getCommentId()}"
+                        >
+                          내용
+                        </p>
+                        <small
+                          class="text-muted"
+                          th:text="${#temporals.format(comment.getCreatedAt(), 'yyyy-MM-dd HH:mm')}"
+                          >댓글 날짜</small
+                        >
+                      </div>
                     </div>
+                    <div
+                      th:if="${comment.getEmail() == #authentication.principal.email}"
+                    >
+                      <button
+                        class="btn btn-sm btn-outline-warning"
+                        th:attr="data-id=${comment.getCommentId()}"
+                        onclick="editComment(this)"
+                      >
+                        수정하기
+                      </button>
+                      <a
+                        th:href="@{/post/{postId}/comment/{commentId}/remove(postId=${postId}, commentId=${comment.getCommentId()})}"
+                        class="btn btn-sm btn-outline-danger"
+                        onclick="return confirm('댓글을 삭제하시겠습니까?')"
+                        >삭제하기</a
+                      >
+                    </div>
+                  </div>
                 </div>
+              </div>
             </div>
+          </div>
         </div>
-    </div>
+      </div>
 
-    <script th:inline="javascript">
+      <script th:inline="javascript">
         /*<![CDATA[*/
-        const id = [[${post_id}]];
+        document.addEventListener('DOMContentLoaded', function() {
+            var categoryId = [[${dto.categoryId}]];
+            var categoryNameInput = document.getElementById('category_name');
+
+            var categories = {
+                1: 'athleisure',
+                2: 'punk',
+                3: 'grunge',
+                4: 'hippie',
+                5: 'military',
+                6: 'minimal',
+                7: 'normcore',
+                8: 'preppy',
+                9: 'street'
+            };
+
+            categoryNameInput.value = categories[categoryId] || 'Unknown Category';
+        });
         /*]]>*/
-    </script>
-</div>
-</body>
+      </script>
+    </div>
+  </body>
 </html>

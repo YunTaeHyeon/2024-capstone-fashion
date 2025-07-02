@@ -21,7 +21,7 @@ public class AutoTrainingKnnModel{
 
         //모델 학습 코드
         try {
-            Process process = new ProcessBuilder(autoTraining).start();
+            Process process = new ProcessBuilder("bash", "-c", "cd recommendation-system && python3 " + autoTraining).start();
         } catch (Exception e) {
             e.printStackTrace();
             log.info("Auto training model Error");

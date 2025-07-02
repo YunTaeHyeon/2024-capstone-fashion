@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
@@ -39,11 +40,16 @@ public class PostController {
     private final UserCategoryScoresService userCategoryScoresService;
 
     /**
-     * 홈 화면
-     * @return 홈 화면
+     * 메인 페이지
+     * @param authentication 유저 정보
+     * @param model
+     * @param pageable 페이징 처리
+     * @param keyword 검색어
+     * @param categoryId 카테고리 ID
+     * @return 메인 페이지
      */
     @GetMapping("/home")
-    public String home(Authentication authentication , Model model, Pageable pageable, String keyword) { // @PageableDefault(page = 0, size = 10, sort = "post_id", direction = Sort.Direction.DESC)
+    public String home(Authentication authentication , Model model, Pageable pageable, String keyword, Long categoryId) { // @PageableDefault(page = 0, size = 10, sort = "postId", direction = Sort.Direction.DESC)
 
         SecurityUserDetailsDto userDetailsDto = (SecurityUserDetailsDto) authentication.getPrincipal();
         String authLoginId = userDetailsDto.getUsername();
@@ -56,15 +62,35 @@ public class PostController {
             return "init-interest";
         }
 
-        if(keyword == null) {
-            model.addAttribute("postList", postService.postList(pageable));
-        } else {
+        if(keyword != null) {
             model.addAttribute("postList", postService.searchingPostList(keyword, pageable));
+        } else if (categoryId != null) {
+            model.addAttribute("postList", postService.searchingPostCategory(categoryId, pageable));
+        } else {
+            model.addAttribute("postList", postService.postList(pageable));
         }
 
         return "home";
     }
 
+    @GetMapping("/recommend")
+    public String recommend(Authentication authentication , Model model, Pageable pageable, String keyword, Long category_id) { // @PageableDefault(page = 0, size = 10, sort = "postId", direction = Sort.Direction.DESC)
+
+        SecurityUserDetailsDto userDetailsDto = (SecurityUserDetailsDto) authentication.getPrincipal();
+        String authLoginId = userDetailsDto.getUsername();
+
+        User user = securityUserService.findByLoginId(authLoginId).orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+
+        if(keyword == null) {
+            model.addAttribute("postList", postService.recommendPostList(user.getId(), pageable));
+        } else if (category_id != null) {
+            model.addAttribute("postList", postService.searchingPostCategory(category_id, pageable));
+        } else {
+            model.addAttribute("postList", postService.searchingPostList(keyword, pageable));
+        }
+
+        return "recommend";
+    }
 
     /**
      * 게시글 작성
@@ -78,10 +104,10 @@ public class PostController {
     /**
      * 게시글 작성 post
      * @param postWriteRequestDTO 게시글 정보
-     * @param authentication 유저 정보
+     * @param postImageUploadDTO 이미지 정보
      * @return 게시글 디테일 페이지
      */
-    @PostMapping("/write")
+    @PostMapping(value="/write", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String write(PostWriteRequestDTO postWriteRequestDTO,
                         @ModelAttribute PostImageUploadDTO postImageUploadDTO,
                         Authentication authentication) {
@@ -95,71 +121,79 @@ public class PostController {
 
     /**
      * 게시글 상세 조회
-     * @param post_id 게시글 ID
+     * @param postId 게시글 ID
      * @param model
      * @return 게시글 상세 페이지
      */
-    @GetMapping("/{post_id}")
-    public String postDetail(@PathVariable Long post_id, Model model) {
-        PostResponseDTO result = postService.postDetail(post_id);
-        List<CommentResponseDTO> commentResponseDTO = commentService.commentList(post_id);
+    @GetMapping("/{postId}")
+    public String postDetail(@PathVariable Long postId, Model model, Authentication authentication) {
+        PostResponseDTO result = postService.postDetail(postId);
+        List<CommentResponseDTO> commentResponseDTO = commentService.commentList(postId);
+
+        //아래가 추가한 부분
+        SecurityUserDetailsDto userDetailsDto = (SecurityUserDetailsDto) authentication.getPrincipal();
+        String authLoginId = userDetailsDto.getUsername();
+
+        User user = securityUserService.findByLoginId(authLoginId).orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+        userCategoryScoresService.viewPost(user.getId(), postId);
+        //여기까지
 
         model.addAttribute("comments", commentResponseDTO);
         model.addAttribute("dto", result);
-        model.addAttribute("post_id", post_id);
+        model.addAttribute("postId", postId);
 
         return "detail";
     }
 
     /**
      * 게시글 수정
-     * @param post_id 게시글 ID
+     * @param postId 게시글 ID
      * @param model
      * @param authentication 유저 정보
      * @return 게시글 수정 페이지
      */
-    @GetMapping("/{post_id}/update")
-    public String postUpdateForm(@PathVariable Long post_id, Model model, Authentication authentication) {
+    @GetMapping("/{postId}/update")
+    public String postUpdateForm(@PathVariable Long postId, Model model, Authentication authentication) {
         SecurityUserDetailsDto userDetails = (SecurityUserDetailsDto) authentication.getPrincipal();
-        PostResponseDTO result = postService.postDetail(post_id);
+        PostResponseDTO result = postService.postDetail(postId);
         if (!result.getEmail().equals(userDetails.getEmail())) {
             return "redirect:/post/home";
         }
 
         model.addAttribute("dto", result);
-        model.addAttribute("post_id", post_id);
+        model.addAttribute("postId", postId);
 
         return "update";
     }
 
     /**
      * 게시글 수정 post
-     * @param post_id 게시글 ID
+     * @param postId 게시글 ID
      * @param postWriteRequestDTO 수정 정보
      * @return 게시글 상세 조회 페이지
      */
-    @PostMapping("/{post_id}/update")
-    public String postUpdate(@PathVariable Long post_id, PostWriteRequestDTO postWriteRequestDTO) {
-        postService.postUpdate(post_id, postWriteRequestDTO);
+    @PostMapping("/{postId}/update")
+    public String postUpdate(@PathVariable Long postId, PostWriteRequestDTO postWriteRequestDTO) {
+        postService.postUpdate(postId, postWriteRequestDTO);
 
-        return "redirect:/post/" + post_id;
+        return "redirect:/post/" + postId;
     }
 
     /**
      * 게시글 삭제
-     * @param post_id 게시글 ID
+     * @param postId 게시글 ID
      * @param authentication 유저 정보
      * @return 메인 페이지
      */
-    @GetMapping("/{post_id}/remove")
-    public String postRemove(@PathVariable Long post_id, Authentication authentication) {
+    @GetMapping("/{postId}/remove")
+    public String postRemove(@PathVariable Long postId, Authentication authentication) {
         SecurityUserDetailsDto userDetails = (SecurityUserDetailsDto) authentication.getPrincipal();
-        PostResponseDTO result = postService.postDetail(post_id);
+        PostResponseDTO result = postService.postDetail(postId);
         if (!Objects.equals(result.getEmail() , userDetails.getEmail())) {
             return "redirect:/post/home";
         }
 
-        postService.postRemove(post_id);
+        postService.postRemove(postId);
 
         return "redirect:/post/home";
     }

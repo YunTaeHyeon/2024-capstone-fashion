@@ -59,20 +59,23 @@ public class UserInitInterestController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/complete") //toDo: 이거 왜 안됨?
-    public String completeInitInterest(Authentication authentication, Model model, Pageable pageable, String keyword) {
-        SecurityUserDetailsDto userDetails = (SecurityUserDetailsDto) authentication.getPrincipal();
-        String loginId = userDetails.getUsername();
-
-        User user = securityUserService.findByLoginId(loginId).orElseThrow(()-> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
-
-        if(keyword == null) {
-            model.addAttribute("postList", postService.postList(pageable));
-        } else {
-            model.addAttribute("postList", postService.searchingPostList(keyword, pageable));
-        }
-
-        return "home";
-    }
+//    @PostMapping("/complete") //toDo: 이거 왜 안됨?
+//    public String completeInitInterest(Authentication authentication, Model model, Pageable pageable, String keyword, Long categoryId) {
+//
+//        SecurityUserDetailsDto userDetailsDto = (SecurityUserDetailsDto) authentication.getPrincipal();
+//        String authLoginId = userDetailsDto.getUsername();
+//
+//        User user = securityUserService.findByLoginId(authLoginId).orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+//
+//        if(keyword != null) {
+//            model.addAttribute("postList", postService.searchingPostList(keyword, pageable));
+//        } else if (categoryId != null) {
+//            model.addAttribute("postList", postService.searchingPostCategory(categoryId, pageable));
+//        } else {
+//            model.addAttribute("postList", postService.postList(pageable));
+//        }
+//
+//        return "home";
+//    }
 
 }

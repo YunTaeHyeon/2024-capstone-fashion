@@ -31,15 +31,25 @@ spring:
     redis:
       host: redis
       port: 6379
+    mongodb:
+      uri: mongodb://root:1234@mongodb:27017/admin
+
+
+  kafka:
+    bootstrap-servers: kafka:9092
+    consumer:
+      topic: chatting
+
+
 file:
-  profileImagePath: C:/Temp/profileImageUpload/
-  postImagePath: C:/Temp/postImageUpload/
+  postImagePath: /temp/postImageUpload/
 userCategory:
   maxUseScores : 50
   maxCategoryCount : 8
   filePath : category_scores/
 
-autoTraining: recommendation-system/dist/train.exe
+autoTraining: recommendation-system/train_recommendation_model.py
+
 
 server:
   port: 8080

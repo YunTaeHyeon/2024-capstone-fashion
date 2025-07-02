@@ -1,47 +1,31 @@
 package com.example.fashioncommuni.chat.domain;
 
+import com.example.fashioncommuni.member.domain.User;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Objects;
 
-@ToString(callSuper = true)
+@Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter @Entity
+@AllArgsConstructor
+@Builder
 public class ChatRoom {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "room_id")
+    private Long id;// pk
+
     @Column(name = "chatroom_id")
-    private Long id;                            // pk
+    private String chatRoomId;
 
     @Column(name = "chatroom_name")
-    private String chatRoomName;                // 채팅방 이름
+    private  String chatRoomName;                // 채팅방 이름
 
-    // private 생성자 선언
-    private ChatRoom(String chatRoomName) {
-        this.chatRoomName = chatRoomName;
-    }
 
-    // factory method 선언
-    public static ChatRoom of(String chatRoomName) {
-        return new ChatRoom(chatRoomName);
-    }
 
-    // equals & hashCode 최적화
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ChatRoom chatRoom)) return false;
-        return this.id != null && Objects.equals(getId(), chatRoom.getId());
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId());
-    }
 
 }

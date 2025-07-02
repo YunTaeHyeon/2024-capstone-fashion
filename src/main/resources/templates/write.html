@@ -1,35 +1,83 @@
 <!DOCTYPE html>
-<html lang="kr" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/default}">
-<head>
-    <meta charset="UTF-8">
+<html
+  lang="kr"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/default}"
+>
+  <head>
+    <meta charset="UTF-8" />
     <title>게시글 작성</title>
-</head>
-<body>
-<div class="container" layout:fragment="content">
-    <form method="post" enctype="multipart/form-data">
+  </head>
+  <body>
+    <div class="container" layout:fragment="content">
+      <form method="post" enctype="multipart/form-data">
         <div class="form-group">
-            <label class="form-label mt-4">게시글 작성</label>
-            <div class="form-floating mb-3">
-                <input type="text" name="title" class="form-control" id="title" required>
-                <label for="title">제목</label>
-            </div>
-            <div class="form-floating mb-3">
-                <textarea name="content" class="form-control" id="content" rows="3" style="height: 500px;" required></textarea>
-                <label for="content">내용</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="file" name="files" class="form-control" id="files" multiple>
-                <label for="files">이미지 업로드</label>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="number" name="category_id" class="form-control" id="category_id" required>
-                <label for="category_id">카테고리</label>
-            </div>
+          <label class="form-label mt-4">게시글 작성</label>
+          <div class="form-floating mb-3">
+            <input
+              type="text"
+              name="title"
+              class="form-control"
+              id="title"
+              required
+            />
+            <label for="title">제목</label>
+          </div>
+          <div class="form-floating mb-3">
+            <textarea
+              name="content"
+              class="form-control"
+              id="content"
+              rows="3"
+              style="height: 500px"
+              required
+            ></textarea>
+            <label for="content">내용</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input
+              type="file"
+              name="files"
+              class="form-control"
+              id="files"
+              multiple
+              onchange="handleFileSelect(event)"
+            />
+            <label for="files">이미지 업로드</label>
+          </div>
+          <div class="form-floating mb-3">
+            <select
+              name="categoryId"
+              class="form-control"
+              id="categoryId"
+              required
+            >
+              <option value="1">athleisure</option>
+              <option value="2">punk</option>
+              <option value="3">grunge</option>
+              <option value="4">hippie</option>
+              <option value="5">military</option>
+              <option value="6">minimal</option>
+              <option value="7">normcore</option>
+              <option value="8">preppy</option>
+              <option value="9">street</option>
+            </select>
+            <label for="categoryId">카테고리</label>
+          </div>
         </div>
         <button type="submit" class="btn btn-primary">등록</button>
-    </form>
-</div>
-</body>
+      </form>
+    </div>
+
+    <script>
+      function handleFileSelect(event) {
+        event.preventDefault();
+        // 파일 선택했다는 알림만 표시
+        alert("이미지가 선택되었습니다.");
+        // 파일 입력 필드 초기화
+        event.target.value = "";
+      }
+    </script>
+  </body>
 </html>
